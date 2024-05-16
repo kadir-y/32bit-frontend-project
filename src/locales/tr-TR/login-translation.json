@@ -1,0 +1,5 @@
+{
+  "welcome": "Uygulamamıza hoş geldiniz!",
+  "hello": "Merhaba, {{name}}!",
+  "changeTheAppLanguage": "Uygulama dilini değiştir"
+}
