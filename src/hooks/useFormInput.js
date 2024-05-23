@@ -6,8 +6,16 @@ export default function useFormInput (initialValue, addHandleChangeEvent = () =>
     setValue(e.target.value);
     addHandleChangeEvent();
   }
+  function clear () {
+    setValue("");
+  }
   return {
-    value,
-    onChange: handleChange
+    props: {
+      value,
+      onChange: handleChange
+    },
+    methods: {
+      clear
+    }
   };
 }

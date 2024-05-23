@@ -1,5 +1,14 @@
 {
-  "welcome": "Welcome to our app!",
-  "hello": "Hello, {{name}}!",
-  "changeTheAppLanguage": "Change The App Language"
+  "welcome": "Welcome!",
+  "description": "Please enter your user code and password.",
+  "userCodeLabel": "User Code",
+  "passwordLabel": "Password",
+  "passwordHelperText": "Please don't share your password with anybody.",
+  "inputMinimumLengthError": "This field minimum length must be {{length}}.",
+  "inputRequiredError": "This field is required.",
+  "userNotFoundError": "User code not found.",
+  "passwordIncorrectError": "Password is incorrect.",
+  "version": "Version",
+  "loginButton": "Sign in",
+  "loggingInButton": "Signing in.."
 }

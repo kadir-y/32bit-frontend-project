@@ -4,17 +4,21 @@ import { getPreferedLanguage, getSystemLanguage } from './utils/languageTools';
 
 // translation files for english language
 import loginEnUSTranslation from './locales/en-US/login-translation.json';
+import appEnUSTranslation from './locales/en-US/app-translation.json';
 
 // translation files for turkish language
 import loginTrTranslation from './locales/tr-TR/login-translation.json';
+import appTrTranslation from './locales/tr-TR/app-translation.json';
 
 // include translation files
 const resources = {
   'tr-TR': {
-    login: loginTrTranslation
+    login: loginTrTranslation,
+    app: appTrTranslation
   },
   'en-US': {
-    login: loginEnUSTranslation
+    login: loginEnUSTranslation,
+    app: appEnUSTranslation
   }
 };
 

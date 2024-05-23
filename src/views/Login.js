@@ -1,43 +1,41 @@
 import { useState, useRef } from "react";
-// import { useTranslation } from "react-i18next";
+import axios from "../axios";
+import { useTranslation } from "react-i18next";
 
 import {
   Grid,
   Box, 
   TextField,
   InputAdornment,
-  Typography,
-  Button,
-} from "@mui/material"; // Grid version 1
+  Typography
+} from "@mui/material";
+import LButton from "../components/LButton";
 
 import {
   Visibility,
   VisibilityOff,
-  AccountCircle,
-  Login as LoginIcon
+  AccountCircle
 } from "@mui/icons-material";
 
-import logo from "../assets/logo.png"; // Logo 300x87 pixels
+import logo from "../assets/logo.png";
 
 import "../stylesheets/Login.css";
 
 import useFormInput from "../hooks/useFormInput";
 
-// const user = {
-//   userCode: "admin1234",
-//   password: "admin1234"
-// };
-
 const { version: appVersion } = require('../../package.json');
 
 function Login () {
-  // const { t } = useTranslation("login");
+  const { t } = useTranslation("login");
   const [passwordError, setPasswordError] = useState("");
   const [userCodeError, setUserCodeError] = useState("");
-  const userCodeProps = useFormInput("", () => { setUserCodeError("") });
-  const passwordProps = useFormInput("", () => { setPasswordError("") });
+  const { props: userCodeProps, methods: { clear: clearUserCode }} = useFormInput("", () => { setUserCodeError("") });
+  const { props: passwordProps, methods: { clear: clearPassword }} = useFormInput("", () => { setPasswordError("") });
+  const userCode = userCodeProps.value;
+  const password = passwordProps.value;
   const [showPassword, setShowPassword] = useState(false);
   const passwordRef = useRef(null);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   function toggleShowPassword (e) {
     e.preventDefault();
     setShowPassword(show => !show);
@@ -46,22 +44,42 @@ function Login () {
   function hidePassword () {
     setShowPassword(false);
   }
-
-  function handleClickLoginButton (e) {
+  async function handleFormSubmit(e) {
     e.preventDefault();
-    const userCode = userCodeProps.value
-    const password = passwordProps.value
+    setIsLoggingIn(true);
     let errCount = 0;
-    if (userCode.trim().length < 8) {
-      setUserCodeError("* Bu alan minimum 8 karakterden oluşmalıdır!");
+    if (userCode.trim().length === 0) {
+      setUserCodeError(t("inputRequiredError"));
+      errCount++;
+    } else if (userCode.trim().length < 6) {
+      setUserCodeError(t("inputMinimumLengthError", { length: 6 }));
       errCount++;
     }
-    if (password.trim().length < 8) {
-      setPasswordError("* Bu alan minimum 8 karakterden oluşmalıdır!");
+    if (password.trim().length === 0) {
+      setPasswordError(t("inputRequiredError"));
+      errCount++;
+    } else if (password.trim().length < 8) {
+      setPasswordError(t("inputMinimumLengthError", { length: 8 }));
       errCount++;
     }
     if (errCount === 0) {
+      try {
+        const res = await axios.post("api/users/login", { userCode, password })
+        localStorage.setItem("token", res?.data?.token);
+      } catch (err) {
+        if (err.response.status === 401) {
+          setPasswordError(t("passwordIncorrectError"));
+          clearPassword();
+        } else if (err.response.status === 404) {
+          setUserCodeError(t("userNotFoundError"));
+          clearUserCode();
+          clearPassword();
+        } else {
+          console.error(err);
+        }
+      }
     }
+    setIsLoggingIn(false);
   } 
   return (
     <Grid container 
@@ -74,7 +92,7 @@ function Login () {
         <Box sx={{ textAlign: "center", mb: { xs: 6, md: 0 } }}>
           <img className="logo" src={logo} alt="Logo" />
           <Typography variant="span" component="p" sx={{ mt: 2 }}>
-            Version&nbsp;{appVersion}
+            {t("version")}&nbsp;{appVersion}
           </Typography>
         </Box>
       </Grid>
@@ -83,12 +101,12 @@ function Login () {
         component="form"
       >
         <Box sx={{ mb: 3 }}>
-          <Typography variant="h5" component="h5">Hoşgeldiniz!</Typography>
+          <Typography variant="h5" component="h5">{t("welcome")}</Typography>
           <Typography 
             variant="subtitle1"
             component="span"
           >
-            Lütfen kullanıcı kodu ve şifrenizi giriniz.
+            {t("description")}
           </Typography>
         </Box>
         <Box sx={{ mb: 2 }}>
@@ -96,7 +114,7 @@ function Login () {
             fullWidth
             error={userCodeError.length > 0}
             helperText={ userCodeError ? userCodeError : '' }
-            label="Kullanıcı Kodu"
+            label={t("userCodeLabel")}
             InputProps={{
               ...userCodeProps,
               type: "text",
@@ -113,8 +131,8 @@ function Login () {
           <TextField
             fullWidth
             error={passwordError.length > 0}
-            helperText={ passwordError ? passwordError : 'Şifrenizi kimseyle paylaşmayın.' }
-            label="Şifre"
+            helperText={ passwordError ? passwordError : t("passwordHelperText") }
+            label={t("passwordLabel")}
             variant="outlined"
             onBlur={hidePassword}
             inputRef={passwordRef}
@@ -130,11 +148,12 @@ function Login () {
           />
         </Box>
         <Box>
-          <Button variant="contained"
-            size="large"
-            startIcon={<LoginIcon/>}
-            onClick={handleClickLoginButton}
-          >GİRİŞ YAP</Button>
+          <LButton
+            label={t("loginButton")}
+            loadingLabel={t("loggingInButton")}
+            isLoading={isLoggingIn}
+            onClick={handleFormSubmit}
+          ></LButton>
         </Box>
       </Grid>
     </Grid>
