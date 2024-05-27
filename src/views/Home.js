@@ -1,23 +1,26 @@
-import { useState } from 'react';
-import i18n from '../i18n';
-import { Button } from '@mui/material';
-import { useTranslation } from 'react-i18next';
+import {
+  Grid,
+  Box, 
+  Button
+} from "@mui/material";
+
+import { ShoppingCart } from '@mui/icons-material';
 
 function Home () {
-  const [displayLanguage, setDisplayLanguage] = useState(i18n.language);
-  const { t } = useTranslation('login');
-  function handleClick () {
-    const newDisplayLanguage = displayLanguage === 'en-US' ? 'tr-TR' : 'en-US';
-    i18n.changeLanguage(newDisplayLanguage);
-    setDisplayLanguage(newDisplayLanguage);
-  }
-
   return (
-    <div className="home">
-      <h3>{ t('welcome') }</h3>
-      <p>{ t('hello', { name: 'Kadir' }) }</p>
-      <Button onClick={handleClick} variant="contained">{ t('changeTheAppLanguage') }</Button>
-    </div>
+    <Grid container sx={{ display: "flex", justifyContent: "center" }}>
+      <Grid item xs={11} sm={10} md={5} lg={4} xlg={3}>
+        <Box>
+          <Button 
+            variant="outlined"
+            startIcon={<ShoppingCart />}
+            sx={{ width: "100%" }}
+          >Satış</Button>
+        </Box>
+      </Grid>
+      <Grid item xs={11} sm={10} md={5} lg={4} xlg={3}>
+      </Grid>
+    </Grid>
   );
 }
 
