@@ -28,8 +28,17 @@ function Login () {
   const setStoredToken = useLocalStorage("token")[1];
   const [passwordError, setPasswordError] = useState("");
   const [userCodeError, setUserCodeError] = useState("");
-  const { props: userCodeProps, methods: { clear: clearUserCode }} = useFormInput("", () => { setUserCodeError("") });
-  const { props: passwordProps, methods: { clear: clearPassword }} = useFormInput("", () => { setPasswordError("") });
+  const { props: userCodeProps, methods: { clear: clearUserCode }} = useFormInput({
+    initialValue: "",
+    label: t("userCodeLabel"),
+    error: userCodeError
+  }, () => { setUserCodeError("") });
+  const { props: passwordProps, methods: { clear: clearPassword }} = useFormInput({
+    initialValue: "",
+    helperText: t("passwordHelperText"),
+    label: t("passwordLabel"),
+    error: passwordError
+  }, () => { setPasswordError("") });
   const userCode = userCodeProps.value;
   const password = passwordProps.value;
   const [showPassword, setShowPassword] = useState(false);

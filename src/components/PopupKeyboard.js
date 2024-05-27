@@ -12,14 +12,13 @@ import {
   Slide
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-
 import {
   ArrowUpward,
   ArrowDownward,
   SpaceBar,
   SubdirectoryArrowRight
 } from '@mui/icons-material';
- 
+import { useKeyboard } from "../hooks/useKeyboard";
 const KButton = styled(Button)({
   width: "2.7rem",
   height: "2.5rem",
@@ -29,29 +28,28 @@ const KButton = styled(Button)({
   textWrap: "nowrap",
   boxSizing: "border-box"
 });
-
 const keyboardRows = [
-  ["q", "w", "e", "r", "t", "y", "u", "ı", "o", "p"],
+  [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
+  ["Capslock", "q", "w", "e", "r", "t", "y", "u", "ı", "o", "p"],
   ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
-  ["Capslock", "z", "x", "c", "v", "b", "n", "m"],
+  ["z", "x", "c", "v", "b", "n", "m"],
   ["Space"]
 ]
-
-function KRow ({ buttons, upperCase, toggleUpperCase }) {
+function KRow({ buttons, upperCase, toggleUpperCase, handleKeyClick, handleSpaceClick }) {
   return (
-    <Stack 
+    <Stack
       direction="row"
       spacing={0.5}
       sx={{ display: "flex", justifyContent: "center", mb: 0.5, width: "100%" }}
       divider={<Divider orientation="vertical" flexItem />}
     >
-      { buttons.map((b, index) => {
+      {buttons.map((b, index) => {
         if (b === "Capslock") {
           return (
-            <KButton 
-              sx={{ width: "4rem" }} key="capslockButton" variant={upperCase ? "contained" : "outlined" } 
+            <KButton
+              sx={{ width: "4rem" }} key="capslockButton" variant={upperCase ? "contained" : "outlined"}
               onClick={toggleUpperCase}>
-              { upperCase ? <ArrowUpward /> : <ArrowDownward /> }
+              {upperCase ? <ArrowUpward /> : <ArrowDownward />}
             </KButton>
           );
         }
@@ -59,60 +57,92 @@ function KRow ({ buttons, upperCase, toggleUpperCase }) {
           return (
             <KButton key="spaceButton"
               sx={{ width: "80%", minWidth: "10rem", maxWidth: "15rem" }}
-              variant="outlined"
+              variant="contained"
               startIcon={<SpaceBar />}
+              onClick={handleSpaceClick}
             >
-              { b }
+              {b}
             </KButton>
           );
         } else {
-          return (<KButton key={index} variant="outlined"> {upperCase ? b.toUpperCase() : b} </KButton>);
+          const keyValue = upperCase && typeof b === "string" ? b.toUpperCase() : b
+          return (<KButton key={index}
+            variant="outlined"
+            onClick={() => handleKeyClick(keyValue)}
+          >
+            {keyValue}
+          </KButton>);
         }
       })}
     </Stack>
   );
 }
-
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
-export default function PopupKeyboard () {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isActivateUpperCases, setIsActivateUpperCases] = useState(false);
-  function handleClose () {
-    setIsOpen(false)
+export default function PopupKeyboard() {
+  const { keyboardIsOpen, closeKeyboard, focusedInputData, setFocusedInputValue, focusedInputValue } = useKeyboard();
+  const [isActivatedUpperCases, setIsActivatedUpperCases] = useState(false);
+  let [showError, setShowError] = useState(true)
+  function toggleUpperCase() {
+    setIsActivatedUpperCases(!isActivatedUpperCases);
   }
-  function toggleUpperCase () {
-    setIsActivateUpperCases(!isActivateUpperCases);
+  function handleOkeyClick() {
+    closeKeyboard();
+    focusedInputData.setValue(focusedInputValue);
+    focusedInputData.addHandleChangeEvent();
+    setShowError(true)
   }
-  setTimeout(() => {
-    setIsOpen(true)
-  }, 1000)
+  function handleChange(e) {
+    setFocusedInputValue(e.target.value);
+    setShowError(false)
+  }
+  function handleKeyClick(key) {
+    setFocusedInputValue(focusedInputValue + key);
+  }
+  function handleSpaceClick() {
+    setFocusedInputValue(focusedInputValue + " ");
+  }
+  showError = showError && focusedInputData.error.length > 0
   return (<>
     <Dialog
-      maxWidth="sm"
       fullWidth
-      open={isOpen}
-      onClose={handleClose}
+      maxWidth="sm"
+      open={keyboardIsOpen ? true : false}
       TransitionComponent={Transition}
       sx={{ textAlign: "center" }}
     >
       <DialogTitle>Keyboard</DialogTitle>
       <DialogContent>
-        <DialogContentText>Please enter your user code.</DialogContentText>
+        <DialogContentText
+          color={showError ? "error" : "grey"}
+          sx={{ mb: 2 }}
+        >
+          {showError ? focusedInputData.error : focusedInputData.helperText}
+        </DialogContentText>
         <Box sx={{ mt: 1, mb: 3, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <TextField fullWidth 
+          <TextField fullWidth
             size="small"
-            label="User Code"
+            label={focusedInputData.label}
             sx={{ maxWidth: "15rem", mr: 1 }}
-            ></TextField>
-          <Button variant="contained" startIcon={<SubdirectoryArrowRight />}>Okey</Button>
+            error={showError}
+            inputProps={{
+              onChange: handleChange,
+              type: focusedInputData.type,
+              value: focusedInputValue
+            }}
+          ></TextField>
+          <Button variant="contained" startIcon={<SubdirectoryArrowRight />} onClick={handleOkeyClick}>Okey</Button>
         </Box>
-        { keyboardRows.map((buttons, index) => 
-          <KRow key={index} buttons={buttons} upperCase={isActivateUpperCases} toggleUpperCase={toggleUpperCase}/>
+        {keyboardRows.map((buttons, index) =>
+          <KRow key={index} buttons={buttons}
+            upperCase={isActivatedUpperCases}
+            toggleUpperCase={toggleUpperCase}
+            handleKeyClick={handleKeyClick}
+            handleSpaceClick={handleSpaceClick}
+          />
         )}
       </DialogContent>
     </Dialog>
-  </>);  
+  </>);
 }
