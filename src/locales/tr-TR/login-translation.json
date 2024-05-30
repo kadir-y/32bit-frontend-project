@@ -1,5 +1,15 @@
 {
-  "welcome": "Uygulamamıza hoş geldiniz!",
-  "hello": "Merhaba, {{name}}!",
-  "changeTheAppLanguage": "Uygulama dilini değiştir"
+  "welcome": "Hoşgeldiniz!",
+  "description": "Lütfen kullanıcı kodunu giriniz.",
+  "usercodeLabel": "Kullanıcı Kodu",
+  "passwordLabel": "Şifre",
+  "passwordHelperText": "Lütfen şifrenizi kimseyle paylaşmayınız.",
+  "version": "Versiyon",
+  "loginButton": "Giriş Yap",
+  "loggingInButton": "Giriş Yapılıyor..",
+  "internalServerError": "Bir hata meydana geldi, lütfen daha sonra yeniden deneyiniz!",
+  "minimumLengthError": "Bu alanın uzunluğu en az {{length}} karakter olmalıdır.",
+  "requiredError": "Lütfen bu alanı doldurunuz.",
+  "userNotfound": "Bu kullanıcı koduna sahip kullanıcı bulunamadı.",
+  "incorrectPassword": "Şifrenizi yanlış girdiniz."
 }

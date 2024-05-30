@@ -3,7 +3,7 @@ export const setPreferedLanguage = function (lng) {
 }
 
 export const getPreferedLanguage = function () {
-  localStorage.getItem('prefered-language')
+  return localStorage.getItem('prefered-language')
 }
 
 export const clearPreferedLanguage = function () {

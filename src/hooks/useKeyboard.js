@@ -1,28 +1,42 @@
 import { createContext, useContext, useState } from "react";
+import { useDisableProperty } from "./useDisableProperty";
+
 const KeyboardContext = createContext();
+
 export const KeyboardProvider = function ({ children }) {
-  const plainFocusedInputData = { type: "text", value: "", label: "", helperText: "", error: "" }
-  const [focusedInputValue, setFocusedInputValue] = useState("");
-  const [focusedInputData, setFocusedInputData] = useState(plainFocusedInputData);
-  const [keyboardIsOpen, setKeyboardIsOpen] = useState(false);
+  const { enable: enableInput, disable: disableInput } = useDisableProperty();
+  const [isOpen, setIsOpen] = useState(false);
+  const plainData = { 
+    id: "",
+    label: "",
+    error: "",
+    helperText: "",
+    value: "",
+    type: "",
+    ignore: true,
+    setValue: () => {},
+    setError: () => {},
+  };
+  const [inputData, setInputData] = useState(plainData);
   function openKeyboard () {
-    if (focusedInputData.label || focusedInputData.helperText || focusedInputData.value) {
-      setKeyboardIsOpen(true); 
+    // THIS FUNCTION MUST BE USED WITH "onMouseDown" EVENT! 
+    if (!inputData.ignore) {
+      disableInput(inputData.id);
+      setIsOpen(true);
     }
   }
   function closeKeyboard () {
-    setKeyboardIsOpen(false);
-    setFocusedInputData(plainFocusedInputData);
+    enableInput(inputData.id);
+    setIsOpen(false);
   }
+
   return (
     <KeyboardContext.Provider value={{ 
       openKeyboard,
       closeKeyboard,
-      setFocusedInputData,
-      focusedInputData,
-      keyboardIsOpen,
-      focusedInputValue,
-      setFocusedInputValue
+      isOpen,
+      inputData,
+      setInputData
     }}>
       {children}
     </KeyboardContext.Provider>

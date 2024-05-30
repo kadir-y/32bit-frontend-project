@@ -1,95 +1,104 @@
-import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "../axios";
-import { useTranslation } from "react-i18next";
 import {
   Grid,
   Box, 
-  TextField,
-  InputAdornment,
   Typography
 } from "@mui/material";
-import LButton from "../components/LButton";
-import {
-  Visibility,
-  VisibilityOff,
-  AccountCircle
-} from "@mui/icons-material";
+import LoadingButton from "../components/LoadingButton";
+import PasswordInput from "../components/PasswordInput";
+import TextInput from "../components/TextInput";
+
+import { AccountCircle } from "@mui/icons-material";
+
 import logo from "../assets/logo.png";
+
 import "../stylesheets/Login.css";
-import useFormInput from "../hooks/useFormInput";
-import useLocalStorage from "../hooks/useLocalStorage";
+
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useFormInput } from "../hooks/useFormInput";
+import { useToggle } from "../hooks/useToggle";
+
+import axios from "../axios";
+import getErrorStatusCode from "../libs/getErrorStatusCode";
 
 const { version: appVersion } = require("../../package.json");
 
 function Login () {
   const { t } = useTranslation("login");
+  const [loading, setLoading] = useToggle(false);
+  
+  const { 
+    value: usercode,
+    clearValue: clearUsercode,
+    setError: setUsercodeError,
+    props: usercodeProps
+  } = useFormInput({
+    label: t("usercodeLabel"),
+    type: "text"
+  });
+  const { 
+    value: password,
+    clearValue: clearPassword,
+    setError: setPasswordError,
+    props: passwordProps
+  } = useFormInput({
+    label: t("passwordLabel"),
+    helperText: t("passwordHelperText"),
+    type: "password"
+  });
+
   const navigate = useNavigate()
   const setStoredToken = useLocalStorage("token")[1];
-  const [passwordError, setPasswordError] = useState("");
-  const [userCodeError, setUserCodeError] = useState("");
-  const { props: userCodeProps, methods: { clear: clearUserCode }} = useFormInput({
-    initialValue: "",
-    label: t("userCodeLabel"),
-    error: userCodeError
-  }, () => { setUserCodeError("") });
-  const { props: passwordProps, methods: { clear: clearPassword }} = useFormInput({
-    initialValue: "",
-    helperText: t("passwordHelperText"),
-    label: t("passwordLabel"),
-    error: passwordError
-  }, () => { setPasswordError("") });
-  const userCode = userCodeProps.value;
-  const password = passwordProps.value;
-  const [showPassword, setShowPassword] = useState(false);
-  const passwordRef = useRef(null);
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
-  function toggleShowPassword (e) {
-    e.preventDefault();
-    setShowPassword(show => !show);
-    passwordRef.current.focus();
-  }
-  function hidePassword () {
-    setShowPassword(false);
-  }
-  async function handleFormSubmit(e) {
-    e.preventDefault();
-    setIsLoggingIn(true);
-    let errCount = 0;
-    if (userCode.trim().length === 0) {
-      setUserCodeError(t("inputRequiredError"));
-      errCount++;
-    } else if (userCode.trim().length < 6) {
-      setUserCodeError(t("inputMinimumLengthError", { length: 6 }));
-      errCount++;
-    }
-    if (password.trim().length === 0) {
-      setPasswordError(t("inputRequiredError"));
-      errCount++;
-    } else if (password.trim().length < 8) {
-      setPasswordError(t("inputMinimumLengthError", { length: 8 }));
-      errCount++;
-    }
-    if (errCount === 0) {
+
+  async function handleLoginButtonClick() {
+    setLoading(true);
+    
+    const errors = {};
+
+    // validate
+    if (usercode.length === 0)
+    errors.usercode = t("requiredError");
+    else if (usercode.length < 8)
+    errors.usercode = t("minimumLengthError", { length: 8 });
+
+    if (password.length === 0)
+    errors.password = t("requiredError");
+    else if (password.length < 8)
+    errors.password = t("minimumLengthError", { length: 8 });
+  
+    // if there is no error send request
+    if (!errors.usercode && !errors.password) {
       try {
-        const res = await axios.post("api/users/login", { userCode, password });
+        const data = { password, usercode};
+        const res = await axios.post("/api/users/login", data);
         setStoredToken(res?.data?.token);
         navigate("/");
       } catch (err) {
-        if (err.response.status === 401) {
-          setPasswordError(t("passwordIncorrectError"));
+        const status = getErrorStatusCode(err);
+        if (status === 401) {
+          errors.password = t("incorrectPassword");
           clearPassword();
-        } else if (err.response.status === 404) {
-          setUserCodeError(t("userNotFoundError"));
-          clearUserCode();
+        } else if (status === 404) {
+          errors.usercode = t("userNotfound");
           clearPassword();
+          clearUsercode();
         } else {
-          console.error(err);
+          errors.usercode = " ";
+          errors.password = t("internalServerError");
         }
       }
     }
-    setIsLoggingIn(false);
-  } 
+
+    // throw errors if necessary
+    if (errors.usercode)
+    setUsercodeError(errors.usercode);
+    if (errors.password)
+    setPasswordError(errors.password);
+
+    setLoading(false);
+  }
+
   return (
     <>
       <Grid container 
@@ -112,58 +121,31 @@ function Login () {
         >
           <Box sx={{ mb: 3 }}>
             <Typography variant="h5" component="h5">{t("welcome")}</Typography>
-            <Typography 
-              variant="subtitle1"
-              component="span"
-            >
-              {t("description")}
-            </Typography>
+            <Typography variant="subtitle1" component="span">{t("description")}</Typography>
           </Box>
           <Box sx={{ mb: 2 }}>
-            <TextField 
-              fullWidth
-              error={userCodeError.length > 0}
-              helperText={ userCodeError ? userCodeError : "" }
-              label={t("userCodeLabel")}
-              InputProps={{
-                ...userCodeProps,
-                type: "text",
-                endAdornment: (
-                  <InputAdornment position="start">
-                    <AccountCircle />
-                  </InputAdornment>
-                ),
-              }}
-              variant="outlined"
+            <TextInput
+              id="usercode"
+              autoComplete="username"
+              autoFocus={true}
+              endAdornment={<AccountCircle />}
+              { ...usercodeProps }
             />
           </Box>
           <Box sx={{ mb: 2 }}>
-            <TextField
-              fullWidth
-              error={passwordError.length > 0}
-              helperText={ passwordError ? passwordError : t("passwordHelperText") }
-              label={t("passwordLabel")}
-              variant="outlined"
-              onBlur={hidePassword}
-              inputRef={passwordRef}
-              InputProps={{
-                ...passwordProps,
-                type: showPassword ? "text" : "password",
-                endAdornment: (
-                  <InputAdornment sx={{ cursor: "pointer" }} position="end" onClick={toggleShowPassword}>
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </InputAdornment>
-                )
-              }}
+            <PasswordInput 
+              id="password"
+              autoComplete="current-password"
+              { ...passwordProps } 
             />
           </Box>
           <Box>
-            <LButton
+            <LoadingButton
               label={t("loginButton")}
               loadingLabel={t("loggingInButton")}
-              isLoading={isLoggingIn}
-              onClick={handleFormSubmit}
-            ></LButton>
+              isLoading={loading}
+              onClick={handleLoginButtonClick}
+            ></LoadingButton>
           </Box>
         </Grid>
       </Grid>

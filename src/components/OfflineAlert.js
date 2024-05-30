@@ -13,7 +13,7 @@ import WifiOffIcon from "@mui/icons-material/WifiOff";
 
 import { useTranslation } from "react-i18next";
 
-export default function OfflineDialog() {
+export default function OfflineAlert() {
   const { t } = useTranslation("app");
   const isOnline = useOnline();
   return (
