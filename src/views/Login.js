@@ -15,7 +15,6 @@ import "../stylesheets/Login.css";
 
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useLocalStorage } from "../hooks/useLocalStorage";
 import { useFormInput } from "../hooks/useFormInput";
 import { useToggle } from "../hooks/useToggle";
 import { useAuth } from "../hooks/useAuth";
@@ -53,8 +52,6 @@ function Login () {
   });
 
   const navigate = useNavigate()
-  const setStoredToken = useLocalStorage("token")[1];
-
   async function handleLoginButtonClick() {
     setLoading(true);
     
@@ -130,7 +127,7 @@ function Login () {
           </Box>
           <Box sx={{ mb: 2 }}>
             <TextInput
-              id="usercode"
+              id="usecode"
               autoComplete="username"
               autoFocus={true}
               endAdornment={<AccountCircle />}

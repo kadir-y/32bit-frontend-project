@@ -1,25 +1,50 @@
-import { IconButton } from "@mui/material";
-import { Keyboard } from "@mui/icons-material";
+import { Snackbar, Fab, Alert } from "@mui/material";
+import { Keyboard as KeyboardIcon } from "@mui/icons-material";
 import { useKeyboard } from "../hooks/useKeyboard";
-import { styled } from "@mui/material/styles";  
+import { useToggle } from "../hooks/useToggle";
+import { useTranslation } from "react-i18next";
 
+let interval;
 export default function FloatingKeyboardButton() {
-  const { openKeyboard } = useKeyboard();
+  const { t } = useTranslation("keyboard");
+  const { openKeyboard, inputData } = useKeyboard();
+  const [barIsOpen, setBarIsOpen] = useToggle();
+
   function handleMouseDown() {
+    if (inputData.ignore) {
+      clearInterval(interval);
+      setBarIsOpen(true);
+      interval = setTimeout(() => {
+        setBarIsOpen(false);
+      }, 1000)
+    }
     openKeyboard();
-  }
-  const StyledIconButton = styled(IconButton)({
-    position: "fixed",
-    zIndex: 9999,
-    bottom: "2rem",
-    right: "2rem"
-  })
+  };
   return (
-    <StyledIconButton
-      onMouseDown={handleMouseDown}
-      size="large"
-    >
-      <Keyboard fontSize="large"/>
-    </StyledIconButton>
+    <>
+      <Snackbar
+        open={barIsOpen}
+        severity="success"
+      >
+        <Alert
+          severity="info"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >{t("notFocusedMessage")}</Alert>
+      </Snackbar>
+      <Fab 
+        variant="extended"
+        onMouseDown={handleMouseDown}
+        sx={{
+          position: "fixed",
+          zIndex: 9999,
+          bottom: "1rem",
+          right: "1rem"
+        }}
+      >
+        <KeyboardIcon sx={{ mr: 1 }} />
+        { t("keyboard") }
+      </Fab>
+    </>
   );
 } 

@@ -1,13 +1,13 @@
-export const setPreferedKeyboardLanguage = function (lng) {
-  localStorage.setItem("prefered-keyboard-language", lng)
+export const setPreferedKeyboardLayout = function (lng) {
+  localStorage.setItem("prefered-keyboard-layout", lng)
 }
 
-export const getPreferedKeyboardLanguage = () => localStorage.getItem("prefered-keyboard-language")
+export const getPreferedKeyboardLayout = () => localStorage.getItem("prefered-keyboard-layout")
 
-export const clearPreferedKeyboardLanguage = function () {
-  localStorage.removeItem("prefered-keyboard-language")
+export const clearPreferedKeyboardLayout = function () {
+  localStorage.removeItem("prefered-keyboard-layout")
 }
 
 export const getKeyboardLayout = lng => require("../locales/" + lng + "/keyboard-layout.json")
 
-export const getSystemLanguage = () => navigator.language || navigator.languages[0];
+export const getSystemLayout = () => navigator.language || navigator.languages[0];

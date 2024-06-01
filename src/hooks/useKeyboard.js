@@ -1,11 +1,22 @@
 import { createContext, useContext, useState } from "react";
 import { useDisableProperty } from "./useDisableProperty";
+import { useToggle } from "./useToggle";
+import { 
+  setPreferedKeyboardLayout,
+  getPreferedKeyboardLayout,
+  getSystemLayout
+} from "../utils/keyboardTools"
 
 const KeyboardContext = createContext();
 
+let initialKeyboardLayout;
+const preferedKeyboardLayout = getPreferedKeyboardLayout();
+initialKeyboardLayout = preferedKeyboardLayout ? preferedKeyboardLayout : getSystemLayout();
+
 export const KeyboardProvider = function ({ children }) {
   const { enable: enableInput, disable: disableInput } = useDisableProperty();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useToggle();
+  const [keyboardLayout, setKeyboardLayout] = useState(initialKeyboardLayout);
   const plainData = { 
     id: "",
     label: "",
@@ -29,6 +40,10 @@ export const KeyboardProvider = function ({ children }) {
     enableInput(inputData.id);
     setIsOpen(false);
   }
+  function changeKeyboardLayout(layout) {
+    setKeyboardLayout(layout);
+    setPreferedKeyboardLayout(layout);
+  }
 
   return (
     <KeyboardContext.Provider value={{ 
@@ -36,7 +51,9 @@ export const KeyboardProvider = function ({ children }) {
       closeKeyboard,
       isOpen,
       inputData,
-      setInputData
+      setInputData,
+      changeKeyboardLayout,
+      keyboardLayout
     }}>
       {children}
     </KeyboardContext.Provider>

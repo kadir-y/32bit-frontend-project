@@ -12,10 +12,12 @@ if ((preferedTheme && preferedTheme === "system") || !Boolean(preferedTheme)) {
 }
 
 const ColorModeContext = createContext();
+const colorModes = ["dark", "system", "light"]
 
 export const ColorModeProvider = function ({ children }) {
-  const [mode, setMode] = useState(initialTheme);
-
+  const [colorMode, setColorMode] = useState(initialTheme);
+  
+  const mode = colorMode === "system" ? getSystemTheme() : colorMode
   const theme = useMemo(
     () =>
       createTheme({
@@ -31,16 +33,18 @@ export const ColorModeProvider = function ({ children }) {
     , [mode]);
 
   window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", event => {
-    setMode(event.matches ? "dark" : "light");
+    setColorMode(event.matches ? "dark" : "light");
   });
 
-  function setColorMode(theme) {
-    setMode(theme === "system" ? getSystemTheme() : theme);
-    setPreferedTheme(theme);
+  function changeColorMode(theme) {
+    if (colorModes.includes(theme)) {
+      setColorMode(theme);
+      setPreferedTheme(theme);
+    }
   }
 
   const data = {
-    mode, setColorMode
+    colorMode, changeColorMode, colorModes
   }
 
   return (

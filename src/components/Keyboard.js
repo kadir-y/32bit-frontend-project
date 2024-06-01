@@ -17,35 +17,26 @@ import PasswordInput from "./PasswordInput";
 import TextInput from "./TextInput";
 import addCharAtPosition from "../libs/addCharAtPosition";
 import removeCharAtPosition from "../libs/removeCharAtPosition";
-import { getPreferedKeyboardLanguage, getKeyboardLayout, getSystemLanguage, setPreferedKeyboardLanguage } from "../utils/keyboardTools";
-
-const preferedKeyboardLanguage = getPreferedKeyboardLanguage();
-const keyboardLanguage = Boolean(getPreferedKeyboardLanguage()) ?
-  preferedKeyboardLanguage :
-  getSystemLanguage();
-const initialKeyboardLayout = getKeyboardLayout(keyboardLanguage);
+import { getKeyboardLayout } from "../utils/keyboardTools";
 
 let keyboardCarretPosition = 0;
 
-function LanguageMenu({ setKeyboardLayout }) {
-  const { t } = useTranslation("keyboard");
+function LanguageMenu() {
+  const { changeKeyboardLayout, keyboardLayout } = useKeyboard();
+  const { t, i18n } = useTranslation("keyboard");
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const languages = [
-    "en-US",
-    "en-GB",
-    "tr-TR"
-  ]
+
+  const languages = Object.entries(i18n.options.resources).map(([lng]) => lng);
+  
   function handleClick (e) {
     setAnchorEl(e.currentTarget);
   };
   function handleClose() {
     setAnchorEl(null);
   };
-  function handleMenuItemClick(lng) {
-    setPreferedKeyboardLanguage(lng);
-    const layout = getKeyboardLayout(lng);
-    setKeyboardLayout(layout);
+  function handleMenuItemClick(layout) {
+    changeKeyboardLayout(layout);
     setAnchorEl(null);
   }
 
@@ -59,11 +50,11 @@ function LanguageMenu({ setKeyboardLayout }) {
         onClick={handleClick}
         sx={{ textTransform: "none" }}
       >
-        {t("language")}, en-US 
+        {t("language")},&nbsp;{keyboardLayout}
         { open ? <ArrowDropUp /> : <ArrowDropDown /> }
       </Button>
       <Menu
-        id="fade-menu"
+        id="language-menu"
         MenuListProps={{
           "aria-labelledby": "fade-button",
         }}
@@ -255,8 +246,9 @@ function OkeyButton({ inputRef }) {
   );
 }
 
-function KeyboardRows ({ inputRef, layout }) {
+function KeyboardRows ({ inputRef, layout: lng }) {
   const [upperCase, toggleUpperCase] = useToggle();
+  const layout = getKeyboardLayout(lng);
   const cases = upperCase ? layout.upperCase : layout.lowerCase;
   return (
     cases.map((buttons, index) =>
@@ -276,7 +268,7 @@ function KeyboardRow({ buttons, inputRef, toggleUpperCase, upperCase }) {
     <Stack
       direction="row"
       spacing={0.4}
-      sx={{ display: "flex", justifyContent: "center", mb: 0.4, width: "100%" }}
+      sx={{ display: "flex", justifyContent: "center", mb: 0.8, width: "100%" }}
       divider={<Divider orientation="vertical" flexItem />}
     >
       {buttons.map((b, index) => {
@@ -292,7 +284,7 @@ function KeyboardRow({ buttons, inputRef, toggleUpperCase, upperCase }) {
         else if (b === "Backspace") {
           return (
             <BackspaceButton 
-              key="Backpace"
+              key="backpace"
               inputRef={inputRef}
             />
           )
@@ -301,7 +293,7 @@ function KeyboardRow({ buttons, inputRef, toggleUpperCase, upperCase }) {
           return (
             <SpaceButton
               inputRef={inputRef}
-              key="Space"
+              key="space"
             ></SpaceButton>);
         } else {
           const keyValue = upperCase && typeof b === "string" ? b.toUpperCase() : b
@@ -320,8 +312,7 @@ function KeyboardRow({ buttons, inputRef, toggleUpperCase, upperCase }) {
 
 export default function Keyboard() {
   const { t } = useTranslation("keyboard");
-  const [keyboardLayout, setKeyboardLayout] = useState(initialKeyboardLayout) 
-  const { isOpen } = useKeyboard();
+  const { isOpen, keyboardLayout } = useKeyboard();
   const inputRef = useRef(null);
   
   function handleMouseDown(e) {
@@ -343,8 +334,8 @@ export default function Keyboard() {
       onMouseDown={handleMouseDown}
     >
       <DialogTitle sx={{ display: "flex", justifyContent: "space-between" }}>
-        <span>{t("title")}</span>
-        <LanguageMenu setKeyboardLayout={setKeyboardLayout}/>
+        <span>{t("keyboard")}</span>
+        <LanguageMenu />
       </DialogTitle>
       <DialogContent>
         <Input inputRef={inputRef}/>

@@ -20,18 +20,20 @@ import {
   Settings as SettingsIcon,
   Logout as LogoutIcon
 } from "@mui/icons-material";
-
-const options = [{
-  label: "Settings",
-  color: "default",
-  redirect: "/settings",
-  icon: <SettingsIcon />,
-}];
+import { useTranslation } from "react-i18next";
 
 export default function TopBar({ toggleNavbar }) {
+  const { t } = useTranslation("navbar");
   const [anchorElOption, setAnchorElOption] = useState(null);
   const navigate = useNavigate()
   const { logout } = useAuth();
+
+  const options = [{
+    label: t("settings"),
+    color: "default",
+    redirect: "/settings",
+    icon: <SettingsIcon />,
+  }];
 
   function handleOpenNavMenu() {
     toggleNavbar();
@@ -46,6 +48,7 @@ export default function TopBar({ toggleNavbar }) {
   };
   function handleLogout() {
     logout();
+    navigate("/login");
   };
   
   
@@ -143,7 +146,7 @@ export default function TopBar({ toggleNavbar }) {
                   <ListItemIcon>
                     <LogoutIcon />
                   </ListItemIcon>
-                  <ListItemText>Logout</ListItemText>
+                  <ListItemText>{t("logout")}</ListItemText>
                 </MenuItem>
             </Menu>
           </Box>

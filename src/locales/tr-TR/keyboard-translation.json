@@ -1,6 +1,7 @@
 {
-  "title": "Klavye",
+  "keyboard": "Klavye",
   "language": "Dil",
   "okey": "Tamam",
-  "space": "Boşluk"
+  "space": "Boşluk",
+  "notFocusedMessage": "Lütfen tıklamadan önce, bir metin alanı seçin."
 }

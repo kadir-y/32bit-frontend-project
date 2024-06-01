@@ -20,16 +20,23 @@ import "@fontsource/roboto/700.css";
 import App from "./App";
 import HomePage from "./views/Home";
 import LoginPage from "./views/Login";
+import SettingsPage from "./views/Settings";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     errorElement: <p>Error</p>,
-    children: [{
-      index: true,
-      element: <HomePage />,
-    }]
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        path: "/settings",
+        element: <SettingsPage />,
+      },
+    ]
   },
   {
     path: "/login",

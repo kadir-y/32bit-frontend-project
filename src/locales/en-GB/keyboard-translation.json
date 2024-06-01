@@ -1,6 +1,7 @@
 {
-  "title": "Keyboard",
+  "keyboard": "Keyboard",
   "language": "Language",
   "okey": "okey",
-  "space": "Space"
+  "space": "Space",
+  "notFocusedMessage": "Please select a text field before clicking."
 }
