@@ -1,26 +1,24 @@
 import {
-  Grid,
-  Box, 
-  Button
+  Grid, Box
 } from "@mui/material";
-
-import { ShoppingCart } from '@mui/icons-material';
+import WidedNavbar from "../components/layout/WidedNavbar";
+import { useToggle } from "../hooks/useToggle"
 
 function Home () {
+  const [isNavbarOpen, toggleNavbar] = useToggle();
   return (
-    <Grid container sx={{ display: "flex", justifyContent: "center" }}>
-      <Grid item xs={11} sm={10} md={5} lg={4} xlg={3}>
-        <Box>
-          <Button 
-            variant="outlined"
-            startIcon={<ShoppingCart />}
-            sx={{ width: "100%" }}
-          >Satış</Button>
-        </Box>
+    <>
+      <WidedNavbar isNavbarOpen={isNavbarOpen} toggleNavbar={toggleNavbar}/>
+      <Grid container sx={{ display: "flex", justifyContent: "end" }}>
+        <Box
+          sx={{
+            width: { xs: "100%", md: isNavbarOpen ? "calc(100% - 250px)" : "100%" },
+            height: "2000px",
+            marginTop: { xs: "56px", sm: "64px" }
+          }}
+        ></Box>
       </Grid>
-      <Grid item xs={11} sm={10} md={5} lg={4} xlg={3}>
-      </Grid>
-    </Grid>
+    </>
   );
 }
 

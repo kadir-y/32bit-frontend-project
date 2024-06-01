@@ -11,7 +11,7 @@ if ((preferedTheme && preferedTheme === "system") || !Boolean(preferedTheme)) {
   initialTheme = preferedTheme;
 }
 
-const ColorModeContext = createContext({ toggleColorMode: () => {} });
+const ColorModeContext = createContext();
 
 export const ColorModeProvider = function ({ children }) {
   const [mode, setMode] = useState(initialTheme);
@@ -20,7 +20,12 @@ export const ColorModeProvider = function ({ children }) {
     () =>
       createTheme({
         palette: {
-          mode
+          mode,
+          ...(mode === "dark" ? {
+            appBar: "#3c3c3c"
+          } : {
+            appBar: "#f5f5f5"
+          })
         }
       })
     , [mode]);

@@ -29,6 +29,8 @@ export default function Input (props) {
   }
   function handleBlur(e) {
     onBlur(e);
+    if (inputRef)
+    onChange({ target: inputRef.current });
   }
   function handleMouseDown(e) {
     onMouseDown(e);

@@ -7,9 +7,9 @@ import {
 import { I18nextProvider } from "react-i18next";
 import { KeyboardProvider } from "./hooks/useKeyboard";
 import { ColorModeProvider } from "./hooks/useColorMode";
+import { AuthProvider } from "./hooks/useAuth";
 import i18n from "./i18n"; // Configuration of i18next
 import reportWebVitals from "./reportWebVitals";
-
 
 // Roboto font imported from fontsource
 import "@fontsource/roboto/300.css";
@@ -20,7 +20,6 @@ import "@fontsource/roboto/700.css";
 import App from "./App";
 import HomePage from "./views/Home";
 import LoginPage from "./views/Login";
-
 
 const router = createBrowserRouter([
   {
@@ -42,11 +41,13 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <I18nextProvider i18n={i18n}>
-      <ColorModeProvider>
-        <KeyboardProvider>
-          <RouterProvider router={router} />
-        </KeyboardProvider>
-      </ColorModeProvider>
+      <AuthProvider>
+        <ColorModeProvider>
+          <KeyboardProvider>
+            <RouterProvider router={router} />
+          </KeyboardProvider>
+        </ColorModeProvider>
+      </AuthProvider>
     </I18nextProvider>
   </React.StrictMode>
 );

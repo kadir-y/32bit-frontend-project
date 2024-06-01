@@ -18,6 +18,9 @@ import { useTranslation } from "react-i18next";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { useFormInput } from "../hooks/useFormInput";
 import { useToggle } from "../hooks/useToggle";
+import { useAuth } from "../hooks/useAuth";
+import Keyboard from "../components/Keyboard";
+import FloatingKeyboardButton from "../components/FloatingKeyboardButton";
 
 import axios from "../axios";
 import getErrorStatusCode from "../libs/getErrorStatusCode";
@@ -27,7 +30,8 @@ const { version: appVersion } = require("../../package.json");
 function Login () {
   const { t } = useTranslation("login");
   const [loading, setLoading] = useToggle(false);
-  
+  const { login } = useAuth();
+
   const { 
     value: usercode,
     clearValue: clearUsercode,
@@ -72,7 +76,8 @@ function Login () {
       try {
         const data = { password, usercode};
         const res = await axios.post("/api/users/login", data);
-        setStoredToken(res?.data?.token);
+        const { user, token } = res.data
+        login(user, token);
         navigate("/");
       } catch (err) {
         const status = getErrorStatusCode(err);
@@ -149,6 +154,8 @@ function Login () {
           </Box>
         </Grid>
       </Grid>
+      <Keyboard />
+      <FloatingKeyboardButton />
     </>
   );
 }

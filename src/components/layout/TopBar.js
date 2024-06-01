@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { 
   AppBar,
@@ -25,53 +26,34 @@ const options = [{
   color: "default",
   redirect: "/settings",
   icon: <SettingsIcon />,
-}, {
-  label: "Logout",
-  color: "danger",
-  onClick: () => {
-    console.log("Logout");
-  },
-  icon: <LogoutIcon />
 }];
 
-export default function TopBar() {
+export default function TopBar({ toggleNavbar }) {
   const [anchorElOption, setAnchorElOption] = useState(null);
   const navigate = useNavigate()
-  
+  const { logout } = useAuth();
+
   function handleOpenNavMenu() {
-    console.log("Open Nav Menu");
-  }
+    toggleNavbar();
+  };
   function handleCloseOptionMenu({ onClick: callback, redirect } = {}) {
     setAnchorElOption(null);
     callback && callback();
     redirect && navigate(redirect);
-  }
+  };
   function handleOpenOptionMenu (e) {
     setAnchorElOption(e.currentTarget);
   };
+  function handleLogout() {
+    logout();
+  };
+  
   
   return (
-    <AppBar>
+    <AppBar color="appBar">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-        <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            32BIT
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1 }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -83,7 +65,24 @@ export default function TopBar() {
               <MenuIcon />
             </IconButton>
           </Box>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}></Box>
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            32BIT
+          </Typography>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
           <Typography
             variant="h5"
             noWrap
@@ -91,13 +90,13 @@ export default function TopBar() {
             href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
-              display: { xs: 'flex', md: 'none' },
+              display: { xs: "flex", md: "none" },
               flexGrow: 1,
-              fontFamily: 'monospace',
+              fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
             32BIT
@@ -109,24 +108,23 @@ export default function TopBar() {
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElOption}
               anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               open={Boolean(anchorElOption)}
               onClose={handleCloseOptionMenu}
             >
               {options.map((option, index) => (
                 <MenuItem 
-                  color="danger"
                   key={option.label} 
                   onClick={e => handleCloseOptionMenu(option)}
                 >
@@ -136,9 +134,17 @@ export default function TopBar() {
                       {option.icon}
                     </ListItemIcon>
                   }
-                  <ListItemText color="">{option.label}</ListItemText>
+                  <ListItemText>{option.label}</ListItemText>
                 </MenuItem>
               ))}
+                <MenuItem 
+                  onClick={handleLogout}
+                >
+                  <ListItemIcon>
+                    <LogoutIcon />
+                  </ListItemIcon>
+                  <ListItemText>Logout</ListItemText>
+                </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
