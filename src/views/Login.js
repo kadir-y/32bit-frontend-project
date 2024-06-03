@@ -23,14 +23,22 @@ import FloatingKeyboardButton from "../components/FloatingKeyboardButton";
 
 import axios from "../axios";
 import getErrorStatusCode from "../libs/getErrorStatusCode";
+import { useEffect, useState } from "react";
 
-const { version: appVersion } = require("../../package.json");
 
 function Login () {
   const { t } = useTranslation("login");
   const [loading, setLoading] = useToggle(false);
+  const [version, setVersion] = useState();
   const { login } = useAuth();
-
+  useEffect(() => {
+    async function fetchVersion () {
+      const res = await axios.get("/version");
+      setVersion(res.data?.version ? res.data?.version : "");
+    }
+    fetchVersion();
+  });
+  
   const { 
     value: usercode,
     clearValue: clearUsercode,
@@ -113,7 +121,7 @@ function Login () {
           <Box sx={{ textAlign: "center", mb: { xs: 6, md: 0 } }}>
             <img className="logo" src={logo} alt="Logo" />
             <Typography variant="span" component="p" sx={{ mt: 2 }}>
-              {t("version")}&nbsp;{appVersion}
+              {t("version")}&nbsp;{version}
             </Typography>
           </Box>
         </Grid>

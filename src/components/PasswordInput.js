@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-
 export default function PasswordInput (props) {
   const [showPassword, toggleShowPassword] = useToggle();
   
@@ -34,7 +33,6 @@ export default function PasswordInput (props) {
   const onClick = props.onClick ? props.onClick : () => {};
 
   function handleBlur(e) {
-    toggleShowPassword(false);
     onBlur(e);
     if (inputRef)
     onChange({ target: inputRef.current });
@@ -52,14 +50,14 @@ export default function PasswordInput (props) {
     onClick(e);
   }
   // Events for show password button.
-  function handleClickShow() {
-    toggleShowPassword();
-  }
   function handleMouseDownShow(e) {
     e.preventDefault();
+    toggleShowPassword();
     if (inputRef)
     onChange({ target: inputRef.current });
   }
+
+
   return (
     <FormControl 
       fullWidth={fullWidth}
@@ -84,7 +82,6 @@ export default function PasswordInput (props) {
           <InputAdornment position="end">
             <IconButton
               aria-label="toggle password visibility"
-              onClick={handleClickShow}
               onMouseDown={handleMouseDownShow}
               edge="end"
             >

@@ -21,7 +21,7 @@ import { getKeyboardLayout } from "../utils/keyboardTools";
 
 let keyboardCarretPosition = 0;
 
-function LanguageMenu() {
+function LanguageMenu({ inputRef }) {
   const { changeKeyboardLayout, keyboardLayout } = useKeyboard();
   const { t, i18n } = useTranslation("keyboard");
   const [anchorEl, setAnchorEl] = useState(null);
@@ -38,7 +38,7 @@ function LanguageMenu() {
   function handleMenuItemClick(layout) {
     changeKeyboardLayout(layout);
     setAnchorEl(null);
-  }
+  };
 
   return (
     <>
@@ -318,10 +318,17 @@ export default function Keyboard() {
   function handleMouseDown(e) {
     e.preventDefault();
   }
+  useEffect(() => {
+    setTimeout(() => {
+      if (isOpen) {
+        inputRef.current.focus();
+        keyboardCarretPosition = inputRef.current.value.length;
+      }
+    }, 1)
+  }, [isOpen])
+  
   function handleTransitionEnd() {
-    if (isOpen) {
-      inputRef.current.focus();
-    }
+    
   }
 
   return (
@@ -335,7 +342,7 @@ export default function Keyboard() {
     >
       <DialogTitle sx={{ display: "flex", justifyContent: "space-between" }}>
         <span>{t("keyboard")}</span>
-        <LanguageMenu />
+        <LanguageMenu inputRef={inputRef} />
       </DialogTitle>
       <DialogContent>
         <Input inputRef={inputRef}/>

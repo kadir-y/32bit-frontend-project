@@ -2,6 +2,7 @@ import { Grid, Box } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useToggle } from "./hooks/useToggle"
+import { useWindowSize } from "./hooks/useWindowSize";
 import OfflineAlert from "./components/OfflineAlert";
 import useTitle from "./hooks/useTitle";
 import "./stylesheets/App.css";
@@ -10,8 +11,10 @@ import FloatingKeyboardButton from "./components/FloatingKeyboardButton";
 import WidedNavbar from "./components/layout/WidedNavbar";
 
 function App() {
+  const windowSize = useWindowSize();
   const { t } = useTranslation("app");
-  const [isNavbarOpen, toggleNavbar] = useToggle();
+  const [isNavbarOpen, toggleNavbar] = useToggle(windowSize.width > 900);
+
   useTitle(t("documentTitle"));
   return (
     <>
