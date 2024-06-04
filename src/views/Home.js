@@ -8,7 +8,6 @@ import {
   List,
   Avatar,
   ListItemText,
-  ListItemButton,
   ListSubheader,
   Button,
   Divider
@@ -64,25 +63,25 @@ const receipts = [
     createdAt: "Jun 4 21:02"
   },
   {
-    id: 1,
+    id: 3,
     total: "2.00",
     receipNumber: 941282, 
     createdAt: "Jun 4 20:49"
   },
   {
-    id: 1,
+    id: 4,
     total: "3.50",
     receipNumber: 102458, 
     createdAt: "Jun 4 20:30"
   },
   {
-    id: 1,
+    id: 5,
     total: "12.50",
     receipNumber: 349122, 
     createdAt: "Jun 4 20:18"
   },
   {
-    id: 1,
+    id: 6,
     total: "49.00",
     receipNumber: 124921, 
     createdAt: "Jun 4 19:30"
@@ -96,7 +95,7 @@ function Home () {
         <Paper sx={{
           py: 2,
           px: 7,
-          mb: 3
+          mb: 1
         }}
         elevation={4}
         >
@@ -133,10 +132,10 @@ function Home () {
                       }} 
                     />
                   </ListItemAvatar>
-                  <ListItemText>
-                    {product.title}
-                    {`${product.totalSales} sold`}
-                  </ListItemText>
+                  <ListItemText
+                    primary={product.title}
+                    secondary={`${product.totalSales} sold`}
+                  />
                 </ListItem>
               )
             }
