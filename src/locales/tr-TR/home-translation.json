@@ -1,0 +1,13 @@
+{
+  "info": {
+    "storeOnlineMessage": "Mağaza Çevrimiçi",
+    "storeNumber": "Mağaza Numarası",
+    "cashRegisterNumber": "Kasa Numarası",
+    "cashRegisterIp": "Kasa Ip Numarası",
+    "version": "Versiyon"
+  },
+  "totalSales": "Yapılan Satışlar",
+  "lastReceipts": "Son Fişler",
+  "showMore": "Daha Fazla Göster",
+  "show": "Göster"
+}

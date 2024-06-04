@@ -36,8 +36,7 @@ export const handlers = [
       filteredData = filteredData.filter(p => {
         search = typeof search === "number" ? search : search.toLocaleLowerCase();
         const title = p.title.toLocaleLowerCase();
-
-        return title.includes(search) || p.meta.barcode.includes(search);
+        return title.includes(search) || p.meta?.barcode.includes(search);
       });
     }
     if (sort === "expensive") {

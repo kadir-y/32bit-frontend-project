@@ -1,0 +1,14 @@
+{
+  "info": {
+    "storeOnlineMessage": "Store is online",
+    "storeNumber": "Store Number",
+    "cashRegisterNumber": "Cash Register Number",
+    "cashRegisterIp": "Cash Register Ip Number",
+    "version": "Version"
+  },
+  "totalSales": "Total Sales",
+  "lastReceipts": "Last Receipts",
+  "showMore": "Show More",
+  "show": "Show"
+  
+}

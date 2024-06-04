@@ -15,6 +15,7 @@ import {
 import {
   FiberManualRecord as FiberManualRecordIcon
 } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 const totalSales = [
   {
@@ -89,6 +90,7 @@ const receipts = [
 ]
 
 function Home () {
+  const { t } = useTranslation("home");
   return (
     <Grid container sx={{ display: "flex", justifyContent: "center", px: 2 }}>
       <Grid item xs={11} md={5} sx={{ pr: 1, pt: 3, pb: 2 }}>
@@ -108,17 +110,17 @@ function Home () {
           >
             <Typography variant="body2" sx={{ 
               mr: 0.5,
-            }}>Mağaza Çevrimiçi</Typography>
+            }}>{t("info.storeOnlineMessage")}</Typography>
             <FiberManualRecordIcon color="success" /> 
           </Box>
-          <Typography component="div" variant="subtitle2" sx={{ fontWeight: "500" }} >Mağaza No: 1057 (Mobile Demo)</Typography>
-          <Typography component="div" variant="subtitle2">Kasa No: (Kasa 1)</Typography>
-          <Typography component="div" variant="subtitle2">Kasa Ip No: 10.0.2.16</Typography>
-          <Typography component="div" variant="subtitle2">Version: v1.4.75.3</Typography>
+          <Typography component="div" variant="subtitle2" sx={{ fontWeight: "500" }} >{t("info.storeNumber")}: 1057 (Mobile Demo)</Typography>
+          <Typography component="div" variant="subtitle2">{t("info.cashRegisterNumber")}: (Kasa 1)</Typography>
+          <Typography component="div" variant="subtitle2">{t("info.cashRegisterIp")}Kasa Ip No: 10.0.2.16</Typography>
+          <Typography component="div" variant="subtitle2">{t("info.version")}: v1.4.75.3</Typography>
         </Paper>
         <Paper elevation={2}>
           <List>
-            <ListSubheader>Total Sales</ListSubheader>
+            <ListSubheader>{t("totalSales")}</ListSubheader>
             {
               totalSales.map(product =>
                 <ListItem>
@@ -141,7 +143,7 @@ function Home () {
             }
             <ListItem>
               <ListItemText></ListItemText>
-              <Button>Show More</Button>
+              <Button>{t("showMore")}</Button>
             </ListItem>
           </List>
         </Paper>
@@ -149,7 +151,7 @@ function Home () {
       <Grid item xs={11} md={5} sx={{ pl: 1, pt: 3, pb: 2, }}>
         <Paper elevation={2}>
           <List>
-            <ListSubheader>Last Receipts</ListSubheader>
+            <ListSubheader>{t("lastReceipts")}</ListSubheader>
             {
               receipts.map(receipt =>
                 <Box key={receipt.receipNumber}>
@@ -169,7 +171,7 @@ function Home () {
                           {`${receipt.total}$`}
                         </Typography>
                           <Button color="primary">
-                            Show
+                            {t("show")}
                           </Button>
                       </Box>
                     </ListItemText>
