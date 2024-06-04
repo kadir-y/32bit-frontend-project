@@ -15,6 +15,9 @@ export const handlers = [
   http.get(baseUrl + "/version", () => {
     return HttpResponse.json({ version: "1.0.0" });
   }),
+  http.get(baseUrl + "/store-is-online", () => {
+    return HttpResponse.json({ isOnline: false });
+  }),
   http.get(baseUrl + "/products", async ({ request }) => {
     const query = url.parse(request.url).query;
     let { page, limit, search, sort, startWith } = queryString.parse(query);

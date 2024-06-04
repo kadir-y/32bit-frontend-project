@@ -73,6 +73,7 @@ export default function Menu({ isNavbarOpen }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   function handleNavigate (path) {
+    if (!Boolean(path)) return;
     if (path.includes("http")) {
       window.open(path, "_blank");
     } else {

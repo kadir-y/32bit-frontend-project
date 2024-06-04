@@ -1,6 +1,6 @@
 {
   "documentTitle": "32bit Web Project",
-  "offlineDiaolog": {
+  "offlineDialog": {
     "title": "Network Error",
     "message": "You are offline, please check your network connection."
   },

@@ -24,9 +24,11 @@ export const ColorModeProvider = function ({ children }) {
         palette: {
           mode,
           ...(mode === "dark" ? {
-            appBar: "#3c3c3c"
+            appBar: "#3c3c3c",
+            showMoreButton: "#1769aa"
           } : {
-            appBar: "#f5f5f5"
+            appBar: "#f5f5f5",
+            showMoreButton: "#1769aa"
           })
         }
       })
