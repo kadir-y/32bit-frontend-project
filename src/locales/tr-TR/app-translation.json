@@ -1,3 +1,5 @@
 {
-  "documentTitle": "32bit Web Kasası Projesi"
+  "documentTitle": "32bit Web Kasası Projesi",
+  "offlineDialogTitle": "Ağ hatası",
+  "offlineDialogMessage": "Ağa bağlanılamıyor, lütfen internet bağlantınızı kontrol edin."
 }

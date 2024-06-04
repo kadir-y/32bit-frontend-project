@@ -6,6 +6,7 @@ export const useFormInput = function (props = {}) {
   const label = props.label ? props.label : "";
   const helperText = props.helperText ? props.helperText : "";
   const type = props.type ? props.type : "text";
+  const onChange = props.onChange ? props.onChange : () => {};
 
   const { setInputData } = useKeyboard();
   const [value, setValue] = useState(initialValue);
@@ -51,6 +52,7 @@ export const useFormInput = function (props = {}) {
       ignore: false
     });
     clearError();
+    onChange(e);
   }
 
   return { 

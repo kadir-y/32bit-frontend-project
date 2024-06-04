@@ -32,12 +32,15 @@ function Login () {
   const [version, setVersion] = useState();
   const { login } = useAuth();
   useEffect(() => {
+    let ignore = false;
     async function fetchVersion () {
       const res = await axios.get("/version");
+      if (ignore) return;
       setVersion(res.data?.version ? res.data?.version : "");
     }
     fetchVersion();
-  });
+    return () => ignore = true;
+  }, []);
   
   const { 
     value: usercode,
@@ -80,7 +83,7 @@ function Login () {
     if (!errors.usercode && !errors.password) {
       try {
         const data = { password, usercode};
-        const res = await axios.post("/api/users/login", data);
+        const res = await axios.post("/users/login", data);
         const { user, token } = res.data
         login(user, token);
         navigate("/");

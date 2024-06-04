@@ -93,7 +93,7 @@ export default function Menu({ isNavbarOpen }) {
       flexDirection: "column",
       top: { xs: "56px", sm: "64px" },
       left: isNavbarOpen ? 0 : "-250px",
-      zIndex: 9999
+      zIndex: 1
     }}>
       <ListItem>
         <ListItemAvatar>

@@ -8,6 +8,7 @@ import { I18nextProvider } from "react-i18next";
 import { KeyboardProvider } from "./hooks/useKeyboard";
 import { ColorModeProvider } from "./hooks/useColorMode";
 import { AuthProvider } from "./hooks/useAuth";
+import { ProductsProvider } from "./hooks/useProducts";
 import i18n from "./i18n"; // Configuration of i18next
 import reportWebVitals from "./reportWebVitals";
 
@@ -21,6 +22,7 @@ import App from "./App";
 import HomePage from "./views/Home";
 import LoginPage from "./views/Login";
 import SettingsPage from "./views/Settings";
+import ProductsPage from "./views/Products";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "/settings",
         element: <SettingsPage />,
+      },
+      {
+        path: "/view-prices",
+        element: <ProductsPage />,
       },
     ]
   },
@@ -53,7 +59,7 @@ async function enableMocking() {
  
   // `worker.start()` returns a Promise that resolves
   // once the Service Worker is up and ready to intercept requests.
-  return worker.start();
+  return worker.start({ onUnhandledRequest: "bypass"});
 };
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -64,7 +70,9 @@ enableMocking().then(() => {
         <AuthProvider>
           <ColorModeProvider>
             <KeyboardProvider>
-              <RouterProvider router={router} />
+              <ProductsProvider>
+                <RouterProvider router={router} />
+              </ProductsProvider>
             </KeyboardProvider>
           </ColorModeProvider>
         </AuthProvider>
