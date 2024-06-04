@@ -18,9 +18,13 @@ export const useFormInput = function (props = {}) {
     helperText,
     type,
     setValue,
-    setError
+    setError,
+    onOkeyButtonClick: handleOkeyButtonClick
   }
 
+  function handleOkeyButtonClick(value) {
+    onChange({ target: { value }});
+  }
   function clearValue() {
     setValue("");
   }
@@ -58,11 +62,11 @@ export const useFormInput = function (props = {}) {
   return { 
     setValue,
     clearValue,
-    value,
     setError,
     clearError,
+    value,
     error,
-    props: { 
+    props: {
       onChange: handleChange,
       onFocus: handleFocus,
       onBlur: handleBlur,

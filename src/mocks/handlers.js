@@ -37,11 +37,11 @@ export const handlers = [
         return title.includes(search) || p.meta.barcode.includes(search);
       });
     }
-    if (sort === "Price Expensive") {
+    if (sort === "expensive") {
       filteredData.sort((a, b) => a.price > b.price  ? -1 : 1);
-    } else if (sort === "Price Cheap") {
+    } else if (sort === "cheap") {
       filteredData.sort((a, b) => a.price < b.price ? -1 : 1);
-    } else if (sort === "Alphabetic Z-A") {
+    } else if (sort === "ZA") {
       filteredData.sort((a, b) => {
         const aTitle = a.title.toLocaleLowerCase();
         const bTitle = b.title.toLocaleLowerCase();

@@ -20,7 +20,7 @@ export default function Input (props) {
   const onChange = props.onChange ? props.onChange : () => {};
   const onMouseDown = props.onMouseDown ? props.onMouseDown : () => {};
   const onClick = props.onClick ? props.onClick : () => {};
-  
+
   function handleChange(e) {
     onChange(e);
   }

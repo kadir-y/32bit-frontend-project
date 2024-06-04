@@ -27,6 +27,7 @@ export const KeyboardProvider = function ({ children }) {
     ignore: true,
     setValue: () => {},
     setError: () => {},
+    onOkeyButtonClick: () => {}
   };
   const [inputData, setInputData] = useState(plainData);
   function openKeyboard () {

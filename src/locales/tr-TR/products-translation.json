@@ -1,0 +1,10 @@
+{
+  "searchPlaceholder": "Ara",
+  "sortByPlaceholder": "Sırala",
+  "sortByOptions": {
+    "alphabeticAZ": "Alfabetik A-Z",
+    "alphabeticZA": "Alfabetik Z-A",
+    "expensive": "Pahalılar önce",
+    "cheap": "Ucuzlar önce"
+  }
+}

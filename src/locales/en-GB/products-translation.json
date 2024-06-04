@@ -1,0 +1,10 @@
+{
+  "searchPlaceholder": "Search",
+  "sortByPlaceholder": "Sort by",
+  "sortByOptions": {
+    "alphabeticAZ": "Alphabetic A-Z",
+    "alphabeticZA": "Alphabetic Z-A",
+    "expensive": "Expensive first",
+    "cheap": "Cheap first"
+  }
+}

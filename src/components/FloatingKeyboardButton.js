@@ -37,7 +37,7 @@ export default function FloatingKeyboardButton() {
         onMouseDown={handleMouseDown}
         sx={{
           position: "fixed",
-          zIndex: 9999,
+          zIndex: 3,
           bottom: "1rem",
           right: "1rem"
         }}

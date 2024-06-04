@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useToggle } from "./hooks/useToggle"
 import { useWindowSize } from "./hooks/useWindowSize";
-import OfflineAlert from "./components/OfflineAlert";
+import OfflineDialog from "./components/OfflineDialog";
 import useTitle from "./hooks/useTitle";
 import "./stylesheets/App.css";
 import Keyboard from "./components/Keyboard";
@@ -14,7 +14,6 @@ function App() {
   const windowSize = useWindowSize();
   const { t } = useTranslation("app");
   const [isNavbarOpen, toggleNavbar] = useToggle(windowSize.width > 900);
-
   useTitle(t("documentTitle"));
   return (
     <>
@@ -29,7 +28,7 @@ function App() {
           <Outlet />
         </Box>
       </Grid>
-      <OfflineAlert />
+      <OfflineDialog />
       <Keyboard />
       <FloatingKeyboardButton />
     </>

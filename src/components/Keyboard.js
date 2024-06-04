@@ -236,6 +236,7 @@ function OkeyButton({ inputRef }) {
     closeKeyboard();
     inputData.setValue(inputRef.current.value);
     inputData.setError("");
+    inputData.onOkeyButtonClick(inputRef.current.value);
   }
   return (
     <Button 

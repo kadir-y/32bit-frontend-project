@@ -1,5 +1,10 @@
 {
   "documentTitle": "32bit Web Project",
-  "offlineDialogTitle": "Network Error",
-  "offlineDialogMessage": "You are offline, please check your network connection."
+  "offlineDiaolog": {
+    "title": "Network Error",
+    "message": "You are offline, please check your network connection."
+  },
+  "alphabeticSearchbar": {
+    "all": "ALL"
+  }
 }

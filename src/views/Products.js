@@ -17,13 +17,15 @@ import { useProducts } from "../hooks/useProducts";
 import { useProductsDispatch } from "../hooks/useProducts";
 import { useEffect, useRef, useState } from "react";
 import { useFormInput } from "../hooks/useFormInput"
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 
 import TextInput from "../components/TextInput";
 import AlphabeticSearchBar from "../components/AlphabeticSearchBar";
 
 function Products () {
-  const [sortBy, setSortBy] = useState("Alphabetic A-Z");
+  const { t } = useTranslation("products");
+  const [sortBy, setSortBy] = useState("AZ");
   const [totalPage, setTotalPage] = useState(0);
   const [isFetching, toggleIsFetching] = useState(true); 
   const [search, setSearch] = useState("");
@@ -32,7 +34,7 @@ function Products () {
   const productsDispatch = useProductsDispatch();
   const fetchCount = useRef(0);
   const { props: searchInputProps } = useFormInput({
-    label: "Search",
+    label: t("searchPlaceholder"),
     type: "text",
     onChange: handleSearchChange
   });
@@ -54,7 +56,6 @@ function Products () {
     .catch(err => console.error(err));
     return () => ignore = true;
   }, [productsDispatch]);
-  
   function handleSortByChange(e) {
     const value = e.target.value
     fetchCount.current++;
@@ -74,12 +75,13 @@ function Products () {
     }).catch(err => console.error(err));
   };
   function handleSearchChange(e) {
-    const value = e.target.value
+    const value = e.target.value;
     fetchCount.current++;
     const queue = fetchCount.current;
+    setStartWith("");
     setSearch(value);
     toggleIsFetching(true);
-    axios(`/products?page=1&limit=${limit.current}&search=${value}&sort=${sortBy}&startWith=${startWith}`)
+    axios(`/products?page=1&limit=${limit.current}&search=${value}&sort=${sortBy}`)
     .then(res => {
       if (queue !== fetchCount.current) return;
       const { totalPage, products } = res.data;
@@ -93,7 +95,7 @@ function Products () {
     .catch(err => console.error(err));
   };
   function handlePageChange(event, value) {
-    fetchCount.current++
+    fetchCount.current++;
     const queue = fetchCount.current;
     axios(`/products?page=${value}&limit=${limit.current}&search=${search}&startWith=${startWith}`)
     .then(res => {
@@ -145,22 +147,21 @@ function Products () {
               width: "8rem"
             }}
           >
-            <InputLabel id="sort-label">Sort by</InputLabel>
+            <InputLabel id="sort-label">{t("sortByPlaceholder")}</InputLabel>
             <Select
               labelId="sort-label"
               id="sort-select"
               value={sortBy}
-              label="Sort by"
+              label={t("sortByPlaceholder")}
               onChange={handleSortByChange}
             >
-              <MenuItem value="Alphabetic A-Z">Alphabetic A-Z</MenuItem>
-              <MenuItem value="Alphabetic Z-A">Alphabetic Z-A</MenuItem>
-              <MenuItem value="Price Expensive">Price Expensive</MenuItem>
-              <MenuItem value="Price Cheap">Price Cheap</MenuItem>
+              <MenuItem value="AZ">{t("sortByOptions.alphabeticAZ")}</MenuItem>
+              <MenuItem value="ZA">{t("sortByOptions.alphabeticZA")}</MenuItem>
+              <MenuItem value="expensive">{t("sortByOptions.expensive")}</MenuItem>
+              <MenuItem value="Cheap">{t("sortByOptions.cheap")}</MenuItem>
             </Select>
           </FormControl>
         </Box>
-
         <Typography 
           sx={{ 
             display: { xs: "none", sm: "block", lg: "none" },
@@ -171,19 +172,19 @@ function Products () {
           }}
           component="h1"
           variant="h6"
-        >
-          View Products
-        </Typography>
-
-        <AlphabeticSearchBar sx={{
-            width: "42rem",
+        >{t("viewProducts")}</Typography>
+        <Paper sx={{
+            display: { xs: "none", lg: "block" },
             mx: "auto",
-            display: { xs: "none", lg: "block" }
+            overflow: "auto",
+            backgroundColor: "transparent",
           }}
-          onChange={handleStartWithChange}
-          value={startWith}
-        />
-        
+        >
+          <AlphabeticSearchBar
+            onChange={handleStartWithChange}
+            value={startWith}
+          />
+        </Paper>
         <TextInput 
           id="search-input"
           {...searchInputProps}
@@ -194,16 +195,22 @@ function Products () {
           size="small"
         />
       </Paper>
-      <AlphabeticSearchBar sx={{
-          width: "90%",
-          mt: 1,
+      <Box
+        sx={{
+          maxWidth: "90%",
           mx: "auto",
-          display: { xs: "block", lg: "none" },
-          overflow: "hidden",
+          display: "flex",
+          justifyContent: "center",
+          mt: 1
         }}
-        onChange={handleStartWithChange}
-        search={search}
-      />
+      >
+        <Paper sx={{ display: { xs: "block", lg: "none", overflow: "auto" } }}>
+          <AlphabeticSearchBar
+            onChange={handleStartWithChange}
+            value={startWith}
+          />
+        </Paper>
+      </Box>
       <Box sx={{ 
           paddingBottom: { xs: "9rem", sm: "8rem", md: "5rem" },
           pt: 3,

@@ -1,38 +1,11 @@
 import { 
   Button,
-  ButtonGroup,
-  Paper 
+  ButtonGroup
 } from "@mui/material";
 import { 
   Splitscreen as SplitscreenIcon
 } from '@mui/icons-material';
-
-export default function AlphabeticSearchBar(props) {
-  const sx = props.sx ? props.sx : {}
-  const elevation = props.elevation ? props.elevation : 1;
-  function handleChange(e) {
-    props.onChange(e)
-  }
-  return (
-    <Paper sx={{
-        ...sx,
-        overflow: "auto",
-        textAlign: "center"
-      }}
-      elevation={elevation}
-    >
-      <ButtonGroup sx={{
-      }} variant="text" aria-label="alphabetic-sorter">
-        <Button variant="text" onClick={handleChange} value="" startIcon={<SplitscreenIcon />}>All</Button>
-        {
-          buttons.map(b => 
-            <Button key={b} variant="text" value={b} onClick={handleChange}>{b}</Button>
-          )
-        }
-      </ButtonGroup>
-    </Paper>
-  );
-}
+import { useTranslation } from "react-i18next";
 
 const buttons = [
   "A",
@@ -40,10 +13,42 @@ const buttons = [
   "C-D",
   "E-F",
   "G-I",
-  "K",
+  "J-K",
   "L-N",
   "P",
   "R-S",
-  "S-T",
+  "T",
   "U-Z"
-]
+];
+
+export default function AlphabeticSearchBar(props) {
+  const { t } = useTranslation("app");
+  function handleChange(e) {
+    props.onChange(e)
+  }
+  return (
+    <ButtonGroup 
+        sx={{
+          textWrap: "nowrap"
+        }}
+        variant="text"
+        aria-label="alphabetic-sorter"
+      >
+      <Button
+        onClick={handleChange}
+        value=""
+        variant={ Boolean(props.value) ? "text" : "contained" } 
+        startIcon={<SplitscreenIcon />}
+      >{t("alphabeticSearchbar.all")}</Button>
+      {
+        buttons.map(b => 
+          <Button 
+            key={b}
+            variant={ b === props.value ? "contained" : "text" }
+            value={b} onClick={handleChange}
+          >{b}</Button>
+        )
+      }
+    </ButtonGroup>
+  );
+}
