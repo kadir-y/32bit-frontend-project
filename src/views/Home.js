@@ -16,6 +16,8 @@ import {
   FiberManualRecord as FiberManualRecordIcon
 } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
+import axios from "../axios";
+import { useEffect, useState } from "react";
 
 const totalSales = [
   {
@@ -90,10 +92,38 @@ const receipts = [
 ]
 
 function Home () {
+  const [storeInfo, setStoreInfo] = useState({
+    number: "",
+    cashRegisterIp: "",
+    cashRegisterNumber: ""
+  })
+  const [appVersion, setAppVersion] = useState("")
+  async function getStoreInfo() {
+    return axios.get("/store-info");
+  };
+  async function getAppVersion() {
+    return axios.get("/version");
+  };
+  useEffect(() => {
+    let ignore = false;
+    getStoreInfo()
+      .then(res => {
+        if(ignore) return;
+        setStoreInfo(res.data.info); 
+      })
+      .catch(err => console.error(err));
+    getAppVersion()
+    .then(res => {
+      if(ignore) return; 
+      setAppVersion(res.data.version); 
+    })
+    .catch(err => console.error(err));
+    return () => ignore = true;
+  }, [])
   const { t } = useTranslation("home");
   return (
-    <Grid container sx={{ display: "flex", justifyContent: "center", px: 2 }}>
-      <Grid item xs={11} md={5} sx={{ pr: 1, pt: 3, pb: 2 }}>
+    <Grid container sx={{ display: "flex", justifyContent: "center", pb: 8 }}>
+      <Grid item xs={11} md={5} sx={{ pt: 3, pb: 2, px: 2 }}>
         <Paper sx={{
           py: 2,
           px: 7,
@@ -113,17 +143,17 @@ function Home () {
             }}>{t("info.storeOnlineMessage")}</Typography>
             <FiberManualRecordIcon color="success" /> 
           </Box>
-          <Typography component="div" variant="subtitle2" sx={{ fontWeight: "500" }} >{t("info.storeNumber")}: 1057 (Mobile Demo)</Typography>
-          <Typography component="div" variant="subtitle2">{t("info.cashRegisterNumber")}: (Kasa 1)</Typography>
-          <Typography component="div" variant="subtitle2">{t("info.cashRegisterIp")}Kasa Ip No: 10.0.2.16</Typography>
-          <Typography component="div" variant="subtitle2">{t("info.version")}: v1.4.75.3</Typography>
+          <Typography component="div" variant="subtitle2" sx={{ fontWeight: "500" }} >{`${t("info.storeNumber")}: ${storeInfo.number}` }</Typography>
+          <Typography component="div" variant="subtitle2">{`${t("info.cashRegisterNumber")}: ${storeInfo.cashRegisterNumber}`}</Typography>
+          <Typography component="div" variant="subtitle2">{`${t("info.cashRegisterIp")}: ${storeInfo.cashRegisterIp}`}</Typography>
+          <Typography component="div" variant="subtitle2">{`${t("info.version")}: ${appVersion}`}</Typography>
         </Paper>
         <Paper elevation={2}>
           <List>
             <ListSubheader>{t("totalSales")}</ListSubheader>
             {
               totalSales.map(product =>
-                <ListItem>
+                <ListItem key={product.title}>
                   <ListItemAvatar>
                     <Avatar
                       alt={product.title}
@@ -148,7 +178,7 @@ function Home () {
           </List>
         </Paper>
       </Grid>
-      <Grid item xs={11} md={5} sx={{ pl: 1, pt: 3, pb: 2, }}>
+      <Grid item xs={11} md={5} sx={{ pt: 3, pb: 2, px: 2 }}>
         <Paper elevation={2}>
           <List>
             <ListSubheader>{t("lastReceipts")}</ListSubheader>

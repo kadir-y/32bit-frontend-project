@@ -3,7 +3,7 @@
     "storeOnlineMessage": "Store is online",
     "storeNumber": "Store Number",
     "cashRegisterNumber": "Cash Register Number",
-    "cashRegisterIp": "Cash Register Ip Number",
+    "cashRegisterIp": "Cash Register Ip",
     "version": "Version"
   },
   "totalSales": "Total Sales",

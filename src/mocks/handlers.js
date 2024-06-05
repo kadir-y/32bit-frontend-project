@@ -3,20 +3,31 @@ import products from './products.json'
 import queryString from "query-string";
 import url from "url";
 
-const baseUrl = process.env.REACT_APP_API_URL
+const baseUrl = process.env.REACT_APP_API_URL;
 
 export const handlers = [
   // And here's a request handler with MSW
   // for the same "GET /user" request that
   // responds with a mock JSON response.
   http.get(baseUrl + "/", () => {
-    return HttpResponse.status(200);
+    return new HttpResponse("ok", {
+      status: 200,  
+      headers: {
+        'Content-Type': 'text/plain',
+      }
+    });
   }),
   http.get(baseUrl + "/version", () => {
     return HttpResponse.json({ version: "1.0.0" });
   }),
-  http.get(baseUrl + "/store-is-online", () => {
-    return HttpResponse.json({ isOnline: false });
+  http.get(baseUrl + "/store-info", () => {
+    return HttpResponse.json({
+      info: {
+        number: "1057",
+        cashRegisterIp: "10.0.2.16",
+        cashRegisterNumber: "Kasa 1"
+      }
+    })
   }),
   http.get(baseUrl + "/products", async ({ request }) => {
     const query = url.parse(request.url).query;

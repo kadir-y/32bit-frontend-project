@@ -25,8 +25,10 @@ import axios from "../axios";
 import getErrorStatusCode from "../libs/getErrorStatusCode";
 import { useEffect, useState } from "react";
 
-
 function Login () {
+  function fetchStoreStatus() {
+    return axios.get("/");
+  }
   const { t } = useTranslation("login");
   const [loading, setLoading] = useToggle(false);
   const [version, setVersion] = useState();

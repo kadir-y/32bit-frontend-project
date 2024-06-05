@@ -1,5 +1,7 @@
 import { Grid, Box } from "@mui/material";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useToggle } from "./hooks/useToggle"
 import { useWindowSize } from "./hooks/useWindowSize";
@@ -9,11 +11,24 @@ import "./stylesheets/App.css";
 import Keyboard from "./components/Keyboard";
 import FloatingKeyboardButton from "./components/FloatingKeyboardButton";
 import WidedNavbar from "./components/layout/WidedNavbar";
+import axios from "axios";
 
 function App() {
+  const navigate = useNavigate();
   const windowSize = useWindowSize();
   const { t } = useTranslation("app");
   const [isNavbarOpen, toggleNavbar] = useToggle(windowSize.width > 900);
+  function fetchStoreStatus() {
+    return axios.get("/");
+  };
+  useEffect(() => {
+    fetchStoreStatus()
+    .then(res => {
+    })
+    .catch(err => {
+      navigate("/login")
+    });
+  } , [navigate]);
   useTitle(t("documentTitle"));
   return (
     <>
