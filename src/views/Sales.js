@@ -10,9 +10,8 @@ import {
   CardMedia,
   List,
   ListSubheader,
-  Divider,
   ListItemText,
-  ListItem
+  ListItemButton
 } from "@mui/material";
 import {
   TabContext,
@@ -27,7 +26,7 @@ import {
   Add as AddIcon,
   Remove as RemoveIcon
 } from '@mui/icons-material';
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useFormInput } from "../hooks/useFormInput";
 import { useToggle } from "../hooks/useToggle";
 import { useNavigate } from "react-router-dom";
@@ -154,18 +153,96 @@ const NumpadButton = styled(Button)({
   }
 })
 
-function NumpadAndButton(props) {
+const normalizeButton = {
+  minWidth: "0 !important",
+  minHeight: "0 !important",
+  padding: "0",
+  margin: "0"
+}
+
+const unitSymbols = {
+  price: "$",
+  mass: "kg",
+  piece: "pieces"
+} 
+
+function NumpadAndInput(props) {
   const [value, setValue] = useState("");
+  const refValue = useRef("");
   const onChange = props.onChange ? props.onChange : () => { };
-  const { unit, isPrice } = props;
+  const { unit } = props;
+
+  useEffect(() => {
+    setValue(() => {
+      const symbol = unitSymbols[unit];
+      if (unit === "price") return `.00 ${symbol}`;
+      else if (unit === "mass") return `.000 ${symbol}`;
+      if (unit === "piece") return `0 ${symbol}`;
+    });
+  }, [unit])
 
   function handleChange(keyValue) {
-    let val = value;
+    let val = refValue.current;
+    if (!Boolean(val) &&
+       (keyValue === "decrease" || keyValue === "backspace")
+    ) return;
     if (keyValue === "backspace") {
+      if (unit === "mass" || unit === "price") {
+        val = val.slice(0, -1);
+      } else if (unit === "piece") {
+        val = val.length === 1 ? "0" : val.slice(0, -1);
+      }
+      value.slice(0, -1);
     } else if (keyValue === "increase") {
+      Boolean(val) || (val = "0");
+      if (unit === "piece") {
+        val = (parseInt(val) + 1).toString();
+      } else if (unit === "mass") {
+        val = (parseInt(val) + 1000).toString();
+      } else if (unit === "price") {
+        val = (parseInt(val) + 100).toString();
+      }
     } else if (keyValue === "decrease") {
-    } else {
+      if (unit === "piece") {
+        val = (parseInt(val) - 1).toString();
+      } else if (unit === "mass") {
+        val = (parseInt(val) - 1000).toString();
+      } else if (unit === "price") {
+        val = (parseInt(val) - 100).toString();
+      }
+    } else if (!(keyValue[0] === "0" && val === "")) {
+      val += keyValue;
     }
+    val = val < 0 ? "0" : val;
+    refValue.current = val;
+    if (unit === "mass") {
+      switch (val.length) {
+        case 0:
+          val = ".000";
+          break;
+        case 1:
+          val = ".00" + val;
+          break;
+        case 2:
+          val = ".0" + val;
+          break;
+        default:
+          val = val.slice(0, -3) + "." + val.slice(-3);
+      }
+    }
+    if (unit === "price") {
+      switch (val.length) {
+        case 0:
+          val = ".00"
+          break;
+        case 1:
+          val = ".0" + val
+          break;
+        default:
+          val = val.slice(0, -2) + "." + val.slice(-2);
+      }
+    }
+    val = `${val} ${unitSymbols[unit]}`;
     onChange(val);
     setValue(val);
   };
@@ -201,7 +278,6 @@ function NumpadAndButton(props) {
           </Box>
           <Box sx={{ display: "flex" }}>
             <NumpadButton variant="contained" onClick={() => handleChange("0")}>0</NumpadButton>
-            {(isPrice && unit === "count") && <NumpadButton variant="contained" onClick={() => handleChange(".")}>.</NumpadButton>}
           </Box>
         </Grid>
         <Grid item xs={5} sx={{ pl: 1, display: "flex", flexDirection: "column" }}>
@@ -210,7 +286,7 @@ function NumpadAndButton(props) {
               fullWidth
               variant="contained"
               onClick={() => handleChange("increase")}
-              sx={{ mr: 0.5 }}
+              sx={{ ...normalizeButton, mr: 0.5 }}
             >
               <AddIcon />
             </Button>
@@ -218,7 +294,7 @@ function NumpadAndButton(props) {
               fullWidth
               variant="contained"
               onClick={() => handleChange("decrease")}
-              sx={{ ml: 0.5 }}
+              sx={{ ...normalizeButton, ml: 0.5, height: "2.5rem"}}
             >
               <RemoveIcon />
             </Button>
@@ -234,12 +310,18 @@ function NumpadAndButton(props) {
   );
 }
 
+const TypographyStyle = {
+  whiteSpace: "nowrap",
+  textOverflow: "ellipsis",
+  overflow: "hidden"
+}
 
 export default function SalesPage() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [isFetching, toggleIsFetching] = useToggle();
   const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(0);
   const fetchCount = useRef(0);
   const {
     props: inputProps
@@ -249,6 +331,9 @@ export default function SalesPage() {
     onChange: handleChange
   });
 
+  function handleProductsItemClick(e, index) {
+    setSelectedProduct(index);
+  }
   function handleViewPriceClick() {
     navigate("/view-prices");
   };
@@ -298,11 +383,12 @@ export default function SalesPage() {
       </Box>
       <Grid container sx={{
         height: "calc(100vh - 9rem)",
+        overflow: "auto",
         pt: 2,
-        px: 1,
-        overflow: "auto"
+        pb: 1,
+        px: 2
       }}>
-        <Grid item xs={12} md={4} lg={5} sx={{ px: 1 }}>
+        <Grid item xs={12} md={4} lg={5} sx={{ pr: { md: 1 } }}>
           <Paper
             sx={{
               width: "100%",
@@ -319,37 +405,60 @@ export default function SalesPage() {
             </Box>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={4} sx={{ px: { md: 1 } }}>
           <Paper
             sx={{
               width: "100%",
               height: "100%",
               position: "relative",
-              overflow: "hidden"
+              overflow: "auto",
             }}
+            elevation={4}
           >
-            <List
-              sx={{
-                overflow: "auto",
-                height: "calc(100% - 5rem)",
-              }}
-              subheader={
-                <ListSubheader component="div" id="products-list-subheader">
-                  Products
-                </ListSubheader>
-              }
-            >
-              <ListItem>
-                <ListItemText>
-                  <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                    <Typography component="span">
-                      Product Name
-                    </Typography>
-                    <Typography>23.24$</Typography>
-                  </Box>
-                </ListItemText>
-              </ListItem>
-            </List>
+            <Box sx={{
+              height: "cal(100% - 9.5rem)",
+              width: "100%",
+              overflow: "auto"
+            }}>
+              <List
+                subheader={
+                  <ListSubheader>Products</ListSubheader>
+                }
+              >
+                <ListItemButton
+                  selected={selectedProduct === 0}
+                  onClick={e => handleProductsItemClick(e, 0)}
+                >
+                  <ListItemText>
+                    <Box sx={{ display: "flex", flexWrap: 1, justifyContent: "space-between" }}>
+                      <Typography 
+                        component="span"
+                        variant="body2"
+                        sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
+                      >Product</Typography>
+                      <Typography 
+                        component="span"
+                        variant="body2"
+                        sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
+                      >%18 KDV</Typography>
+                    </Box>
+                    <Box sx={{ display: "flex", flexWrap: 1, justifyContent: "space-between" }}>
+                      <Typography 
+                        component="span"
+                        variant="subtitle2"
+                        sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
+                      >Kitchen</Typography>
+                      <Typography 
+                        component="span"
+                        variant="subtitle2"
+                        sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
+                      >15$</Typography>
+                    </Box>
+                  </ListItemText>
+                </ListItemButton>
+              </List>
+            </Box>
+
             <Box sx={{
               position: "absolute",
               bottom: 0,
@@ -381,7 +490,7 @@ export default function SalesPage() {
             </Box>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={4} lg={3} sx={{ px: 1 }} elevation={5}>
+        <Grid item xs={12} md={4} lg={3} sx={{ pl: { md: 1 } }}>
           <Paper
             sx={{
               display: "flex",
@@ -413,12 +522,12 @@ export default function SalesPage() {
                 <Button fullWidth variant="contained" color="success">Kampanyalar</Button>
               </Box>
               <Box>
-                <NumpadAndButton />
+                <NumpadAndInput unit="mass" />
               </Box>
             </Box>
           </Paper>
         </Grid>
-      </Grid>
+      </Grid> 
       <Box sx={{ width: "calc(100% - 9.5rem)", px: 2, pt: 1 }}>
         <Footer />
       </Box>
