@@ -1,3 +1,4 @@
+import { useState, useRef } from "react";
 import {
   Grid,
   Paper,
@@ -18,21 +19,17 @@ import {
   TabList,
   TabPanel
 } from '@mui/lab';
-import { styled } from "@mui/material/styles";
 import {
   ManageSearchOutlined as ManageSearchOutlinedIcon,
-  FiberManualRecord as FiberManualRecordIcon,
-  BackspaceOutlined as BackspaceOutlinedIcon,
-  Add as AddIcon,
-  Remove as RemoveIcon
+  FiberManualRecord as FiberManualRecordIcon
 } from '@mui/icons-material';
-import { useState, useRef, useEffect } from "react";
 import { useFormInput } from "../hooks/useFormInput";
 import { useToggle } from "../hooks/useToggle";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import TextInput from "../components/TextInput";
 import BasicTitleBar from "../components/BasicTitleBar";
+import NumpadAndInput from "../components/NumpadAndInput";
 import kitchenImage from "../assets/images/kitchen.jpg";
 import bookImage from "../assets/images/books.jpg";
 import beutyImage from "../assets/images/beuty.jpg";
@@ -52,7 +49,7 @@ const categories = [
   }
 ]
 
-function ProductContent(props) {
+function SearchProductSection(props) {
   const [value, setValue] = useState("3");
   const { products, ...others } = props;
   function handleChange(e, newValue) {
@@ -141,172 +138,64 @@ function Footer() {
   );
 }
 
-const NumpadButton = styled(Button)({
-  padding: 0,
-  minWidth: 0,
-  flexGrow: 1,
-  height: "3rem",
-  fontSize: "1.25rem",
-  marginRight: "0.25rem",
-  "&:last-child": {
-    marginRight: 0
-  }
-})
-
-const normalizeButton = {
-  minWidth: "0 !important",
-  minHeight: "0 !important",
-  padding: "0",
-  margin: "0"
+function ProductList () {
+  const [selectedProduct, setSelectedProduct] = useState(0);
+  function handleProductItemClick(e, index) {
+    setSelectedProduct(index);
+  };
+  return (
+    <List
+      subheader={
+        <ListSubheader>Products</ListSubheader>
+      }
+    >
+      {
+        [0, 1, 2].map(i => 
+          <ProductItem
+            key={i}
+            index={i}
+            selectedProduct={selectedProduct}
+            handleProductItemClick={handleProductItemClick}
+          />
+        )
+      }
+    </List>
+  );
 }
 
-const unitSymbols = {
-  price: "$",
-  mass: "kg",
-  piece: "pieces"
-} 
-
-function NumpadAndInput(props) {
-  const [value, setValue] = useState("");
-  const refValue = useRef("");
-  const onChange = props.onChange ? props.onChange : () => { };
-  const { unit } = props;
-
-  useEffect(() => {
-    setValue(() => {
-      const symbol = unitSymbols[unit];
-      if (unit === "price") return `.00 ${symbol}`;
-      else if (unit === "mass") return `.000 ${symbol}`;
-      if (unit === "piece") return `0 ${symbol}`;
-    });
-  }, [unit])
-
-  function handleChange(keyValue) {
-    let val = refValue.current;
-    if (!Boolean(val) &&
-       (keyValue === "decrease" || keyValue === "backspace")
-    ) return;
-    if (keyValue === "backspace") {
-      if (unit === "mass" || unit === "price") {
-        val = val.slice(0, -1);
-      } else if (unit === "piece") {
-        val = val.length === 1 ? "0" : val.slice(0, -1);
-      }
-      value.slice(0, -1);
-    } else if (keyValue === "increase") {
-      Boolean(val) || (val = "0");
-      if (unit === "piece") {
-        val = (parseInt(val) + 1).toString();
-      } else if (unit === "mass") {
-        val = (parseInt(val) + 1000).toString();
-      } else if (unit === "price") {
-        val = (parseInt(val) + 100).toString();
-      }
-    } else if (keyValue === "decrease") {
-      if (unit === "piece") {
-        val = (parseInt(val) - 1).toString();
-      } else if (unit === "mass") {
-        val = (parseInt(val) - 1000).toString();
-      } else if (unit === "price") {
-        val = (parseInt(val) - 100).toString();
-      }
-    } else if (!(keyValue[0] === "0" && val === "")) {
-      val += keyValue;
-    }
-    val = val < 0 ? "0" : val;
-    refValue.current = val;
-    if (unit === "mass") {
-      switch (val.length) {
-        case 0:
-          val = ".000";
-          break;
-        case 1:
-          val = ".00" + val;
-          break;
-        case 2:
-          val = ".0" + val;
-          break;
-        default:
-          val = val.slice(0, -3) + "." + val.slice(-3);
-      }
-    }
-    if (unit === "price") {
-      switch (val.length) {
-        case 0:
-          val = ".00"
-          break;
-        case 1:
-          val = ".0" + val
-          break;
-        default:
-          val = val.slice(0, -2) + "." + val.slice(-2);
-      }
-    }
-    val = `${val} ${unitSymbols[unit]}`;
-    onChange(val);
-    setValue(val);
-  };
-
+function ProductItem({ index, product, selectedProduct, handleProductItemClick }) {
   return (
-    <>
-      <Box sx={{
-        border: 1,
-        borderColor: "grey.500",
-        borderRadius: 2,
-        height: "3rem",
-        lineHeight: "3rem",
-        fontSize: "1.25rem",
-        my: 1,
-        px: 1.5
-      }}>{value}</Box>
-      <Grid container>
-        <Grid item xs={7} sx={{ pr: 1 }}>
-          <Box sx={{ display: "flex", mb: 0.5 }}>
-            <NumpadButton variant="contained" onClick={() => handleChange("7")}>7</NumpadButton>
-            <NumpadButton variant="contained" onClick={() => handleChange("8")}>8</NumpadButton>
-            <NumpadButton variant="contained" onClick={() => handleChange("9")}>9</NumpadButton>
-          </Box>
-          <Box sx={{ display: "flex", mb: 0.5 }}>
-            <NumpadButton variant="contained" onClick={() => handleChange("4")}>4</NumpadButton>
-            <NumpadButton variant="contained" onClick={() => handleChange("5")}>5</NumpadButton>
-            <NumpadButton variant="contained" onClick={() => handleChange("6")}>6</NumpadButton>
-          </Box>
-          <Box sx={{ display: "flex", mb: 0.5 }}>
-            <NumpadButton variant="contained" onClick={() => handleChange("1")}>1</NumpadButton>
-            <NumpadButton variant="contained" onClick={() => handleChange("2")}>2</NumpadButton>
-            <NumpadButton variant="contained" onClick={() => handleChange("3")}>3</NumpadButton>
-          </Box>
-          <Box sx={{ display: "flex" }}>
-            <NumpadButton variant="contained" onClick={() => handleChange("0")}>0</NumpadButton>
-          </Box>
-        </Grid>
-        <Grid item xs={5} sx={{ pl: 1, display: "flex", flexDirection: "column" }}>
-          <Box sx={{ display: "flex", mb: 1 }}>
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={() => handleChange("increase")}
-              sx={{ ...normalizeButton, mr: 0.5 }}
-            >
-              <AddIcon />
-            </Button>
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={() => handleChange("decrease")}
-              sx={{ ...normalizeButton, ml: 0.5, height: "2.5rem"}}
-            >
-              <RemoveIcon />
-            </Button>
-          </Box>
-          <Button fullWidth variant="contained" sx={{ mb: 1 }} onClick={() => handleChange("00")}>00</Button>
-          <Button fullWidth variant="contained" color="error" sx={{ mb: 1 }} onClick={() => handleChange("backspace")}>
-            <BackspaceOutlinedIcon />
-          </Button>
-          <Button fullWidth variant="contained" color="primary" sx={{ flexGrow: 1 }}>Devam Et</Button>
-        </Grid>
-      </Grid>
-    </>
+    <ListItemButton
+      selected={selectedProduct === index}
+      onClick={e => handleProductItemClick(e, index)}
+    >
+      <ListItemText>
+        <Box sx={{ display: "flex", flexWrap: 1, justifyContent: "space-between" }}>
+          <Typography 
+            component="span"
+            variant="body2"
+            sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
+          >Product</Typography>
+          <Typography 
+            component="span"
+            variant="body2"
+            sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
+          >%18 KDV</Typography>
+        </Box>
+        <Box sx={{ display: "flex", flexWrap: 1, justifyContent: "space-between" }}>
+          <Typography 
+            component="span"
+            variant="subtitle2"
+            sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
+          >Kitchen</Typography>
+          <Typography 
+            component="span"
+            variant="subtitle2"
+            sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
+          >15$</Typography>
+        </Box>
+      </ListItemText>
+    </ListItemButton>
   );
 }
 
@@ -321,7 +210,6 @@ export default function SalesPage() {
   const [search, setSearch] = useState("");
   const [isFetching, toggleIsFetching] = useToggle();
   const [products, setProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(0);
   const fetchCount = useRef(0);
   const {
     props: inputProps
@@ -331,9 +219,6 @@ export default function SalesPage() {
     onChange: handleChange
   });
 
-  function handleProductsItemClick(e, index) {
-    setSelectedProduct(index);
-  }
   function handleViewPriceClick() {
     navigate("/view-prices");
   };
@@ -401,7 +286,7 @@ export default function SalesPage() {
               <TextInput id="search-input" {...inputProps} />
             </Box>
             <Box sx={{ mt: 1 }}>
-              <ProductContent />
+              <SearchProductSection />
             </Box>
           </Paper>
         </Grid>
@@ -420,43 +305,7 @@ export default function SalesPage() {
               width: "100%",
               overflow: "auto"
             }}>
-              <List
-                subheader={
-                  <ListSubheader>Products</ListSubheader>
-                }
-              >
-                <ListItemButton
-                  selected={selectedProduct === 0}
-                  onClick={e => handleProductsItemClick(e, 0)}
-                >
-                  <ListItemText>
-                    <Box sx={{ display: "flex", flexWrap: 1, justifyContent: "space-between" }}>
-                      <Typography 
-                        component="span"
-                        variant="body2"
-                        sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
-                      >Product</Typography>
-                      <Typography 
-                        component="span"
-                        variant="body2"
-                        sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
-                      >%18 KDV</Typography>
-                    </Box>
-                    <Box sx={{ display: "flex", flexWrap: 1, justifyContent: "space-between" }}>
-                      <Typography 
-                        component="span"
-                        variant="subtitle2"
-                        sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
-                      >Kitchen</Typography>
-                      <Typography 
-                        component="span"
-                        variant="subtitle2"
-                        sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
-                      >15$</Typography>
-                    </Box>
-                  </ListItemText>
-                </ListItemButton>
-              </List>
+              <ProductList />
             </Box>
 
             <Box sx={{
