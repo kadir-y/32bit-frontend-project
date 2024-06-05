@@ -24,11 +24,27 @@ export default function BasicTitleBar(props) {
       justifyContent: "space-between",
       alignItems: "center"
     }}>
-      <Button sx={{ textTransform: "none" }} variant="text" onClick={handleBackwardClick}>
+      <Button 
+        sx={{
+          textTransform: "none",
+          whiteSpace: "nowrap",
+          textOverflow: "ellipsis",
+        }}
+        variant="text"
+        onClick={handleBackwardClick}
+      >
         <ArrowBackIosNewIcon sx={{ mr: 1 }}/>
         Backward
       </Button>
-      <Typography component="span" variant="h6">{ title }</Typography>
+      <Typography 
+        sx={{
+          whiteSpace: "nowrap",
+          textOverflow: "ellipsis",
+          overflow: "hidden",
+          px: 2
+        }}
+        component="span" 
+        variant="h6">{ title }</Typography>
       { endSlot ? endSlot : ""}
     </Paper>
   )

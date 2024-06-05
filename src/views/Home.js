@@ -163,8 +163,10 @@ function Home () {
             <Typography component="div" variant="subtitle2">{`${t("info.version")}: ${appVersion}`}</Typography>
           </Paper>
           <Paper elevation={2}>
-            <List>
-              <ListSubheader>{t("totalSales")}</ListSubheader>
+            <List 
+              subheader={
+                <ListSubheader>{t("totalSales")}</ListSubheader>
+              }>
               {
                 totalSales.map(product =>
                   <ListItem key={product.title}>
@@ -194,8 +196,12 @@ function Home () {
         </Grid>
         <Grid item xs={11} md={5} sx={{ pt: 3, pb: 2, px: 2 }}>
           <Paper elevation={2}>
-            <List>
-              <ListSubheader>{t("lastReceipts")}</ListSubheader>
+            <List
+              subheader={
+                <ListSubheader>{t("lastReceipts")}</ListSubheader>
+              }
+            >
+              
               {
                 receipts.map(receipt =>
                   <Box key={receipt.receipNumber}>

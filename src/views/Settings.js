@@ -5,6 +5,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Box
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useColorMode } from "../hooks/useColorMode";
@@ -12,6 +13,7 @@ import { useFormInput } from "../hooks/useFormInput";
 import { useKeyboard } from "../hooks/useKeyboard";
 import { setPreferedLanguage } from "../utils/languageTools";
 import TextInput from "../components/TextInput";
+import BasicTitleBar from "../components/BasicTitleBar";
 
 export default function Settings() {
   const { t, i18n } = useTranslation("settings");
@@ -40,7 +42,10 @@ export default function Settings() {
   const languages = Object.entries(i18n.options.resources).map(([lng]) => lng);
   
   return(
-    <>
+    <> 
+      <Box sx={{ width: "90%", mx: "auto", mt: 2 }}>
+        <BasicTitleBar />
+      </Box>
       <Grid container sx={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}>
         <Grid item xs={10} md={8} lg={6}>
           <Typography sx={{ mb: 5 }} component="h1" variant="h5">{t("settings")}</Typography>
