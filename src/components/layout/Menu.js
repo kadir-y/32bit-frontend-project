@@ -6,7 +6,8 @@ import {
   ListItemText,
   Divider,
   ListItemIcon,
-  ListItemButton
+  ListItemButton,
+  Paper
 } from "@mui/material";
 import { 
   Logout as LogoutIcon,
@@ -85,42 +86,46 @@ export default function Menu({ isNavbarOpen }) {
     navigate("/login");
   };
   return (
-    <List sx={{
-      height: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
-      width: "250px",
-      bgcolor: "appBar",
-      position: "fixed",
-      display: "flex",
-      flexDirection: "column",
-      top: { xs: "56px", sm: "64px" },
-      left: isNavbarOpen ? 0 : "-250px",
-      zIndex: 2
-    }}>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar alt={getFullName(user)} src={user.profilePicture} />
-        </ListItemAvatar>
-        <ListItemText>{getFullName(user)}</ListItemText>
-      </ListItem>
-      <ListItem sx={{ mt: 1, mb: 1, alignSelf: "flex-end" }} disablePadding>
-        <ListItemButton onClick={handleLogout}>
-          <ListItemIcon>
-            <LogoutIcon />
-          </ListItemIcon>
-          <ListItemText>{t("logout")}</ListItemText>
-        </ListItemButton>
-      </ListItem>
-      <Divider />
-      {
-        navigations.map((n, index) => (
-          <ListItem key={index} onClick={() => handleNavigate(n.path)} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>{n.icon}</ListItemIcon>
-              <ListItemText>{n.label}</ListItemText>
-            </ListItemButton>
-          </ListItem>
-        ))
-      }
-    </List>
+    <Paper 
+      sx={{
+        height: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
+        width: "250px",
+        position: "fixed",
+        display: "flex",
+        flexDirection: "column",
+        top: { xs: "56px", sm: "64px" },
+        left: isNavbarOpen ? 0 : "-250px",
+        zIndex: 2
+      }}
+    >
+      <List sx={{
+      }}>
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar alt={getFullName(user)} src={user.profilePicture} />
+          </ListItemAvatar>
+          <ListItemText>{getFullName(user)}</ListItemText>
+        </ListItem>
+        <ListItem sx={{ mt: 1, mb: 1, alignSelf: "flex-end" }} disablePadding>
+          <ListItemButton onClick={handleLogout}>
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText>{t("logout")}</ListItemText>
+          </ListItemButton>
+        </ListItem>
+        <Divider />
+        {
+          navigations.map((n, index) => (
+            <ListItem key={index} onClick={() => handleNavigate(n.path)} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>{n.icon}</ListItemIcon>
+                <ListItemText>{n.label}</ListItemText>
+              </ListItemButton>
+            </ListItem>
+          ))
+        }
+      </List>
+    </Paper>
   );
 }

@@ -23,6 +23,7 @@ import HomePage from "./views/Home";
 import LoginPage from "./views/Login";
 import SettingsPage from "./views/Settings";
 import ProductsPage from "./views/Products";
+import SalesPage from "./views/Sales";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "/view-prices",
         element: <ProductsPage />,
+      },
+      {
+        path: "/sales",
+        element: <SalesPage />,
       },
     ]
   },
