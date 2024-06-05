@@ -29,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import TextInput from "../components/TextInput";
 import BasicTitleBar from "../components/BasicTitleBar";
+import { useBasket, useBasketDispatch } from "../hooks/useBasket"; 
 import NumpadAndInput from "../components/NumpadAndInput";
 import kitchenImage from "../assets/images/kitchen.jpg";
 import bookImage from "../assets/images/books.jpg";
@@ -139,10 +140,13 @@ function Footer() {
 }
 
 function ProductList () {
+  const basket = useBasket();
   const [selectedProduct, setSelectedProduct] = useState(0);
-  function handleProductItemClick(e, index) {
-    setSelectedProduct(index);
+  
+  function handleClick(e, id) {
+    setSelectedProduct(id);
   };
+
   return (
     <List
       subheader={
@@ -150,12 +154,19 @@ function ProductList () {
       }
     >
       {
-        [0, 1, 2].map(i => 
+        basket.length === 0 ?
+        <Typography 
+          component="div"
+          variant="body2"
+          sx={{ textAlign: "center", py: 5 }}
+        >Lütfen Sepete Ürün Ekleyin</Typography>
+        : basket.map(product => 
           <ProductItem
-            key={i}
-            index={i}
+            key={product.id}
+            index={product.id}
             selectedProduct={selectedProduct}
-            handleProductItemClick={handleProductItemClick}
+            product={product}
+            onClick={handleClick}
           />
         )
       }
@@ -163,11 +174,11 @@ function ProductList () {
   );
 }
 
-function ProductItem({ index, product, selectedProduct, handleProductItemClick }) {
+function ProductItem({ product, selectedProduct, onClick: handleClick }) {
   return (
     <ListItemButton
-      selected={selectedProduct === index}
-      onClick={e => handleProductItemClick(e, index)}
+      selected={selectedProduct === product.id}
+      onClick={e => handleClick(e, product.id)}
     >
       <ListItemText>
         <Box sx={{ display: "flex", flexWrap: 1, justifyContent: "space-between" }}>
@@ -175,7 +186,7 @@ function ProductItem({ index, product, selectedProduct, handleProductItemClick }
             component="span"
             variant="body2"
             sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
-          >Product</Typography>
+          >{ product.title }</Typography>
           <Typography 
             component="span"
             variant="body2"
@@ -187,12 +198,12 @@ function ProductItem({ index, product, selectedProduct, handleProductItemClick }
             component="span"
             variant="subtitle2"
             sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
-          >Kitchen</Typography>
+          >{product.category}</Typography>
           <Typography 
             component="span"
             variant="subtitle2"
             sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
-          >15$</Typography>
+          >{product.price} $</Typography>
         </Box>
       </ListItemText>
     </ListItemButton>
@@ -206,6 +217,7 @@ const TypographyStyle = {
 }
 
 export default function SalesPage() {
+  const basketDispatch = useBasketDispatch();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [isFetching, toggleIsFetching] = useToggle();
@@ -222,21 +234,30 @@ export default function SalesPage() {
   function handleViewPriceClick() {
     navigate("/view-prices");
   };
-  function fetchProducts() {
-    return axios.get(`/api/products?search=${search}`);
+  function fetchProducts(searchParameter) {
+    return axios.get(`/products?search=${searchParameter}&limit=10&page=1`);
   };
   function handleChange(e) {
-    if (e.target.value === "")
-      return setProducts([]);
+    const value = e.target.value;
+    if (value === "") return setProducts([]);
     fetchCount.current++;
     const queue = fetchCount.current;
-    const value = e.target.value;
     setSearch(value);
     toggleIsFetching(true);
-    fetchProducts()
+    fetchProducts(value)
       .then(res => {
         if (queue !== fetchCount.current) return;
-        setProducts(res.data.products);
+        const { products } = res.data;
+        console.log("1 whoo", products)
+        if (products.length === 1) {
+          console.log("whoo")
+          basketDispatch({
+            type: "added",
+            product: products[0]
+          })
+        } else {
+          setProducts(products);
+        }
         toggleIsFetching(false);
       })
       .catch(err => {

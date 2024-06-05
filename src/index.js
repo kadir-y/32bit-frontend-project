@@ -9,6 +9,7 @@ import { KeyboardProvider } from "./hooks/useKeyboard";
 import { ColorModeProvider } from "./hooks/useColorMode";
 import { AuthProvider } from "./hooks/useAuth";
 import { ProductsProvider } from "./hooks/useProducts";
+import { BasketProvider } from "./hooks/useBasket";
 import i18n from "./i18n"; // Configuration of i18next
 import reportWebVitals from "./reportWebVitals";
 
@@ -76,7 +77,9 @@ enableMocking().then(() => {
           <ColorModeProvider>
             <KeyboardProvider>
               <ProductsProvider>
-                <RouterProvider router={router} />
+                <BasketProvider>
+                  <RouterProvider router={router} />
+                </BasketProvider>
               </ProductsProvider>
             </KeyboardProvider>
           </ColorModeProvider>

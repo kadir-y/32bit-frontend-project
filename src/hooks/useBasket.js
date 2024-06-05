@@ -4,7 +4,7 @@ const BasketContext = createContext(null);
 const BasketDispatchContext = createContext(null);
 
 export function BasketProvider({ children }) {
-  const [basket, dispatch] = useReducer(productReducer, []);
+  const [basket, dispatch] = useReducer(basketReducer, []);
 
   return (
     <BasketContext.Provider value={basket}>
@@ -23,26 +23,33 @@ export function useBasket() {
   return useContext(BasketContext);
 }
 
-function productReducer(basket, action) {
+function basketReducer(basket, action) {
   switch (action.type) {
     case "added": {
-      return [...basket, {
-        id: action.id,
-        text: action.text,
-        done: false
-      }];
+      const indexOf = basket.findIndex(p => p.id === action.product.id);
+      console.log(indexOf)
+      if (indexOf === -1) {
+        return [...basket, { ...action.product, quantity: 1 }];
+      } else {
+        const newBasket = basket.slice();
+        newBasket[indexOf].quantity += 1;
+        return newBasket;
+      }
     }
     case "changed": {
-      return basket.map(t => {
-        if (t.id === basket.item.id) {
-          return basket.item;
+      return basket.map(p => {
+        if (p.id === action.product.id) {
+          return action.product;
         } else {
-          return t;
+          return p;
         }
       });
     }
     case "deleted": {
-      return basket.filter(t => t.id !== action.id);
+      return basket.filter(p => p.id !== action.product.id);
+    }
+    case "cleared": {
+      return [];
     }
     default: {
       throw Error("Unknown action: " + action.type);
