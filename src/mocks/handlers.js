@@ -29,6 +29,10 @@ export const handlers = [
       }
     })
   }),
+  http.get(baseUrl + "/product", ({ request }) => {
+    const path = url.parse(request.url).path;
+    console.log(path)
+  }),
   http.get(baseUrl + "/products", async ({ request }) => {
     const query = url.parse(request.url).query;
     let { page, limit, search, sort, startWith } = queryString.parse(query);
