@@ -2,7 +2,6 @@ import {
   Grid,
   Paper,
   Box,
-  IconButton,
   Button,
   Typography,
   Tab,
@@ -15,17 +14,16 @@ import {
   TabList,
   TabPanel
 } from '@mui/lab';
+import {
+  ManageSearchOutlined as ManageSearchOutlinedIcon
+} from '@mui/icons-material';
 import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { useFormInput } from "../hooks/useFormInput";
 import { useToggle } from "../hooks/useToggle";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import TextInput from "../components/TextInput";
-import {
-  Pageview as PageviewIcon,
-  ArrowBackIosNew as ArrowBackIosNewIcon
-} from "@mui/icons-material";
-
+import BasicTitleBar from "../components/BasicTitleBar";
 import kitchenImage from "../assets/images/kitchen.jpg"; 
 import bookImage from "../assets/images/books.jpg"; 
 import beutyImage from "../assets/images/beuty.jpg"; 
@@ -113,9 +111,6 @@ export default function SalesPage() {
   function handleViewPriceClick() {
     navigate("/view-prices");
   };
-  function handleBackwardClick() {
-    navigate(-1);
-  };
   function fetchProducts() {
     return axios.get(`/api/products?search=${search}`);
   };
@@ -140,64 +135,59 @@ export default function SalesPage() {
   };
   
   return(
-    <Grid container sx={{ 
-      pt: 3, pb: 5,
-    }}>
-      <Paper sx={{ 
-        width: "100%",
-        mx: 2,
-        mb: 2,
-        p: 1,
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center"
+    <>
+    <Box item  sx={{ width: "100%", px: 2, pt: 1 }}>
+        <BasicTitleBar 
+          title="Satış Belgesi"
+          endSlot={
+            <Button
+              sx={{ textTransform: "none" }}
+              variant="text"
+              onClick={handleViewPriceClick}>
+              Fiyatları Gör
+              <ManageSearchOutlinedIcon sx={{ ml: 1 }} />
+            </Button>
+          }
+        />
+      </Box>
+      <Grid container sx={{ 
+        pt: 2, pb: 5,
       }}>
-        <IconButton onClick={handleBackwardClick}>
-          <ArrowBackIosNewIcon />
-        </IconButton>
-        <Typography component="span" variant="subtitle1">Satış Belgesi</Typography>
-        <Button
-          sx={{ textTransform: "none" }}
-          variant="contained"
-          startIcon={<PageviewIcon />}
-          onClick={handleViewPriceClick}>
-          Fiyatları Gör
-        </Button>
-      </Paper>
-      <Grid item xs={12} md={4} sx={{ pb: 2, px: 2 }}>
-        <Paper
-          sx={{
-            width: "100%",
-            px: 1,
-            py: 2
-          }}
-        >
-          <Box>
-            <TextInput id="search-input" {...inputProps} />
-          </Box>
-          <Box sx={{ mt: 1 }}>
-            <ProductContent />
-          </Box>
-        </Paper>
+        <Grid item xs={12} md={4} sx={{ pb: 2, px: 2 }}>
+          <Paper
+            sx={{
+              width: "100%",
+              px: 1,
+              py: 2
+            }}
+          >
+            <Box>
+              <TextInput id="search-input" {...inputProps} />
+            </Box>
+            <Box sx={{ mt: 1 }}>
+              <ProductContent />
+            </Box>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={4} sx={{ pb: 2, px: 0.5 }}>
+          <Paper
+            sx={{
+              width: "100%",
+              py: 2
+            }}
+          >
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={4} sx={{ pb: 2, px: 2 }}>
+          <Paper
+            sx={{
+              width: "100%",
+              py: 2
+            }}
+          >
+          </Paper>
+        </Grid>
       </Grid>
-      <Grid item xs={12} md={4} sx={{ pb: 2, px: 0.5 }}>
-        <Paper
-          sx={{
-            width: "100%",
-            py: 2
-          }}
-        >
-        </Paper>
-      </Grid>
-      <Grid item xs={12} md={4} sx={{ pb: 2, px: 2 }}>
-        <Paper
-          sx={{
-            width: "100%",
-            py: 2
-          }}
-        >
-        </Paper>
-      </Grid>
-    </Grid>
+    </>
   );
 }

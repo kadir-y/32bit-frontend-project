@@ -22,6 +22,7 @@ import axios from "axios";
 
 import TextInput from "../components/TextInput";
 import AlphabeticSearchBar from "../components/AlphabeticSearchBar";
+import BasicTitleBar from "../components/BasicTitleBar";
 
 function Products () {
   const { t } = useTranslation("products");
@@ -131,6 +132,9 @@ function Products () {
 
   return (
     <>
+      <Box sx={{ width: "90%", mx: "auto", mt: 2 }}>
+        <BasicTitleBar />
+      </Box>
       <Paper sx={{
         width: "90%",
         mx: "auto",

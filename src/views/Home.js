@@ -15,9 +15,12 @@ import {
 import {
   FiberManualRecord as FiberManualRecordIcon
 } from "@mui/icons-material";
-import { useTranslation } from "react-i18next";
-import axios from "../axios";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useToggle } from "../hooks/useToggle"
+import { useWindowSize } from "../hooks/useWindowSize";
+import axios from "../axios";
+import WidedNavbar from "../components/layout/WidedNavbar";
 
 const totalSales = [
   {
@@ -92,6 +95,8 @@ const receipts = [
 ]
 
 function Home () {
+  const windowSize = useWindowSize();
+  const [isNavbarOpen, toggleNavbar] = useToggle(windowSize.width > 900);
   const [storeInfo, setStoreInfo] = useState({
     number: "",
     cashRegisterIp: "",
@@ -122,97 +127,109 @@ function Home () {
   }, [])
   const { t } = useTranslation("home");
   return (
-    <Grid container sx={{ display: "flex", justifyContent: "center", pb: 8 }}>
-      <Grid item xs={11} md={5} sx={{ pt: 3, pb: 2, px: 2 }}>
-        <Paper sx={{
-          py: 2,
-          px: 7,
-          mb: 1
-        }}
-        elevation={4}
+    <>
+      <WidedNavbar isNavbarOpen={isNavbarOpen} toggleNavbar={toggleNavbar}/>
+      <Grid container sx={{ display: "flex", justifyContent: isNavbarOpen ? "end" : "center" }}>
+        <Box
+          sx={{
+            width: { xs: "100%", md: isNavbarOpen ? "calc(100% - 250px)" : "100%" },
+            marginTop: { xs: "56px", sm: "64px" },
+          }}
         >
-          <Box component="div"
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              mb: 1,
-            }}
+      <Grid container sx={{ display: "flex", justifyContent: "center", pb: 8 }}>
+        <Grid item xs={11} md={5} sx={{ pt: 3, pb: 2, px: 2 }}>
+          <Paper sx={{
+            py: 2,
+            px: 7,
+            mb: 1
+          }}
+          elevation={4}
           >
-            <Typography variant="body2" sx={{ 
-              mr: 0.5,
-            }}>{t("info.storeOnlineMessage")}</Typography>
-            <FiberManualRecordIcon color="success" /> 
-          </Box>
-          <Typography component="div" variant="subtitle2" sx={{ fontWeight: "500" }} >{`${t("info.storeNumber")}: ${storeInfo.number}` }</Typography>
-          <Typography component="div" variant="subtitle2">{`${t("info.cashRegisterNumber")}: ${storeInfo.cashRegisterNumber}`}</Typography>
-          <Typography component="div" variant="subtitle2">{`${t("info.cashRegisterIp")}: ${storeInfo.cashRegisterIp}`}</Typography>
-          <Typography component="div" variant="subtitle2">{`${t("info.version")}: ${appVersion}`}</Typography>
-        </Paper>
-        <Paper elevation={2}>
-          <List>
-            <ListSubheader>{t("totalSales")}</ListSubheader>
-            {
-              totalSales.map(product =>
-                <ListItem key={product.title}>
-                  <ListItemAvatar>
-                    <Avatar
-                      alt={product.title}
-                      src={product.thumbnail} 
-                      variant="rounded"
-                      sx={{
-                        backgroundColor: "white"
-                      }} 
+            <Box component="div"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                mb: 1,
+              }}
+            >
+              <Typography variant="body2" sx={{ 
+                mr: 0.5,
+              }}>{t("info.storeOnlineMessage")}</Typography>
+              <FiberManualRecordIcon color="success" /> 
+            </Box>
+            <Typography component="div" variant="subtitle2" sx={{ fontWeight: "500" }} >{`${t("info.storeNumber")}: ${storeInfo.number}` }</Typography>
+            <Typography component="div" variant="subtitle2">{`${t("info.cashRegisterNumber")}: ${storeInfo.cashRegisterNumber}`}</Typography>
+            <Typography component="div" variant="subtitle2">{`${t("info.cashRegisterIp")}: ${storeInfo.cashRegisterIp}`}</Typography>
+            <Typography component="div" variant="subtitle2">{`${t("info.version")}: ${appVersion}`}</Typography>
+          </Paper>
+          <Paper elevation={2}>
+            <List>
+              <ListSubheader>{t("totalSales")}</ListSubheader>
+              {
+                totalSales.map(product =>
+                  <ListItem key={product.title}>
+                    <ListItemAvatar>
+                      <Avatar
+                        alt={product.title}
+                        src={product.thumbnail} 
+                        variant="rounded"
+                        sx={{
+                          backgroundColor: "white"
+                        }} 
+                      />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={product.title}
+                      secondary={`${product.totalSales} sold`}
                     />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={product.title}
-                    secondary={`${product.totalSales} sold`}
-                  />
-                </ListItem>
-              )
-            }
-            <ListItem>
-              <ListItemText></ListItemText>
-              <Button>{t("showMore")}</Button>
-            </ListItem>
-          </List>
-        </Paper>
-      </Grid>
-      <Grid item xs={11} md={5} sx={{ pt: 3, pb: 2, px: 2 }}>
-        <Paper elevation={2}>
-          <List>
-            <ListSubheader>{t("lastReceipts")}</ListSubheader>
-            {
-              receipts.map(receipt =>
-                <Box key={receipt.receipNumber}>
-                  <Divider />
-                  <ListItem>
-                    <ListItemText>
-                      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                        <Typography component="span">
-                          {receipt.receipNumber}
-                        </Typography>
-                        <Typography>
-                          {receipt.createdAt}
-                        </Typography>
-                      </Box>
-                      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                        <Typography component="span">
-                          {`${receipt.total}$`}
-                        </Typography>
-                          <Button color="primary">
-                            {t("show")}
-                          </Button>
-                      </Box>
-                    </ListItemText>
                   </ListItem>
-                </Box>
-              )
-            }
-          </List>
-        </Paper>
+                )
+              }
+              <ListItem>
+                <ListItemText></ListItemText>
+                <Button>{t("showMore")}</Button>
+              </ListItem>
+            </List>
+          </Paper>
+        </Grid>
+        <Grid item xs={11} md={5} sx={{ pt: 3, pb: 2, px: 2 }}>
+          <Paper elevation={2}>
+            <List>
+              <ListSubheader>{t("lastReceipts")}</ListSubheader>
+              {
+                receipts.map(receipt =>
+                  <Box key={receipt.receipNumber}>
+                    <Divider />
+                    <ListItem>
+                      <ListItemText>
+                        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                          <Typography component="span">
+                            {receipt.receipNumber}
+                          </Typography>
+                          <Typography>
+                            {receipt.createdAt}
+                          </Typography>
+                        </Box>
+                        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                          <Typography component="span">
+                            {`${receipt.total}$`}
+                          </Typography>
+                            <Button color="primary">
+                              {t("show")}
+                            </Button>
+                        </Box>
+                      </ListItemText>
+                    </ListItem>
+                  </Box>
+                )
+              }
+            </List>
+          </Paper>
+        </Grid>
       </Grid>
-    </Grid>
+      </Box>
+      </Grid>
+    </>
   );
 }
 
