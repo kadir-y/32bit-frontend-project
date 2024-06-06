@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Box,
   Grid,
@@ -10,6 +10,7 @@ import {
   Remove as RemoveIcon
 } from '@mui/icons-material';
 import { styled } from "@mui/material/styles";
+import getMeasureDigit from "../libs/getMeasureDigit";
 
 const unitSymbols = {
   price: "$",
@@ -37,84 +38,38 @@ const normalizeButton = {
 }
 
 export default function NumpadAndInput(props) {
-  const [value, setValue] = useState("");
-  const refValue = useRef("");
   const onChange = props.onChange ? props.onChange : () => { };
-  const { unit } = props;
+  const { unit, measure } = props;
+  const [value, setValue] = useState();
+  const digit = useRef(0);
+  
+  useEffect(() => {
+    digit.current = getMeasureDigit(unit);
+    setValue(parseFloat(0).toFixed(digit.current));
+  }, [unit]);
 
   useEffect(() => {
-    setValue(() => {
-      const symbol = unitSymbols[unit];
-      if (unit === "price") return `.00 ${symbol}`;
-      else if (unit === "mass") return `.000 ${symbol}`;
-      if (unit === "piece") return `0 ${symbol}`;
-    });
-  }, [unit])
-
+    setValue(measure);
+  }, [measure]);
+  
   function handleChange(keyValue) {
-    let val = refValue.current;
-    if (!Boolean(val) &&
-       (keyValue === "decrease" || keyValue === "backspace")
-    ) return;
+    if (!Boolean(unit) || !Boolean(measure)) return;
+    let val = parseInt(parseFloat(value) * Math.pow(10, digit.current));
+    if (keyValue === "decrease" && val === 0) return;
     if (keyValue === "backspace") {
-      if (unit === "mass" || unit === "price") {
-        val = val.slice(0, -1);
-      } else if (unit === "piece") {
-        val = val.length === 1 ? "0" : val.slice(0, -1);
-      }
-      value.slice(0, -1);
+      val = Math.floor(val / 10);
     } else if (keyValue === "increase") {
-      Boolean(val) || (val = "0");
-      if (unit === "piece") {
-        val = (parseInt(val) + 1).toString();
-      } else if (unit === "mass") {
-        val = (parseInt(val) + 1000).toString();
-      } else if (unit === "price") {
-        val = (parseInt(val) + 100).toString();
-      }
+      val += Math.pow(10, digit.current);
     } else if (keyValue === "decrease") {
-      if (unit === "piece") {
-        val = (parseInt(val) - 1).toString();
-      } else if (unit === "mass") {
-        val = (parseInt(val) - 1000).toString();
-      } else if (unit === "price") {
-        val = (parseInt(val) - 100).toString();
-      }
-    } else if (!(keyValue[0] === "0" && val === "")) {
-      val += keyValue;
+      val -= Math.pow(10, digit.current);
+    } else if (keyValue === "doublezero") {
+      val = val * 100;
+    } else {
+      val = val * 10 + keyValue ;
     }
-    val = val < 0 ? "0" : val;
-    refValue.current = val;
-    if (unit === "mass") {
-      switch (val.length) {
-        case 0:
-          val = ".000";
-          break;
-        case 1:
-          val = ".00" + val;
-          break;
-        case 2:
-          val = ".0" + val;
-          break;
-        default:
-          val = val.slice(0, -3) + "." + val.slice(-3);
-      }
-    }
-    if (unit === "price") {
-      switch (val.length) {
-        case 0:
-          val = ".00"
-          break;
-        case 1:
-          val = ".0" + val
-          break;
-        default:
-          val = val.slice(0, -2) + "." + val.slice(-2);
-      }
-    }
-    val = `${val} ${unitSymbols[unit]}`;
-    onChange(val);
+    val = (val / Math.pow(10, digit.current)).toFixed(digit.current);
     setValue(val);
+    onChange(val);
   };
 
   return (
@@ -127,27 +82,28 @@ export default function NumpadAndInput(props) {
         lineHeight: "3rem",
         fontSize: "1.25rem",
         my: 1,
-        px: 1.5
-      }}>{value}</Box>
+        px: 1.5,
+        textAlign: "right"
+      }}>{(Boolean(unit) && Boolean(measure)) && `${value} ${unitSymbols[unit]}`}</Box>
       <Grid container>
         <Grid item xs={7} sx={{ pr: 1 }}>
           <Box sx={{ display: "flex", mb: 0.5 }}>
-            <NumpadButton variant="contained" onClick={() => handleChange("7")}>7</NumpadButton>
-            <NumpadButton variant="contained" onClick={() => handleChange("8")}>8</NumpadButton>
-            <NumpadButton variant="contained" onClick={() => handleChange("9")}>9</NumpadButton>
+            <NumpadButton variant="contained" onClick={() => handleChange(7)}>7</NumpadButton>
+            <NumpadButton variant="contained" onClick={() => handleChange(8)}>8</NumpadButton>
+            <NumpadButton variant="contained" onClick={() => handleChange(9)}>9</NumpadButton>
           </Box>
           <Box sx={{ display: "flex", mb: 0.5 }}>
-            <NumpadButton variant="contained" onClick={() => handleChange("4")}>4</NumpadButton>
-            <NumpadButton variant="contained" onClick={() => handleChange("5")}>5</NumpadButton>
-            <NumpadButton variant="contained" onClick={() => handleChange("6")}>6</NumpadButton>
+            <NumpadButton variant="contained" onClick={() => handleChange(4)}>4</NumpadButton>
+            <NumpadButton variant="contained" onClick={() => handleChange(5)}>5</NumpadButton>
+            <NumpadButton variant="contained" onClick={() => handleChange(6)}>6</NumpadButton>
           </Box>
           <Box sx={{ display: "flex", mb: 0.5 }}>
-            <NumpadButton variant="contained" onClick={() => handleChange("1")}>1</NumpadButton>
-            <NumpadButton variant="contained" onClick={() => handleChange("2")}>2</NumpadButton>
-            <NumpadButton variant="contained" onClick={() => handleChange("3")}>3</NumpadButton>
+            <NumpadButton variant="contained" onClick={() => handleChange(1)}>1</NumpadButton>
+            <NumpadButton variant="contained" onClick={() => handleChange(2)}>2</NumpadButton>
+            <NumpadButton variant="contained" onClick={() => handleChange(3)}>3</NumpadButton>
           </Box>
           <Box sx={{ display: "flex" }}>
-            <NumpadButton variant="contained" onClick={() => handleChange("0")}>0</NumpadButton>
+            <NumpadButton variant="contained" onClick={() => handleChange(0)}>0</NumpadButton>
           </Box>
         </Grid>
         <Grid item xs={5} sx={{ pl: 1, display: "flex", flexDirection: "column" }}>
@@ -169,7 +125,7 @@ export default function NumpadAndInput(props) {
               <RemoveIcon />
             </Button>
           </Box>
-          <Button fullWidth variant="contained" sx={{ mb: 1 }} onClick={() => handleChange("00")}>00</Button>
+          <Button fullWidth variant="contained" sx={{ mb: 1 }} onClick={() => handleChange("doublezero")}>00</Button>
           <Button fullWidth variant="contained" color="error" sx={{ mb: 1 }} onClick={() => handleChange("backspace")}>
             <BackspaceOutlinedIcon />
           </Button>

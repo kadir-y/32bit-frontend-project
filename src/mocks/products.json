@@ -14,6 +14,8 @@
       "barcode": "9164035109868",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "beauty"
   },
   {
@@ -31,6 +33,8 @@
       "barcode": "2817839095220",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "beauty"
   },
   {
@@ -48,6 +52,8 @@
       "barcode": "0516267971277",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "beauty"
   },
   {
@@ -65,6 +71,8 @@
       "barcode": "9444582199406",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "beauty"
   },
   {
@@ -82,6 +90,8 @@
       "barcode": "3212847902461",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "beauty"
   },
   {
@@ -101,6 +111,8 @@
       "barcode": "2210136215089",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "fragrances"
   },
   {
@@ -120,6 +132,8 @@
       "barcode": "1435582999795",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "fragrances"
   },
   {
@@ -139,6 +153,8 @@
       "barcode": "0887083199279",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "fragrances"
   },
   {
@@ -158,6 +174,8 @@
       "barcode": "1939383392674",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "fragrances"
   },
   {
@@ -177,6 +195,8 @@
       "barcode": "8232190382069",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "fragrances"
   },
   {
@@ -196,6 +216,8 @@
       "barcode": "7113807059215",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "furniture"
   },
   {
@@ -215,6 +237,8 @@
       "barcode": "0426785817074",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "furniture"
   },
   {
@@ -234,6 +258,8 @@
       "barcode": "2913244159666",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "furniture"
   },
   {
@@ -253,6 +279,8 @@
       "barcode": "0726316339746",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "furniture"
   },
   {
@@ -272,6 +300,8 @@
       "barcode": "7839797529453",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "furniture"
   },
   {
@@ -289,6 +319,8 @@
       "barcode": "2517819903837",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -306,6 +338,8 @@
       "barcode": "8335515097879",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -323,6 +357,8 @@
       "barcode": "5503491330693",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -341,6 +377,8 @@
       "barcode": "0966223559510",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -358,6 +396,8 @@
       "barcode": "6707669443381",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -375,6 +415,8 @@
       "barcode": "2597004869708",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -392,6 +434,8 @@
       "barcode": "7957222289508",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -409,6 +453,8 @@
       "barcode": "7095702028776",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -426,6 +472,8 @@
       "barcode": "4250692197342",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -443,6 +491,8 @@
       "barcode": "7583442707568",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -460,6 +510,8 @@
       "barcode": "8400326844874",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -477,6 +529,8 @@
       "barcode": "0668665656044",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -497,6 +551,8 @@
       "barcode": "9603960319256",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -514,6 +570,8 @@
       "barcode": "8546824122355",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -531,6 +589,8 @@
       "barcode": "3325493172934",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -548,6 +608,8 @@
       "barcode": "6364178053480",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -565,6 +627,8 @@
       "barcode": "6340035595037",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -582,6 +646,8 @@
       "barcode": "3327790147313",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -599,6 +665,8 @@
       "barcode": "8923332839320",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -616,6 +684,8 @@
       "barcode": "1374727655057",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -633,6 +703,8 @@
       "barcode": "2858973742684",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -650,6 +722,8 @@
       "barcode": "5439836346472",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -667,6 +741,8 @@
       "barcode": "0027455825200",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -684,6 +760,8 @@
       "barcode": "3523564932164",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -701,6 +779,8 @@
       "barcode": "7936749779940",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -719,6 +799,8 @@
       "barcode": "0639828085202",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -736,6 +818,8 @@
       "barcode": "7625896901250",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 8,
+    "unit": "mass",
     "category": "groceries"
   },
   {
@@ -755,6 +839,8 @@
       "barcode": "6434699988216",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "home-decoration"
   },
   {
@@ -772,6 +858,8 @@
       "barcode": "9462569143093",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "home-decoration"
   },
   {
@@ -791,6 +879,8 @@
       "barcode": "1895440764997",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "home-decoration"
   },
   {
@@ -811,6 +901,8 @@
       "barcode": "4265754153251",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "home-decoration"
   },
   {
@@ -828,6 +920,8 @@
       "barcode": "7764806947768",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "home-decoration"
   },
   {
@@ -845,6 +939,8 @@
       "barcode": "4736572105219",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -863,6 +959,8 @@
       "barcode": "9830484636197",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -880,6 +978,8 @@
       "barcode": "6349276911476",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -900,6 +1000,8 @@
       "barcode": "3795471854572",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -917,6 +1019,8 @@
       "barcode": "9814335139552",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -934,6 +1038,8 @@
       "barcode": "1812405979802",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -951,6 +1057,8 @@
       "barcode": "2499527422857",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -968,6 +1076,8 @@
       "barcode": "1537527680664",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -988,6 +1098,8 @@
       "barcode": "9184442726039",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1005,6 +1117,8 @@
       "barcode": "0913686095458",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1022,6 +1136,8 @@
       "barcode": "8403472856763",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1039,6 +1155,8 @@
       "barcode": "1717131152077",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1056,6 +1174,8 @@
       "barcode": "3884864069212",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1073,6 +1193,8 @@
       "barcode": "0910668863747",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1090,6 +1212,8 @@
       "barcode": "7685066283284",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1107,6 +1231,8 @@
       "barcode": "4674610806136",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1124,6 +1250,8 @@
       "barcode": "8987152038596",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1141,6 +1269,8 @@
       "barcode": "6294012902550",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1161,6 +1291,8 @@
       "barcode": "4567190151518",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1179,6 +1311,8 @@
       "barcode": "2099756104307",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1196,6 +1330,8 @@
       "barcode": "8562045288370",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1213,6 +1349,8 @@
       "barcode": "5500686082076",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1230,6 +1368,8 @@
       "barcode": "5757998756907",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1247,6 +1387,8 @@
       "barcode": "6630860592730",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1264,6 +1406,8 @@
       "barcode": "4553081799999",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1281,6 +1425,8 @@
       "barcode": "9714959799802",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1298,6 +1444,8 @@
       "barcode": "9577845433830",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1315,6 +1463,8 @@
       "barcode": "8480335361590",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1332,6 +1482,8 @@
       "barcode": "8349683798423",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1349,6 +1501,8 @@
       "barcode": "1621510537954",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "kitchen-accessories"
   },
   {
@@ -1368,7 +1522,10 @@
       "barcode": "3883623063065",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "laptops"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "laptops",
+    "otv": "18"
   },
   {
     "id": 79,
@@ -1387,7 +1544,10 @@
       "barcode": "2899455033799",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "laptops"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "laptops",
+    "otv": "18"
   },
   {
     "id": 80,
@@ -1406,7 +1566,10 @@
       "barcode": "1232723732298",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "laptops"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "laptops",
+    "otv": "18"
   },
   {
     "id": 81,
@@ -1425,7 +1588,10 @@
       "barcode": "9590995785298",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "laptops"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "laptops",
+    "otv": "18"
   },
   {
     "id": 82,
@@ -1444,7 +1610,10 @@
       "barcode": "0358629687929",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "laptops"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "laptops",
+    "otv": "18"
   },
   {
     "id": 83,
@@ -1464,6 +1633,8 @@
       "barcode": "8840720880947",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mens-shirts"
   },
   {
@@ -1484,6 +1655,8 @@
       "barcode": "3072645939073",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mens-shirts"
   },
   {
@@ -1504,6 +1677,8 @@
       "barcode": "9383795178668",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mens-shirts"
   },
   {
@@ -1524,6 +1699,8 @@
       "barcode": "8162805546713",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mens-shirts"
   },
   {
@@ -1544,6 +1721,8 @@
       "barcode": "1360512025227",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mens-shirts"
   },
   {
@@ -1564,6 +1743,8 @@
       "barcode": "0098559139691",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mens-shoes"
   },
   {
@@ -1584,6 +1765,8 @@
       "barcode": "0517654748946",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mens-shoes"
   },
   {
@@ -1604,6 +1787,8 @@
       "barcode": "3562849555769",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mens-shoes"
   },
   {
@@ -1624,6 +1809,8 @@
       "barcode": "3784445385582",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mens-shoes"
   },
   {
@@ -1644,6 +1831,8 @@
       "barcode": "0839375107303",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mens-shoes"
   },
   {
@@ -1663,6 +1852,8 @@
       "barcode": "9559180055872",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mens-watches"
   },
   {
@@ -1682,6 +1873,8 @@
       "barcode": "1865008250672",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mens-watches"
   },
   {
@@ -1701,6 +1894,8 @@
       "barcode": "8917585155737",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mens-watches"
   },
   {
@@ -1720,6 +1915,8 @@
       "barcode": "0330714338454",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mens-watches"
   },
   {
@@ -1739,6 +1936,8 @@
       "barcode": "4957618378388",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mens-watches"
   },
   {
@@ -1758,6 +1957,8 @@
       "barcode": "6567997358364",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mens-watches"
   },
   {
@@ -1776,6 +1977,8 @@
       "barcode": "0697313083842",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mobile-accessories"
   },
   {
@@ -1795,6 +1998,8 @@
       "barcode": "3925144121840",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mobile-accessories"
   },
   {
@@ -1812,6 +2017,8 @@
       "barcode": "9261269777547",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mobile-accessories"
   },
   {
@@ -1829,6 +2036,8 @@
       "barcode": "6981066059882",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mobile-accessories"
   },
   {
@@ -1846,6 +2055,8 @@
       "barcode": "3484370545271",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mobile-accessories"
   },
   {
@@ -1864,6 +2075,8 @@
       "barcode": "9483427398580",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mobile-accessories"
   },
   {
@@ -1882,6 +2095,8 @@
       "barcode": "1850091228580",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mobile-accessories"
   },
   {
@@ -1901,6 +2116,8 @@
       "barcode": "4492482209885",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mobile-accessories"
   },
   {
@@ -1918,6 +2135,8 @@
       "barcode": "4068884711976",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mobile-accessories"
   },
   {
@@ -1938,6 +2157,8 @@
       "barcode": "4106912332105",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mobile-accessories"
   },
   {
@@ -1956,6 +2177,8 @@
       "barcode": "2270380444574",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mobile-accessories"
   },
   {
@@ -1973,6 +2196,8 @@
       "barcode": "6205123036707",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mobile-accessories"
   },
   {
@@ -1990,6 +2215,8 @@
       "barcode": "2854098561118",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mobile-accessories"
   },
   {
@@ -2007,6 +2234,8 @@
       "barcode": "4797157680929",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "mobile-accessories"
   },
   {
@@ -2027,7 +2256,10 @@
       "barcode": "3727788887261",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "motorcycle"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "motorcycle",
+    "mtv": "18"
   },
   {
     "id": 114,
@@ -2047,7 +2279,10 @@
       "barcode": "0537669788973",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "motorcycle"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "motorcycle",
+    "mtv": "18"
   },
   {
     "id": 115,
@@ -2067,7 +2302,10 @@
       "barcode": "0702250890221",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "motorcycle"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "motorcycle",
+    "mtv": "18"
   },
   {
     "id": 116,
@@ -2087,7 +2325,10 @@
       "barcode": "5433184150501",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "motorcycle"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "motorcycle",
+    "mtv": "18"
   },
   {
     "id": 117,
@@ -2107,7 +2348,10 @@
       "barcode": "0047068612003",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "motorcycle"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "motorcycle",
+    "mtv": "18"
   },
   {
     "id": 118,
@@ -2126,6 +2370,8 @@
       "barcode": "4295199431696",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "skin-care"
   },
   {
@@ -2145,6 +2391,8 @@
       "barcode": "7184195298854",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "skin-care"
   },
   {
@@ -2164,6 +2412,8 @@
       "barcode": "7128996084231",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "skin-care"
   },
   {
@@ -2183,7 +2433,10 @@
       "barcode": "2903942810911",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "smartphones"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "smartphones",
+    "otv": "30"
   },
   {
     "id": 122,
@@ -2202,7 +2455,10 @@
       "barcode": "2517230562429",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "smartphones"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "smartphones",
+    "otv": "30"
   },
   {
     "id": 123,
@@ -2221,7 +2477,10 @@
       "barcode": "2986724589988",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "smartphones"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "smartphones",
+    "otv": "30"
   },
   {
     "id": 124,
@@ -2240,7 +2499,10 @@
       "barcode": "4331405454760",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "smartphones"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "smartphones",
+    "otv": "30"
   },
   {
     "id": 125,
@@ -2259,7 +2521,10 @@
       "barcode": "1743445108634",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "smartphones"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "smartphones",
+    "otv": "30"
   },
   {
     "id": 126,
@@ -2278,7 +2543,10 @@
       "barcode": "7451360954140",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "smartphones"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "smartphones",
+    "otv": "30"
   },
   {
     "id": 127,
@@ -2298,7 +2566,10 @@
       "barcode": "7535531820285",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "smartphones"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "smartphones",
+    "otv": "30"
   },
   {
     "id": 128,
@@ -2317,7 +2588,10 @@
       "barcode": "3119744926904",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "smartphones"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "smartphones",
+    "otv": "30"
   },
   {
     "id": 129,
@@ -2336,7 +2610,10 @@
       "barcode": "0139612574728",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "smartphones"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "smartphones",
+    "otv": "30"
   },
   {
     "id": 130,
@@ -2355,7 +2632,10 @@
       "barcode": "3985844484131",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "smartphones"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "smartphones",
+    "otv": "30"
   },
   {
     "id": 131,
@@ -2374,7 +2654,10 @@
       "barcode": "8841359359362",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "smartphones"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "smartphones",
+    "otv": "30"
   },
   {
     "id": 132,
@@ -2393,7 +2676,10 @@
       "barcode": "1337599403784",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "smartphones"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "smartphones",
+    "otv": "30"
   },
   {
     "id": 133,
@@ -2412,7 +2698,10 @@
       "barcode": "0311929399881",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "smartphones"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "smartphones",
+    "otv": "30"
   },
   {
     "id": 134,
@@ -2431,7 +2720,10 @@
       "barcode": "4070349673041",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "smartphones"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "smartphones",
+    "otv": "30"
   },
   {
     "id": 135,
@@ -2450,7 +2742,10 @@
       "barcode": "1506104702332",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "smartphones"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "smartphones",
+    "otv": "30"
   },
   {
     "id": 136,
@@ -2469,7 +2764,10 @@
       "barcode": "2543504494043",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "smartphones"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "smartphones",
+    "otv": "30"
   },
   {
     "id": 137,
@@ -2486,6 +2784,8 @@
       "barcode": "2510402973927",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sports-accessories"
   },
   {
@@ -2503,6 +2803,8 @@
       "barcode": "2160728153953",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sports-accessories"
   },
   {
@@ -2522,6 +2824,8 @@
       "barcode": "6055304153121",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sports-accessories"
   },
   {
@@ -2539,6 +2843,8 @@
       "barcode": "0365979467747",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sports-accessories"
   },
   {
@@ -2556,6 +2862,8 @@
       "barcode": "6350072055940",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sports-accessories"
   },
   {
@@ -2573,6 +2881,8 @@
       "barcode": "1172140250231",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sports-accessories"
   },
   {
@@ -2590,6 +2900,8 @@
       "barcode": "0230768893692",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sports-accessories"
   },
   {
@@ -2610,6 +2922,8 @@
       "barcode": "4273297592026",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sports-accessories"
   },
   {
@@ -2627,6 +2941,8 @@
       "barcode": "4967828756034",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sports-accessories"
   },
   {
@@ -2644,6 +2960,8 @@
       "barcode": "7282562018266",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sports-accessories"
   },
   {
@@ -2661,6 +2979,8 @@
       "barcode": "6355211584281",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sports-accessories"
   },
   {
@@ -2678,6 +2998,8 @@
       "barcode": "5080386819883",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sports-accessories"
   },
   {
@@ -2695,6 +3017,8 @@
       "barcode": "1443785609686",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sports-accessories"
   },
   {
@@ -2712,6 +3036,8 @@
       "barcode": "3794773705386",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sports-accessories"
   },
   {
@@ -2729,6 +3055,8 @@
       "barcode": "0283869936919",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sports-accessories"
   },
   {
@@ -2746,6 +3074,8 @@
       "barcode": "7876356604989",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sports-accessories"
   },
   {
@@ -2763,6 +3093,8 @@
       "barcode": "4505233760788",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sports-accessories"
   },
   {
@@ -2782,6 +3114,8 @@
       "barcode": "5882136939141",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sunglasses"
   },
   {
@@ -2801,6 +3135,8 @@
       "barcode": "8441015763783",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sunglasses"
   },
   {
@@ -2820,6 +3156,8 @@
       "barcode": "3645259229399",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sunglasses"
   },
   {
@@ -2839,6 +3177,8 @@
       "barcode": "0425848276443",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sunglasses"
   },
   {
@@ -2858,6 +3198,8 @@
       "barcode": "9189532411470",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "sunglasses"
   },
   {
@@ -2878,7 +3220,10 @@
       "barcode": "6190943900668",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "tablets"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "tablets",
+    "otv": "28"
   },
   {
     "id": 160,
@@ -2898,7 +3243,10 @@
       "barcode": "7204800760083",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "tablets"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "tablets",
+    "otv": "28"
   },
   {
     "id": 161,
@@ -2918,7 +3266,10 @@
       "barcode": "1952499482706",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "tablets"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "tablets",
+    "otv": "28"
   },
   {
     "id": 162,
@@ -2938,6 +3289,8 @@
       "barcode": "3867112520929",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "tops"
   },
   {
@@ -2958,6 +3311,8 @@
       "barcode": "1171873054762",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "tops"
   },
   {
@@ -2978,6 +3333,8 @@
       "barcode": "4089123821366",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "tops"
   },
   {
@@ -2998,6 +3355,8 @@
       "barcode": "5470465127276",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "tops"
   },
   {
@@ -3018,6 +3377,8 @@
       "barcode": "6945099655063",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "tops"
   },
   {
@@ -3040,7 +3401,10 @@
       "barcode": "4354670429851",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "vehicle"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "vehicle",
+    "mtv": "48"
   },
   {
     "id": 168,
@@ -3062,7 +3426,10 @@
       "barcode": "3076808951073",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "vehicle"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "vehicle",
+    "mtv": "48"
   },
   {
     "id": 169,
@@ -3084,7 +3451,10 @@
       "barcode": "5552996682784",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "vehicle"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "vehicle",
+    "mtv": "48"
   },
   {
     "id": 170,
@@ -3106,7 +3476,10 @@
       "barcode": "0325066634371",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "vehicle"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "vehicle",
+    "mtv": "48"
   },
   {
     "id": 171,
@@ -3128,7 +3501,10 @@
       "barcode": "0423919231919",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
-    "category": "vehicle"
+    "kdv": 18,
+    "unit": "piece",
+    "category": "vehicle",
+    "mtv": "48"
   },
   {
     "id": 172,
@@ -3147,6 +3523,8 @@
       "barcode": "5830586302839",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-bags"
   },
   {
@@ -3166,6 +3544,8 @@
       "barcode": "4736917854821",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-bags"
   },
   {
@@ -3185,6 +3565,8 @@
       "barcode": "4590351278063",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-bags"
   },
   {
@@ -3204,6 +3586,8 @@
       "barcode": "2451119128549",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-bags"
   },
   {
@@ -3223,6 +3607,8 @@
       "barcode": "4391376510493",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-bags"
   },
   {
@@ -3243,6 +3629,8 @@
       "barcode": "3515162615847",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-dresses"
   },
   {
@@ -3263,6 +3651,8 @@
       "barcode": "5612433310069",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-dresses"
   },
   {
@@ -3283,6 +3673,8 @@
       "barcode": "1585516684321",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-dresses"
   },
   {
@@ -3303,6 +3695,8 @@
       "barcode": "8423169561887",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-dresses"
   },
   {
@@ -3323,6 +3717,8 @@
       "barcode": "4670281112327",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-dresses"
   },
   {
@@ -3342,6 +3738,8 @@
       "barcode": "1370841315431",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-jewellery"
   },
   {
@@ -3361,6 +3759,8 @@
       "barcode": "4865862581826",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-jewellery"
   },
   {
@@ -3380,6 +3780,8 @@
       "barcode": "3902265895387",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-jewellery"
   },
   {
@@ -3400,6 +3802,8 @@
       "barcode": "7641648910463",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-shoes"
   },
   {
@@ -3420,6 +3824,8 @@
       "barcode": "0909273919848",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-shoes"
   },
   {
@@ -3440,6 +3846,8 @@
       "barcode": "0008484295237",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-shoes"
   },
   {
@@ -3460,6 +3868,8 @@
       "barcode": "9067128136436",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-shoes"
   },
   {
@@ -3480,6 +3890,8 @@
       "barcode": "6076832823797",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-shoes"
   },
   {
@@ -3499,6 +3911,8 @@
       "barcode": "3417342002384",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-watches"
   },
   {
@@ -3518,6 +3932,8 @@
       "barcode": "3517608890772",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-watches"
   },
   {
@@ -3537,6 +3953,8 @@
       "barcode": "6032534220602",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-watches"
   },
   {
@@ -3556,6 +3974,8 @@
       "barcode": "0793324106392",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-watches"
   },
   {
@@ -3575,6 +3995,8 @@
       "barcode": "7588684177028",
       "qrCode": "https://dummyjson.com/public/qr-code.png"
     },
+    "kdv": 18,
+    "unit": "piece",
     "category": "womens-watches"
   }
 ]

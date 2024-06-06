@@ -26,15 +26,7 @@ export function useBasket() {
 function basketReducer(basket, action) {
   switch (action.type) {
     case "added": {
-      const indexOf = basket.findIndex(p => p.id === action.product.id);
-      console.log(indexOf)
-      if (indexOf === -1) {
-        return [...basket, { ...action.product, quantity: 1 }];
-      } else {
-        const newBasket = basket.slice();
-        newBasket[indexOf].quantity += 1;
-        return newBasket;
-      }
+      return [ ...basket, action.product ];
     }
     case "changed": {
       return basket.map(p => {

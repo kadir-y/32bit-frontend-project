@@ -35,7 +35,7 @@ export const handlers = [
   }),
   http.get(baseUrl + "/products", async ({ request }) => {
     const query = url.parse(request.url).query;
-    let { page, limit, search, sort, startWith } = queryString.parse(query);
+    let { page, limit, search, sort, startWith, category } = queryString.parse(query);
     let filteredData = products;
     if (Boolean(startWith)) {
       filteredData = filteredData.filter(p => {
@@ -46,6 +46,9 @@ export const handlers = [
         const tCharCode = title[0].toLocaleLowerCase().charCodeAt();
         return fCharCode === tCharCode || (sCharCode && (sCharCode >= tCharCode && fCharCode < tCharCode));
       });
+    }
+    if (Boolean(category)) {
+      filteredData = filteredData.filter(p => p.category === category.toLocaleLowerCase());
     }
     if (Boolean(search)) {
       filteredData = filteredData.filter(p => {

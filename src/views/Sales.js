@@ -5,14 +5,7 @@ import {
   Box,
   Button,
   Typography,
-  Tab,
-  Card,
-  CardContent,
-  CardMedia,
-  List,
-  ListSubheader,
-  ListItemText,
-  ListItemButton
+  Tab
 } from "@mui/material";
 import {
   TabContext,
@@ -20,20 +13,24 @@ import {
   TabPanel
 } from '@mui/lab';
 import {
-  ManageSearchOutlined as ManageSearchOutlinedIcon,
-  FiberManualRecord as FiberManualRecordIcon
+  ManageSearchOutlined as ManageSearchOutlinedIcon
 } from '@mui/icons-material';
+import { useBasket, useBasketDispatch } from "../hooks/useBasket"; 
 import { useFormInput } from "../hooks/useFormInput";
 import { useToggle } from "../hooks/useToggle";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import TextInput from "../components/TextInput";
+import ProductList from "../components/ProductList";
 import BasicTitleBar from "../components/BasicTitleBar";
-import { useBasket, useBasketDispatch } from "../hooks/useBasket"; 
 import NumpadAndInput from "../components/NumpadAndInput";
+import CategoryCard from "../components/CategoryCard";
+import Footer from "../components/layout/Footer";
 import kitchenImage from "../assets/images/kitchen.jpg";
 import bookImage from "../assets/images/books.jpg";
 import beutyImage from "../assets/images/beuty.jpg";
+import sumArray from "../libs/sumArray";
+import getMeasureDigit from "../libs/getMeasureDigit";
 
 const categories = [
   {
@@ -73,26 +70,12 @@ function SearchProductSection(props) {
           flexWrap: "wrap"
         }}>
         {
-          categories.map(category =>
-            <Card key={category.title} sx={{
-              width: "7rem",
-              cursor: "pointer",
-              "&:hover": { transform: "translateY(-1rem)" },
-              transition: "transform 0.3s",
-              mb: 2
-            }}>
-              <CardMedia>
-                <CardMedia
-                  component="img"
-                  alt={category.title}
-                  height="100"
-                  src={category.image}
-                ></CardMedia>
-                <CardContent>
-                  <Typography component="span" variant="body2">{category.title}</Typography>
-                </CardContent>
-              </CardMedia>
-            </Card>
+          categories.map(c => 
+            <CategoryCard 
+              key={c.title}
+              title={c.title}
+              image={c.image}
+            />
           )
         }
       </TabPanel>
@@ -101,134 +84,73 @@ function SearchProductSection(props) {
         {
           products ?
             products.map(p => <Box></Box>) :
-            <Typography sx={{ textAlign: "center" }} component="div" variant="body2">Gösterilcek ürün bulunamadı.</Typography>
+            <Typography 
+              sx={{ textAlign: "center" }}
+              component="div"
+              variant="body2"
+            >Gösterilcek ürün bulunamadı.</Typography>
         }
       </TabPanel>
     </TabContext>
   );
 }
 
-function Footer() {
-  return (
-    <Paper sx={{ px: 2, py: 1 }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography component="span" variant="body1">SATICI/MÜŞTERİ</Typography>
-        <Typography component="span" variant="body2">SATIŞ BELGESİ</Typography>
-        <Typography
-          component="span"
-          variant="subtitle2"
-          sx={{ display: "flex", alignItems: "center" }}
-        >
-          Ingenico
-          <FiberManualRecordIcon color="error" />
-        </Typography>
-      </Box>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography component="span" variant="body1">Merkeze Gönderilecek: 0</Typography>
-        <Typography component="span" variant="body2">1057/Haz. 5</Typography>
-        <Typography
-          component="span"
-          variant="subtitle2"
-          sx={{ display: "flex", alignItems: "center" }}
-        >
-          Mağaza Çevrimiçi
-          <FiberManualRecordIcon color="success" />
-        </Typography>
-      </Box>
-    </Paper>
-  );
-}
-
-function ProductList () {
+function PriceSummary () {
   const basket = useBasket();
-  const [selectedProduct, setSelectedProduct] = useState(0);
-  
-  function handleClick(e, id) {
-    setSelectedProduct(id);
-  };
-
   return (
-    <List
-      subheader={
-        <ListSubheader>Products</ListSubheader>
-      }
-    >
-      {
-        basket.length === 0 ?
-        <Typography 
-          component="div"
-          variant="body2"
-          sx={{ textAlign: "center", py: 5 }}
-        >Lütfen Sepete Ürün Ekleyin</Typography>
-        : basket.map(product => 
-          <ProductItem
-            key={product.id}
-            index={product.id}
-            selectedProduct={selectedProduct}
-            product={product}
-            onClick={handleClick}
-          />
-        )
-      }
-    </List>
-  );
-}
-
-function ProductItem({ product, selectedProduct, onClick: handleClick }) {
-  return (
-    <ListItemButton
-      selected={selectedProduct === product.id}
-      onClick={e => handleClick(e, product.id)}
-    >
-      <ListItemText>
-        <Box sx={{ display: "flex", flexWrap: 1, justifyContent: "space-between" }}>
-          <Typography 
-            component="span"
-            variant="body2"
-            sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
-          >{ product.title }</Typography>
-          <Typography 
-            component="span"
-            variant="body2"
-            sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
-          >%18 KDV</Typography>
+    <>
+      <Box sx={{
+        width: "100%",
+        px: 2,
+        py: 1,
+        bgcolor: "info.main",
+        color: "white"
+      }}>
+        <Box sx={{ display: "flex" }}>
+          <Typography component="span" variant="body1" sx={{ flexGrow: 1 }}>
+            Ara Toplam 
+          </Typography>
+          <Typography component="span" variant="body1">
+            {sumArray(basket, "price*measure").toFixed(2)} $
+          </Typography>
         </Box>
-        <Box sx={{ display: "flex", flexWrap: 1, justifyContent: "space-between" }}>
-          <Typography 
-            component="span"
-            variant="subtitle2"
-            sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
-          >{product.category}</Typography>
-          <Typography 
-            component="span"
-            variant="subtitle2"
-            sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
-          >{product.price} $</Typography>
+      </Box>
+      <Box sx={{
+        width: "100%",
+        px: 2,
+        pb: 1,
+        pt: 1,
+        bgcolor: "primary.main",
+        color: "white"
+      }}>
+        <Box sx={{ display: "flex" }}>
+          <Typography component="span" variant="body1" sx={{ flexGrow: 1 }}>
+            Toplam Tutar
+          </Typography>
+          <Typography component="span" variant="body1">
+            {sumArray(basket, "price*measure").toFixed(2)} $
+          </Typography>
         </Box>
-      </ListItemText>
-    </ListItemButton>
+      </Box>
+    </>
   );
-}
-
-const TypographyStyle = {
-  whiteSpace: "nowrap",
-  textOverflow: "ellipsis",
-  overflow: "hidden"
 }
 
 export default function SalesPage() {
+  const [selectedProduct, setSelectedProduct] = useState(0);
   const basketDispatch = useBasketDispatch();
+  const basket = useBasket();
   const navigate = useNavigate();
-  const [search, setSearch] = useState("");
   const [isFetching, toggleIsFetching] = useToggle();
   const [products, setProducts] = useState([]);
   const fetchCount = useRef(0);
   const {
-    props: inputProps
+    props: inputProps,
+    setValue: setSearchInputValue
   } = useFormInput({
     label: "Klavyeden Ürün girişi",
     type: "text",
-    onChange: handleChange
+    onChange: handleSearchInputChange
   });
 
   function handleViewPriceClick() {
@@ -237,24 +159,32 @@ export default function SalesPage() {
   function fetchProducts(searchParameter) {
     return axios.get(`/products?search=${searchParameter}&limit=10&page=1`);
   };
-  function handleChange(e) {
+  async function handleSearchInputChange(e) {
     const value = e.target.value;
     if (value === "") return setProducts([]);
     fetchCount.current++;
     const queue = fetchCount.current;
-    setSearch(value);
     toggleIsFetching(true);
     fetchProducts(value)
       .then(res => {
         if (queue !== fetchCount.current) return;
         const { products } = res.data;
-        console.log("1 whoo", products)
         if (products.length === 1) {
-          console.log("whoo")
+          const product = products[0];
+          const unit = product.unit;
+          const indexOf = basket.findIndex(p => p.id === product.id);
+          if (indexOf === -1) {
+            product.measure = unit === "piece" ? 1 : parseFloat(0).toFixed(getMeasureDigit(unit));
+          } else {
+            const oldProduct = basket.find(p => p.id === product.id);
+            product.measure = unit === "piece" ? parseInt(oldProduct.measure) + 1 : oldProduct.measure;
+          }
           basketDispatch({
-            type: "added",
-            product: products[0]
+            type: indexOf === -1 ? "added" : "changed", 
+            product
           })
+          setSearchInputValue("");
+          setSelectedProduct(product);
         } else {
           setProducts(products);
         }
@@ -265,6 +195,30 @@ export default function SalesPage() {
         console.error(err);
       });
   };
+  function handleAbortReceipt() {
+    basketDispatch({ type: "cleared" });
+    setSelectedProduct({});
+  };
+  function handleDeleteProduct() {
+    basketDispatch({ type: "deleted", product: { id: selectedProduct.id }});
+  }
+  function handleNumpadChange(value) {
+    if (parseFloat(value) === 0) {
+      basketDispatch({
+        type: "deleted",
+        product: selectedProduct
+      });
+      setSelectedProduct({});
+    } else {
+      basketDispatch({
+        type: "changed",
+        product: {
+          ...selectedProduct,
+          measure: value
+        }
+      });
+    }
+  }
 
   return (
     <>
@@ -316,17 +270,17 @@ export default function SalesPage() {
             sx={{
               width: "100%",
               height: "100%",
-              position: "relative",
-              overflow: "auto",
+              position: "relative"
             }}
             elevation={4}
           >
             <Box sx={{
-              height: "cal(100% - 9.5rem)",
+              height: "calc(100% - 5rem)",
               width: "100%",
-              overflow: "auto"
+              overflow: "auto",
+              position: "absolute"
             }}>
-              <ProductList />
+              <ProductList value={selectedProduct} onChange={setSelectedProduct}  />
             </Box>
 
             <Box sx={{
@@ -334,29 +288,7 @@ export default function SalesPage() {
               bottom: 0,
               width: "100%",
             }}>
-              <Box sx={{
-                width: "100%",
-                px: 2,
-                py: 1,
-                bgcolor: "info.main",
-                color: "white"
-              }}>
-                <Typography component="span" variant="body1">
-                  Ara Toplam:&nbsp;&nbsp;&nbsp;260.10$
-                </Typography>
-              </Box>
-              <Box sx={{
-                width: "100%",
-                px: 2,
-                pb: 1,
-                pt: 1,
-                bgcolor: "primary.main",
-                color: "white"
-              }}>
-                <Typography component="span" variant="body1">
-                  Toplam Tutar:&nbsp;&nbsp;&nbsp;240.10$
-                </Typography>
-              </Box>
+              <PriceSummary />
             </Box>
           </Paper>
         </Grid>
@@ -382,17 +314,21 @@ export default function SalesPage() {
 
               <Box sx={{ mb: 4 }}>
                 <Box sx={{ display: "flex", mb: 1 }}>
-                  <Button fullWidth sx={{ mr: 0.5 }} color="error" variant="outlined">
+                  <Button fullWidth sx={{ mr: 0.5 }} color="error" variant="outlined" onClick={handleDeleteProduct}>
                     SATIR SİL
                   </Button>
-                  <Button fullWidth sx={{ ml: 0.5 }} color="error" variant="contained">
+                  <Button fullWidth sx={{ ml: 0.5 }} color="error" variant="contained" onClick={handleAbortReceipt}>
                     BELGE İPTAL
                   </Button>
                 </Box>
                 <Button fullWidth variant="contained" color="success">Kampanyalar</Button>
               </Box>
               <Box>
-                <NumpadAndInput unit="mass" />
+                <NumpadAndInput 
+                  onChange={handleNumpadChange}
+                  unit={selectedProduct.unit}
+                  measure={selectedProduct.measure} 
+                />
               </Box>
             </Box>
           </Paper>
