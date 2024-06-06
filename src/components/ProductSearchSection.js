@@ -5,22 +5,28 @@ import {
   Box,
   Button,
   Typography,
-  Tab
+  Tab,
+  CircularProgress
 } from "@mui/material";
 import {
   TabContext,
   TabList,
   TabPanel
 } from '@mui/lab';
-import AlphabeticSearchBar from "../components/AlphabeticSearchBar";
-import ProductCard from "../components/ProductCard";
-import CategoryCard from "../components/CategoryCard";
 import {
   ArrowBackIosNew as  ArrowBackIosNewIcon
 } from '@mui/icons-material';
+import { useBasket, useBasketDispatch } from "../hooks/useBasket"; 
+import { useToggle } from "../hooks/useToggle";
+import { useFormInput } from "../hooks/useFormInput";
+import TextInput from "./TextInput";
+import AlphabeticSearchBar from "./AlphabeticSearchBar";
+import ProductCard from "./ProductCard";
+import CategoryCard from "./CategoryCard";
 import kitchenImage from "../assets/images/kitchen.jpg";
 import bookImage from "../assets/images/books.jpg";
 import beutyImage from "../assets/images/beuty.jpg";
+import getMeasureDigit from "../libs/getMeasureDigit";
 
 const categories = [
   {
@@ -37,21 +43,80 @@ const categories = [
   }
 ]
 
-export default function ProductSearchSection({ addToBasket, products }) {
+export default function ProductSearchSection({ setSelectedProduct, selectedProduct }) {
+  const basket = useBasket();
+  const basketDispatch = useBasketDispatch();
   const [startWith, setStartWith] = useState("");
   const [products1, setProducts1] = useState([]);
   const [products2, setProducts2] = useState([]);
-  const [value, setValue] = useState("1");
+  const [products3, setProducts3] = useState([]);
+  const [isFetching, toggleIsFetching] = useToggle(false);
+  const [tabId, changeTab] = useState("1");
   const fetchCount = useRef(0);
+  const {
+    props: inputProps,
+    setValue: setSearchInputValue
+  } = useFormInput({
+    label: "Klavyeden Ürün girişi",
+    type: "text",
+    onChange: handleSearchInputChange
+  });
 
   useEffect(() => {
-    if (products.length > 0) {
-      setValue("3");
+    let ignore  = false;
+    fetchProducts({ startWith: "", category: "groceries" })
+      .then(res => {
+        if (ignore) return;
+        setProducts2(res.data.products);
+      })
+      .catch(err => console.error(err));
+    return() => ignore = true;
+  }, []);
+
+  function addToBasket(product) {
+    const unit = product.unit;
+    const indexOf = basket.findIndex(p => p.id === product.id);
+    if (indexOf === -1) {
+      product.measure = unit === "piece" ? 1 : parseFloat(0).toFixed(getMeasureDigit(unit));
+    } else {
+      const oldProduct = basket.find(p => p.id === product.id);
+      if (unit === "piece") {
+        product.measure = parseInt(oldProduct.measure) + 1;
+      } else {
+        product.measure = oldProduct.measure;
+      }
     }
-  }, [products]);
+    basketDispatch({
+      type: indexOf === -1 ? "added" : "changed", 
+      product
+    })
+    setSearchInputValue("");
+    setSelectedProduct(product);
+  };
+  async function handleSearchInputChange(e) {
+    const value = e.target.value;
+    fetchCount.current++;
+    const queue = fetchCount.current;
+    toggleIsFetching(true);
+    changeTab("3");
+    fetchProducts({ search: value })
+      .then(res => {
+        if (queue !== fetchCount.current) return;
+        const { products } = res.data;
+        if (products.length === 1 && value.length === 13) {
+          addToBasket(products[0]);
+        } else {
+          setProducts3(products);
+        }
+        toggleIsFetching(false);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
 
   function handleChange(e, newValue) {
-    setValue(newValue);
+    changeTab(newValue);
   };
   function fetchProducts(obj) {
     const search = Boolean(obj.search) ? obj.search : "";
@@ -67,163 +132,170 @@ export default function ProductSearchSection({ addToBasket, products }) {
   function handleBackwardClick() {
     setProducts1([]);
   };
-  
-  useEffect(() => {
-    let ignore  = false;
-    fetchProducts({ startWith: "", category: "groceries" })
-      .then(res => {
-        if (ignore) return;
-        setProducts2(res.data.products);
-      })
-      .catch(err => console.error(err));
-    return() => ignore = true;
-    }, []);
 
   function handleStartWithChange(e) {
     const nStartWith = e.target.value;
     setStartWith(nStartWith);
     fetchCount.current++;
     const queue = fetchCount.current;
+    toggleIsFetching(true);
     fetchProducts({ startWith: nStartWith })
       .then(res => {
         if (queue !== fetchCount.current) return;
         setProducts2(res.data.products);
+        toggleIsFetching(false);
       })
       .catch(err => console.error(err));
   };
   function handleCategoryClick(category) {
     fetchCount.current++;
     const queue = fetchCount.current;
+    toggleIsFetching(true);
     fetchProducts({ category })
       .then(res => {
         if (queue !== fetchCount.current) return;
         setProducts1(res.data.products);
+        toggleIsFetching(false);
       })
       .catch(err => console.error(err));
   }
 
   return (
-    <TabContext value={value}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <TabList onChange={handleChange} aria-label="lab API tabs example">
-          <Tab sx={{ textTransform: "none" }} label="Kategoriler" value="1" />
-          <Tab sx={{ textTransform: "none" }} label="Barkodsuz Ürünler" value="2" />
-          <Tab sx={{ textTransform: "none" }} label="Ürünler" value="3" />
-        </TabList>
+    <Box>
+      <Box sx={{ mb: 2, px: 1, pt: 1 }}> 
+        <TextInput id="search-input" {...inputProps} />
       </Box>
-      <Box sx={{
-        overflow: "auto",
-        height: "calc(100vh - 18.1rem)"
-      }}>
-        <TabPanel value="1">
-          { products1.length > 0 &&
-            <Paper sx={{
-              mb: 3
-            }}>
-              <Button 
-                sx={{
-                  textTransform: "none",
-                  whiteSpace: "nowrap",
-                  textOverflow: "ellipsis"
-                }}
-                variant="text"
-                onClick={handleBackwardClick}
-              >
-                <ArrowBackIosNewIcon sx={{ mr: 1 }}/>
-                Backward
-              </Button>
-            </Paper>
-          }
+      <TabContext value={tabId}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <TabList onChange={handleChange} aria-label="lab API tabs example">
+            <Tab sx={{ textTransform: "none" }} label="Kategoriler" value="1" />
+            <Tab sx={{ textTransform: "none" }} label="Barkodsuz Ürünler" value="2" />
+            <Tab sx={{ textTransform: "none" }} label="Ürünler" value="3" />
+          </TabList>
+        </Box>
           <Box sx={{
-              display: "flex",
-              justifyContent: "space-evenly",
-              flexWrap: "wrap"
-            }}
-          >
-          {
-            products1.length > 0
-            ? <>
-              {
-                products1.map(p => 
-                  <ProductCard 
-                    key={p.meta.barcode}
-                    product={p}
-                    onClick={() => addToBasket(p)}
-                  />
-                )
-              }
-              </>
-            : categories.map(c => 
-              <CategoryCard
-                key={c.category}
-                category={c.category}
-                thumbnail={c.thumbnail}
-                onClick={() => handleCategoryClick(c.category)}
-              />)
-          }
-          </Box>
-        </TabPanel>
-        <TabPanel value="2" sx={{ p: 0 }}>
-          <Box
-            sx={{
-              width: "100%",
-              px: 2,
-              pb: 1,
-              pt: 2,
-              display: "flex",
-              justifyContent: "center"
-            }}
-          >
-            <Paper sx={{ overflow: "auto", display: "inline-block", mx: "auto" }}>
-              <AlphabeticSearchBar 
-              onChange={handleStartWithChange}
-              value={startWith}
-              />
-            </Paper>
-          </Box>
-          <Box sx={{ 
-            display: "flex",
-            justifyContent:"space-around",
-            flexWrap: "wrap",
-            mt: 2
+            overflow: "auto",
+            height: "calc(100vh - 18.1rem)"
           }}>
-            {
-              products2.length > 0 ?
-                products2.map(p => <ProductCard 
-                  key={p.meta.barcode}
-                  product={p}
-                  onClick={() => addToBasket(p)}
-                />) :
-                <Typography 
-                  sx={{ textAlign: "center", mt: 2 }}
-                  component="div"
-                  variant="body2"
-                >Gösterilecek sonuç bulunamadı.</Typography>
-            }
+            { isFetching ? 
+              <Box sx={{ 
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}>
+                <CircularProgress /> 
+              </Box>
+              : <>
+              <TabPanel value="1">
+                { products1.length > 0 &&
+                  <Paper sx={{ mb: 3 }}>
+                    <Button 
+                      sx={{
+                        textTransform: "none",
+                        whiteSpace: "nowrap",
+                        textOverflow: "ellipsis"
+                      }}
+                      variant="text"
+                      onClick={handleBackwardClick}
+                    >
+                      <ArrowBackIosNewIcon sx={{ mr: 1 }}/>
+                      Backward
+                    </Button>
+                  </Paper>
+                }
+                <Box sx={{
+                    display: "flex",
+                    justifyContent: "space-evenly",
+                    flexWrap: "wrap"
+                  }}
+                >
+                {
+                  products1.length > 0
+                  ? <>
+                    {
+                      products1.map(p => 
+                        <ProductCard 
+                          key={p.meta.barcode}
+                          product={p}
+                          onClick={() => addToBasket(p)}
+                        />
+                      )
+                    }
+                    </>
+                  : categories.map(c => 
+                    <CategoryCard
+                      key={c.category}
+                      category={c.category}
+                      thumbnail={c.thumbnail}
+                      onClick={() => handleCategoryClick(c.category)}
+                    />)
+                }
+                </Box>
+              </TabPanel>
+              <TabPanel value="2" sx={{ p: 0 }}>
+                <Box
+                  sx={{
+                    width: "100%",
+                    px: 2,
+                    pb: 1,
+                    pt: 2,
+                    display: "flex",
+                    justifyContent: "center"
+                  }}
+                >
+                  <Paper sx={{ overflow: "auto", display: "inline-block", mx: "auto" }}>
+                    <AlphabeticSearchBar 
+                    onChange={handleStartWithChange}
+                    value={startWith}
+                    />
+                  </Paper>
+                </Box>
+                <Box sx={{ 
+                  display: "flex",
+                  justifyContent:"space-around",
+                  flexWrap: "wrap",
+                  mt: 2
+                }}>
+                  {
+                    products2.length > 0 ?
+                      products2.map(p => <ProductCard 
+                        key={p.meta.barcode}
+                        product={p}
+                        onClick={() => addToBasket(p)}
+                      />) :
+                      <Typography 
+                        sx={{ textAlign: "center", mt: 2 }}
+                        component="div"
+                        variant="body2"
+                      >Gösterilecek sonuç bulunamadı.</Typography>
+                  }
+                </Box>
+              </TabPanel>
+              <TabPanel value="3">
+                <Box sx={{ 
+                  display: "flex",
+                  justifyContent:"space-around",
+                  flexWrap: "wrap"
+                }}>
+                  {
+                    products3.length > 0 ?
+                      products3.map(p => <ProductCard 
+                        key={p.meta.barcode}
+                        product={p}
+                        onClick={() => addToBasket(p)}
+                      />) :
+                      <Typography 
+                        sx={{ textAlign: "center" }}
+                        component="div"
+                        variant="body2"
+                      >Gösterilcek ürün bulunamadı.</Typography>
+                  }
+                </Box>
+              </TabPanel>
+            </>}
           </Box>
-        </TabPanel>
-        <TabPanel value="3">
-          <Box sx={{ 
-            display: "flex",
-            justifyContent:"space-around",
-            flexWrap: "wrap"
-          }}>
-            {
-              products.length > 0 ?
-                products.map(p => <ProductCard 
-                  key={p.meta.barcode}
-                  product={p}
-                  onClick={() => addToBasket(p)}
-                />) :
-                <Typography 
-                  sx={{ textAlign: "center" }}
-                  component="div"
-                  variant="body2"
-                >Gösterilcek ürün bulunamadı.</Typography>
-            }
-          </Box>
-        </TabPanel>
-      </Box>
-    </TabContext>
+      </TabContext>
+    </Box>
   );
-}
+} 

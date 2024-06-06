@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import {
   Grid,
   Paper,
@@ -10,25 +10,21 @@ import {
   ManageSearchOutlined as ManageSearchOutlinedIcon
 } from '@mui/icons-material';
 import { useBasket, useBasketDispatch } from "../hooks/useBasket"; 
-import { useFormInput } from "../hooks/useFormInput";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import TextInput from "../components/TextInput";
 import ProductList from "../components/ProductList";
 import BasicTitleBar from "../components/BasicTitleBar";
 import NumpadAndInput from "../components/NumpadAndInput";
 import ProductSearchSection from "../components/ProductSearchSection";
 import Footer from "../components/layout/Footer";
-import addTaxToUnitPrice from "../libs/addTaxToUnitPrice";
-import getMeasureDigit from "../libs/getMeasureDigit";
+import addTaxToUnitPrice from "../libs/addTaxToUnitPrice";  
 
 function calcSubtotalPrice(basket) {
   let total = 0;
   basket.forEach(i => {
     total += addTaxToUnitPrice(i) * i.measure;
-  })
+  });
   return total.toFixed(2);
-}
+};
 
 function PriceSummary () {
   const basket = useBasket();
@@ -73,65 +69,12 @@ function PriceSummary () {
 }
 
 export default function SalesPage() {
-  const [selectedProduct, setSelectedProduct] = useState(0);
+  const [selectedProduct, setSelectedProduct] = useState({});
   const basketDispatch = useBasketDispatch();
-  const basket = useBasket();
   const navigate = useNavigate();
-  const [products, setProducts] = useState([]);
-  const fetchCount = useRef(0);
-  const {
-    props: inputProps,
-    setValue: setSearchInputValue
-  } = useFormInput({
-    label: "Klavyeden Ürün girişi",
-    type: "text",
-    onChange: handleSearchInputChange
-  });
 
   function handleViewPriceClick() {
     navigate("/view-prices");
-  };
-  function fetchProducts(searchParameter) {
-    return axios.get(`/products?search=${searchParameter}&limit=10&page=1`);
-  };
-  function addToBasket(product) {
-    const unit = product.unit;
-    const indexOf = basket.findIndex(p => p.id === product.id);
-    if (indexOf === -1) {
-      product.measure = unit === "piece" ? 1 : parseFloat(0).toFixed(getMeasureDigit(unit));
-    } else {
-      const oldProduct = basket.find(p => p.id === product.id);
-      if (unit === "piece") {
-        product.measure = parseInt(oldProduct.measure) + 1;
-      } else {
-        product.measure = oldProduct.measure;
-      }
-    }
-    basketDispatch({
-      type: indexOf === -1 ? "added" : "changed", 
-      product
-    })
-    setSearchInputValue("");
-    setSelectedProduct(product);
-  };
-
-  async function handleSearchInputChange(e) {
-    const value = e.target.value;
-    fetchCount.current++;
-    const queue = fetchCount.current;
-    fetchProducts(value)
-      .then(res => {
-        if (queue !== fetchCount.current) return;
-        const { products } = res.data;
-        if (products.length === 1 && value.length === 13) {
-          addToBasket(products[0]);
-        } else {
-          setProducts(products);
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
   };
   function handleAbortReceipt() {
     basketDispatch({ type: "cleared" });
@@ -139,24 +82,16 @@ export default function SalesPage() {
   };
   function handleDeleteProduct() {
     basketDispatch({ type: "deleted", product: { id: selectedProduct.id }});
-  }
+  };
   function handleNumpadChange(value) {
-    if (parseFloat(value) === 0) {
-      basketDispatch({
-        type: "deleted",
-        product: selectedProduct
-      });
-      setSelectedProduct({});
-    } else {
-      basketDispatch({
-        type: "changed",
-        product: {
-          ...selectedProduct,
-          measure: value
-        }
-      });
-    }
-  }
+    basketDispatch({
+      type: "changed",
+      product: {
+        ...selectedProduct,
+        measure: value
+      }
+    });
+  };
 
   return (
     <>
@@ -180,26 +115,25 @@ export default function SalesPage() {
         />
       </Box>
       <Grid container sx={{
-        height: "calc(100vh - 9rem)",
-        overflow: "auto",
-        pt: 2,
-        pb: 1,
+        height: "calc(100vh - 8.5rem)",
+        overflow: "hidden",
+        py: 1.5,
         px: 2
       }}>
         <Grid item xs={12} md={4} lg={5} sx={{ pr: { md: 1 } }}>
           <Paper
-            sx={{
+            sx={{ 
               width: "100%",
-              height: { xs: "auto", md: "100%" },
-              px: 1,
-              pt: 1
+              height: "auto",
+              minHeight: { md: "100%" },
+              overflow: "hidden"
             }}
           >
-            <Box>
-              <TextInput id="search-input" {...inputProps} />
-            </Box>
             <Box sx={{ mt: 1 }}>
-              <ProductSearchSection addToBasket={addToBasket} products={products} />
+              <ProductSearchSection 
+                setSelectedProduct={setSelectedProduct}
+                selectedProduct={selectedProduct}
+              />
             </Box>
           </Paper>
         </Grid>
@@ -207,7 +141,8 @@ export default function SalesPage() {
           <Paper
             sx={{
               width: "100%",
-              height: { xs: "auto", md: "100%" },
+              height: "auto",
+              minHeight: { md: "100%" },
               position: "relative",
               overflow: "hidden"
             }}
@@ -234,10 +169,11 @@ export default function SalesPage() {
         <Grid item xs={12} md={4} lg={3} sx={{ pl: { md: 1 } }}>
           <Paper
             sx={{
+              width: "100%",
+              height: "auto",
+              minHeight: { md: "100%" },
               display: "flex",
               alignItems: "center",
-              width: "100%",
-              height: { xs: "auto", md: "100%" },
               px: 1,
               py: 2
             }}

@@ -29,10 +29,6 @@ export const handlers = [
       }
     })
   }),
-  http.get(baseUrl + "/product", ({ request }) => {
-    const path = url.parse(request.url).path;
-    console.log(path)
-  }),
   http.get(baseUrl + "/products", async ({ request }) => {
     const query = url.parse(request.url).query;
     let { page, limit, search, sort, startWith, category } = queryString.parse(query);
@@ -46,7 +42,6 @@ export const handlers = [
         const tCharCode = title[0].toLocaleLowerCase().charCodeAt();
         return fCharCode === tCharCode || (sCharCode && (sCharCode >= tCharCode && fCharCode < tCharCode));
       });
-      console.log(startWith)
     }
     if (Boolean(category)) {
       filteredData = filteredData.filter(p => p.category === category.toLocaleLowerCase());

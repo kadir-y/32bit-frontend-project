@@ -10,7 +10,7 @@ import {
 export default function Footer() {
   return (
     <Paper sx={{ px: 2, py: 1 }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
         <Typography component="span" variant="body1">SATICI/MÜŞTERİ</Typography>
         <Typography component="span" variant="body2">SATIŞ BELGESİ</Typography>
         <Typography
@@ -22,7 +22,7 @@ export default function Footer() {
           <FiberManualRecordIcon color="error" />
         </Typography>
       </Box>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
         <Typography component="span" variant="body1">Merkeze Gönderilecek: 0</Typography>
         <Typography component="span" variant="body2">1057/Haz. 5</Typography>
         <Typography
