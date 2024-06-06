@@ -1,0 +1,10 @@
+{
+  "documentTitle": "32-битный веб-проект",
+  "offlineDialog": {
+    "title": "Ошибка сети",
+    "message": "Вы не в сети, проверьте подключение к сети."
+  },
+  "alphabeticSearchbar": {
+    "all": "ВСЕ"
+  }
+}

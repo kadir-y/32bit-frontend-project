@@ -29,6 +29,15 @@ import settingsEnGBTranslation from "./locales/en-GB/settings-translation.json";
 import productsEnGBTranslation from "./locales/en-GB/products-translation.json";
 import homeEnGBTranslation from "./locales/en-GB/home-translation.json";
 
+// translation files for russian language
+import loginRuRUTranslation from "./locales/ru-RU/login-translation.json";
+import appRuRUTranslation from "./locales/ru-RU/app-translation.json";
+import keyboardRuRUTranslation from "./locales/ru-RU/keyboard-translation.json";
+import navbarRuRUTranslation from "./locales/ru-RU/navbar-translation.json";
+import settingsRuRUTranslation from "./locales/ru-RU/settings-translation.json";
+import productsRuRUTranslation from "./locales/ru-RU/products-translation.json";
+import homeRuRUTranslation from "./locales/ru-RU/home-translation.json";
+
 // include translation files
 const resources = {
   "tr-TR": {
@@ -57,6 +66,15 @@ const resources = {
     settings: settingsEnGBTranslation,
     products: productsEnGBTranslation,
     home: homeEnGBTranslation
+  },
+  "ru-RU": {
+    login: loginRuRUTranslation,
+    app: appRuRUTranslation,
+    keyboard: keyboardRuRUTranslation,
+    navbar: navbarRuRUTranslation,
+    settings: settingsRuRUTranslation,
+    products: productsRuRUTranslation,
+    home: homeRuRUTranslation
   }
 };
 

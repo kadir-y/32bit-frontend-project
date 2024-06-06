@@ -1,0 +1,11 @@
+{
+  "searchPlaceholder": "Поиск",
+  "sortByPlaceholder": "Сортировать по",
+  "sortByOptions": {
+    "alphabeticAZ": "Aлфавитный A-Z",
+    "alphabeticZA": "Aлфавитный Z-A",
+    "expensive": "Дорого во-первых",
+    "cheap": "Сначала дешево"
+  },
+  "viewProducts": "Посмотреть продукты"
+}

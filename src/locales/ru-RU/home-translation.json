@@ -1,0 +1,14 @@
+{
+  "info": {
+    "storeOnlineMessage": "Store is online",
+    "storeNumber": "Магазин онлайн",
+    "cashRegisterNumber": "Номер кассового аппарата",
+    "cashRegisterIp": "IP-адрес кассового аппарата",
+    "version": "Версия"
+  },
+  "totalSales": "Тотальная распродажа",
+  "lastReceipts": "Последние поступления",
+  "showMore": "Показать больше",
+  "show": "показывать"
+  
+}

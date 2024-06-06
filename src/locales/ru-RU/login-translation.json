@@ -1,0 +1,15 @@
+{
+  "welcome": "Добро пожаловать!",
+  "description": "Пожалуйста, введите свой код пользователя и пароль.",
+  "usercodeLabel": "Код пользователя",
+  "passwordLabel": "Пароль",
+  "passwordHelperText": "Пожалуйста, никому не сообщайте свой пароль.",
+  "version": "Версия",
+  "loginButton": "Войти",
+  "loggingInButton": "Вход в систему...",
+  "internalServerError": "Произошла ошибка, повторите попытку позже!",
+  "minimumLengthError": "Минимальная длина этого поля должна быть {{length}}.",
+  "requiredError": "Это поле обязательно к заполнению.",
+  "userNotfound": "Код пользователя не найден.",
+  "incorrectPassword": "Неверный пароль."
+}
