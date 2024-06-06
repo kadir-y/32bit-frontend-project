@@ -46,6 +46,7 @@ export const handlers = [
         const tCharCode = title[0].toLocaleLowerCase().charCodeAt();
         return fCharCode === tCharCode || (sCharCode && (sCharCode >= tCharCode && fCharCode < tCharCode));
       });
+      console.log(startWith)
     }
     if (Boolean(category)) {
       filteredData = filteredData.filter(p => p.category === category.toLocaleLowerCase());

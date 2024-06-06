@@ -4,6 +4,7 @@ import {
   Typography,
   Box
 } from "@mui/material";
+import addTaxToUnitPrice from "../libs/addTaxToUnitPrice";
 
 const TypographyStyle = {
   whiteSpace: "nowrap",
@@ -27,10 +28,11 @@ export default function ProductItem({ product, selectedProduct, onClick: handleC
           <Typography 
             component="span"
             variant="subtitle2"
-            sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)", fontSize: "0.7rem" }}
+            sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)", fontSize: "0.75rem" }}
           >
             {
-              (
+              ( 
+                `${product.price}$ and ` +
                 (product.kdv ? `%${product.kdv} KDV` : "") +
                 (product.otv ? ` %${product.otv} ÖTV` : "") +
                 (product.mtv ? ` %${product.mtv} MTV` : "")
@@ -48,13 +50,13 @@ export default function ProductItem({ product, selectedProduct, onClick: handleC
             component="span"
             variant="subtitle2"
             sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)", fontSize: "0.8rem"  }}
-          >{product.measure} {product.unit === "mass" ? "kg" : "piece" } x {product.price} $</Typography>
+          >{product.measure} {product.unit === "mass" ? "kg" : "piece" } x {addTaxToUnitPrice(product)}$</Typography>
         </Box>
         <Typography 
           component="div"
           variant="subtitle2"
-          sx={{ ...TypographyStyle, textAlign: "right"}}
-        >{parseFloat(product.price * product.measure).toFixed(2)} $</Typography>
+          sx={{ ...TypographyStyle, textAlign: "right", fontSize: "0.85rem"}}
+        >= {parseFloat(addTaxToUnitPrice(product) * product.measure).toFixed(2)}$</Typography>
       </ListItemText>
     </ListItemButton>
   );

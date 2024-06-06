@@ -2259,7 +2259,7 @@
     "kdv": 18,
     "unit": "piece",
     "category": "motorcycle",
-    "mtv": "18"
+    "mtv": 18
   },
   {
     "id": 114,
@@ -2282,7 +2282,7 @@
     "kdv": 18,
     "unit": "piece",
     "category": "motorcycle",
-    "mtv": "18"
+    "mtv": 18
   },
   {
     "id": 115,
@@ -2305,7 +2305,7 @@
     "kdv": 18,
     "unit": "piece",
     "category": "motorcycle",
-    "mtv": "18"
+    "mtv": 18
   },
   {
     "id": 116,
@@ -2328,7 +2328,7 @@
     "kdv": 18,
     "unit": "piece",
     "category": "motorcycle",
-    "mtv": "18"
+    "mtv": 18
   },
   {
     "id": 117,
@@ -2351,7 +2351,7 @@
     "kdv": 18,
     "unit": "piece",
     "category": "motorcycle",
-    "mtv": "18"
+    "mtv": 18
   },
   {
     "id": 118,
@@ -3404,7 +3404,7 @@
     "kdv": 18,
     "unit": "piece",
     "category": "vehicle",
-    "mtv": "48"
+    "mtv": 48
   },
   {
     "id": 168,
@@ -3429,7 +3429,7 @@
     "kdv": 18,
     "unit": "piece",
     "category": "vehicle",
-    "mtv": "48"
+    "mtv": 48
   },
   {
     "id": 169,
@@ -3454,7 +3454,7 @@
     "kdv": 18,
     "unit": "piece",
     "category": "vehicle",
-    "mtv": "48"
+    "mtv": 48
   },
   {
     "id": 170,
@@ -3479,7 +3479,7 @@
     "kdv": 18,
     "unit": "piece",
     "category": "vehicle",
-    "mtv": "48"
+    "mtv": 48
   },
   {
     "id": 171,
@@ -3504,7 +3504,7 @@
     "kdv": 18,
     "unit": "piece",
     "category": "vehicle",
-    "mtv": "48"
+    "mtv": 48
   },
   {
     "id": 172,

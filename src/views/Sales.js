@@ -4,99 +4,35 @@ import {
   Paper,
   Box,
   Button,
-  Typography,
-  Tab
+  Typography
 } from "@mui/material";
-import {
-  TabContext,
-  TabList,
-  TabPanel
-} from '@mui/lab';
 import {
   ManageSearchOutlined as ManageSearchOutlinedIcon
 } from '@mui/icons-material';
 import { useBasket, useBasketDispatch } from "../hooks/useBasket"; 
 import { useFormInput } from "../hooks/useFormInput";
-import { useToggle } from "../hooks/useToggle";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import TextInput from "../components/TextInput";
 import ProductList from "../components/ProductList";
 import BasicTitleBar from "../components/BasicTitleBar";
 import NumpadAndInput from "../components/NumpadAndInput";
-import CategoryCard from "../components/CategoryCard";
+import ProductSearchSection from "../components/ProductSearchSection";
 import Footer from "../components/layout/Footer";
-import kitchenImage from "../assets/images/kitchen.jpg";
-import bookImage from "../assets/images/books.jpg";
-import beutyImage from "../assets/images/beuty.jpg";
-import sumArray from "../libs/sumArray";
+import addTaxToUnitPrice from "../libs/addTaxToUnitPrice";
 import getMeasureDigit from "../libs/getMeasureDigit";
 
-const categories = [
-  {
-    title: "Kitchen",
-    image: kitchenImage
-  },
-  {
-    title: "Books",
-    image: bookImage
-  },
-  {
-    title: "Beuty",
-    image: beutyImage
-  }
-]
-
-function SearchProductSection(props) {
-  const [value, setValue] = useState("3");
-  const { products, ...others } = props;
-  function handleChange(e, newValue) {
-    setValue(newValue);
-  };
-  return (
-    <TabContext {...others} value={value}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <TabList onChange={handleChange} aria-label="lab API tabs example">
-          <Tab sx={{ textTransform: "none" }} label="Kategoriler" value="1" />
-          <Tab sx={{ textTransform: "none" }} label="Barkodsuz Ürünler" value="2" />
-          <Tab sx={{ textTransform: "none" }} label="Ürünler" value="3" />
-        </TabList>
-      </Box>
-      <TabPanel
-        value="1"
-        sx={{
-          display: "flex",
-          justifyContent: "space-evenly",
-          flexWrap: "wrap"
-        }}>
-        {
-          categories.map(c => 
-            <CategoryCard 
-              key={c.title}
-              title={c.title}
-              image={c.image}
-            />
-          )
-        }
-      </TabPanel>
-      <TabPanel value="2">Item Two</TabPanel>
-      <TabPanel value="3">
-        {
-          products ?
-            products.map(p => <Box></Box>) :
-            <Typography 
-              sx={{ textAlign: "center" }}
-              component="div"
-              variant="body2"
-            >Gösterilcek ürün bulunamadı.</Typography>
-        }
-      </TabPanel>
-    </TabContext>
-  );
+function calcSubtotalPrice(basket) {
+  let total = 0;
+  basket.forEach(i => {
+    total += addTaxToUnitPrice(i) * i.measure;
+  })
+  return total.toFixed(2);
 }
 
 function PriceSummary () {
   const basket = useBasket();
+  const subtotalPrice = calcSubtotalPrice(basket);
   return (
     <>
       <Box sx={{
@@ -111,7 +47,7 @@ function PriceSummary () {
             Ara Toplam 
           </Typography>
           <Typography component="span" variant="body1">
-            {sumArray(basket, "price*measure").toFixed(2)} $
+            {subtotalPrice} $
           </Typography>
         </Box>
       </Box>
@@ -121,14 +57,14 @@ function PriceSummary () {
         pb: 1,
         pt: 1,
         bgcolor: "primary.main",
-        color: "white"
+        color: "#fff"
       }}>
         <Box sx={{ display: "flex" }}>
           <Typography component="span" variant="body1" sx={{ flexGrow: 1 }}>
             Toplam Tutar
           </Typography>
           <Typography component="span" variant="body1">
-            {sumArray(basket, "price*measure").toFixed(2)} $
+            {subtotalPrice} $
           </Typography>
         </Box>
       </Box>
@@ -141,7 +77,6 @@ export default function SalesPage() {
   const basketDispatch = useBasketDispatch();
   const basket = useBasket();
   const navigate = useNavigate();
-  const [isFetching, toggleIsFetching] = useToggle();
   const [products, setProducts] = useState([]);
   const fetchCount = useRef(0);
   const {
@@ -159,39 +94,42 @@ export default function SalesPage() {
   function fetchProducts(searchParameter) {
     return axios.get(`/products?search=${searchParameter}&limit=10&page=1`);
   };
+  function addToBasket(product) {
+    const unit = product.unit;
+    const indexOf = basket.findIndex(p => p.id === product.id);
+    if (indexOf === -1) {
+      product.measure = unit === "piece" ? 1 : parseFloat(0).toFixed(getMeasureDigit(unit));
+    } else {
+      const oldProduct = basket.find(p => p.id === product.id);
+      if (unit === "piece") {
+        product.measure = parseInt(oldProduct.measure) + 1;
+      } else {
+        product.measure = oldProduct.measure;
+      }
+    }
+    basketDispatch({
+      type: indexOf === -1 ? "added" : "changed", 
+      product
+    })
+    setSearchInputValue("");
+    setSelectedProduct(product);
+  };
+
   async function handleSearchInputChange(e) {
     const value = e.target.value;
-    if (value === "") return setProducts([]);
     fetchCount.current++;
     const queue = fetchCount.current;
-    toggleIsFetching(true);
     fetchProducts(value)
       .then(res => {
         if (queue !== fetchCount.current) return;
         const { products } = res.data;
-        if (products.length === 1) {
-          const product = products[0];
-          const unit = product.unit;
-          const indexOf = basket.findIndex(p => p.id === product.id);
-          if (indexOf === -1) {
-            product.measure = unit === "piece" ? 1 : parseFloat(0).toFixed(getMeasureDigit(unit));
-          } else {
-            const oldProduct = basket.find(p => p.id === product.id);
-            product.measure = unit === "piece" ? parseInt(oldProduct.measure) + 1 : oldProduct.measure;
-          }
-          basketDispatch({
-            type: indexOf === -1 ? "added" : "changed", 
-            product
-          })
-          setSearchInputValue("");
-          setSelectedProduct(product);
+        if (products.length === 1 && value.length === 13) {
+          addToBasket(products[0]);
         } else {
           setProducts(products);
         }
-        toggleIsFetching(false);
       })
       .catch(err => {
-        toggleIsFetching(false);
         console.error(err);
       });
   };
@@ -252,16 +190,16 @@ export default function SalesPage() {
           <Paper
             sx={{
               width: "100%",
-              height: "100%",
+              height: { xs: "auto", md: "100%" },
               px: 1,
-              py: 1
+              pt: 1
             }}
           >
             <Box>
               <TextInput id="search-input" {...inputProps} />
             </Box>
             <Box sx={{ mt: 1 }}>
-              <SearchProductSection />
+              <ProductSearchSection addToBasket={addToBasket} products={products} />
             </Box>
           </Paper>
         </Grid>
@@ -269,8 +207,9 @@ export default function SalesPage() {
           <Paper
             sx={{
               width: "100%",
-              height: "100%",
-              position: "relative"
+              height: { xs: "auto", md: "100%" },
+              position: "relative",
+              overflow: "hidden"
             }}
             elevation={4}
           >
@@ -298,7 +237,7 @@ export default function SalesPage() {
               display: "flex",
               alignItems: "center",
               width: "100%",
-              height: "100%",
+              height: { xs: "auto", md: "100%" },
               px: 1,
               py: 2
             }}

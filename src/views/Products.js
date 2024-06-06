@@ -12,14 +12,13 @@ import {
   CardContent,
   LinearProgress
 } from "@mui/material";
-
 import { useProducts } from "../hooks/useProducts";
 import { useProductsDispatch } from "../hooks/useProducts";
 import { useEffect, useRef, useState } from "react";
 import { useFormInput } from "../hooks/useFormInput"
 import { useTranslation } from "react-i18next";
 import axios from "axios";
-
+import addTaxToUnitPrice from "../libs/addTaxToUnitPrice";
 import TextInput from "../components/TextInput";
 import AlphabeticSearchBar from "../components/AlphabeticSearchBar";
 import BasicTitleBar from "../components/BasicTitleBar";
@@ -248,7 +247,7 @@ function Products () {
                 component="div"
               >{p.title}</Typography>
               <Typography variant="body2" color="text.secondary" sx={{ textTransform: "capitalize", mb: 1.5 }}>{p.category}</Typography>
-              <Typography variant="body2" color="text.secondary">{p.price}$</Typography>
+              <Typography variant="body2" color="text.secondary">{addTaxToUnitPrice(p)} $</Typography>
               </CardContent>
             </Card>);
           })
