@@ -9,3 +9,4 @@ export default function getErrorStatusCode (error) {
   return error.response && error.response.status
   ? error.response.status : -1;
 }
+

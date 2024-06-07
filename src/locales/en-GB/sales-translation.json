@@ -1,0 +1,22 @@
+{
+  "emptyBasketMessage": "Please add one item to cart once before.",
+  "products": "Products",
+  "backward:": "Backward",
+  "noResultMessage": "No results to display.",
+  "seller/customer": "Seller/Customer",
+  "salesDocument": "Sales Document",
+  "willBeSentToCenter": "Will be sent to the center",
+  "storeStatus": "Store is online.",
+  "subtotal": "Subtotal",
+  "totalPrice": "Total Price",
+  "viewPrices": "View Prices",
+  "installment": "INSTALLMENT",
+  "deleteLine": "Delete Line",
+  "abortProcess": "Abort Process",
+  "campaigns": "Campaigns",
+  "next": "Next",
+  "tab1Label": "Categories",
+  "tab2Label": "Products Without Barcode",
+  "tab3Label": "Products",
+  "searchInputPlaceholder": "Product entry from keyboard"
+}

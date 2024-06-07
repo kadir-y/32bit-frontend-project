@@ -28,6 +28,7 @@ import navbarEnGBTranslation from "./locales/en-GB/navbar-translation.json";
 import settingsEnGBTranslation from "./locales/en-GB/settings-translation.json";
 import productsEnGBTranslation from "./locales/en-GB/products-translation.json";
 import homeEnGBTranslation from "./locales/en-GB/home-translation.json";
+import salesEnGBTranslation from "./locales/en-GB/sales-translation.json";
 
 // translation files for russian language
 import loginRuRUTranslation from "./locales/ru-RU/login-translation.json";
@@ -65,7 +66,8 @@ const resources = {
     navbar: navbarEnGBTranslation,
     settings: settingsEnGBTranslation,
     products: productsEnGBTranslation,
-    home: homeEnGBTranslation
+    home: homeEnGBTranslation,
+    sales: salesEnGBTranslation
   },
   "ru-RU": {
     login: loginRuRUTranslation,
