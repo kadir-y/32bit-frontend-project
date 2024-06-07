@@ -39,6 +39,7 @@ const normalizeButton = {
 
 export default function NumpadAndInput(props) {
   const onChange = props.onChange ? props.onChange : () => { };
+  const AdditionalButton = props.AdditionalButton;
   const { unit, measure } = props;
   const [value, setValue] = useState();
   const digit = useRef(0);
@@ -129,7 +130,7 @@ export default function NumpadAndInput(props) {
           <Button fullWidth variant="contained" color="error" sx={{ mb: 1 }} onClick={() => handleChange("backspace")}>
             <BackspaceOutlinedIcon />
           </Button>
-          <Button fullWidth variant="contained" color="primary" sx={{ flexGrow: 1 }}>Devam Et</Button>
+          { AdditionalButton }
         </Grid>
       </Grid>
     </>

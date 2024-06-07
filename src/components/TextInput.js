@@ -14,6 +14,7 @@ export default function Input (props) {
   const inputRef = props.inputRef ? props.inputRef : null;
   const sx = props.sx ? props.sx : {};
   const autoFocus = props.autoFocus ? props.autoFocus : false;
+  const disabled = props.disabled ? props.disabled : false;
 
   const onBlur = props.onBlur ? props.onBlur : () => {};
   const onFocus = props.onFocus ? props.onFocus : () => {};
@@ -56,6 +57,7 @@ export default function Input (props) {
       onMouseDown={handleMouseDown}
       onClick={handleClick}
       InputProps={{
+        disabled,
         autoComplete,
         autoFocus,
         value,

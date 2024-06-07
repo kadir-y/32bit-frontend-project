@@ -5,8 +5,10 @@ import {
 } from "@mui/material";
 import ProductItem from "../components/ProductItem";
 import { useBasket } from "../hooks/useBasket";
+import { useTranslation } from "react-i18next";
 
 export default function ProductList ({ value: selectedProduct, onChange: setSelectedProduct }) {
+  const { t } = useTranslation("sales");
   const basket = useBasket();
 
   function handleClick(e, product) {
@@ -16,7 +18,7 @@ export default function ProductList ({ value: selectedProduct, onChange: setSele
   return (
     <List
       subheader={
-        <ListSubheader>Products</ListSubheader>
+        <ListSubheader>{t("products")}</ListSubheader>
       }
     >
       {
@@ -25,7 +27,7 @@ export default function ProductList ({ value: selectedProduct, onChange: setSele
           component="div"
           variant="body2"
           sx={{ textAlign: "center", py: 5 }}
-        >Lütfen Sepete Ürün Ekleyin</Typography>
+        >{t("emptyBasketMessage")}</Typography>
         : basket.map(product => 
           <ProductItem
             key={product.id}

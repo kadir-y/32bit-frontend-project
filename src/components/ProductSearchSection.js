@@ -16,6 +16,7 @@ import {
 import {
   ArrowBackIosNew as  ArrowBackIosNewIcon
 } from '@mui/icons-material';
+import { useTranslation } from "react-i18next";
 import { useBasket, useBasketDispatch } from "../hooks/useBasket"; 
 import { useToggle } from "../hooks/useToggle";
 import { useFormInput } from "../hooks/useFormInput";
@@ -44,6 +45,7 @@ const categories = [
 ]
 
 export default function ProductSearchSection({ setSelectedProduct, selectedProduct }) {
+  const { t } = useTranslation("sales");
   const basket = useBasket();
   const basketDispatch = useBasketDispatch();
   const [startWith, setStartWith] = useState("");
@@ -57,7 +59,7 @@ export default function ProductSearchSection({ setSelectedProduct, selectedProdu
     props: inputProps,
     setValue: setSearchInputValue
   } = useFormInput({
-    label: "Klavyeden Ürün girişi",
+    label: t("searchInputPlaceholder"),
     type: "text",
     onChange: handleSearchInputChange
   });
@@ -167,10 +169,10 @@ export default function ProductSearchSection({ setSelectedProduct, selectedProdu
       </Box>
       <TabContext value={tabId}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab sx={{ textTransform: "none" }} label="Kategoriler" value="1" />
-            <Tab sx={{ textTransform: "none" }} label="Barkodsuz Ürünler" value="2" />
-            <Tab sx={{ textTransform: "none" }} label="Ürünler" value="3" />
+          <TabList onChange={handleChange} aria-label="Tabs for search products">
+            <Tab sx={{ textTransform: "none" }} label={t("tab1Label")} value="1" />
+            <Tab sx={{ textTransform: "none" }} label={t("tab2Label")} value="2" />
+            <Tab sx={{ textTransform: "none" }} label={t("tab3Label")} value="3" />
           </TabList>
         </Box>
           <Box sx={{
@@ -200,7 +202,7 @@ export default function ProductSearchSection({ setSelectedProduct, selectedProdu
                       onClick={handleBackwardClick}
                     >
                       <ArrowBackIosNewIcon sx={{ mr: 1 }}/>
-                      Backward
+                      {t("backward")}
                     </Button>
                   </Paper>
                 }
@@ -268,7 +270,7 @@ export default function ProductSearchSection({ setSelectedProduct, selectedProdu
                         sx={{ textAlign: "center", mt: 2 }}
                         component="div"
                         variant="body2"
-                      >Gösterilecek sonuç bulunamadı.</Typography>
+                      >{t("noResultMessage")}</Typography>
                   }
                 </Box>
               </TabPanel>
@@ -289,7 +291,7 @@ export default function ProductSearchSection({ setSelectedProduct, selectedProdu
                         sx={{ textAlign: "center" }}
                         component="div"
                         variant="body2"
-                      >Gösterilcek ürün bulunamadı.</Typography>
+                      >{t("noResultMessage")}</Typography>
                   }
                 </Box>
               </TabPanel>

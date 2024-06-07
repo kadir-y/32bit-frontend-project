@@ -6,13 +6,15 @@ import {
 import {
   FiberManualRecord as FiberManualRecordIcon
 } from '@mui/icons-material';
+import { useTranslation } from "react-i18next";
 
 export default function Footer() {
+  const { t } = useTranslation("sales");
   return (
     <Paper sx={{ px: 2, py: 1 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
-        <Typography component="span" variant="body1">SATICI/MÜŞTERİ</Typography>
-        <Typography component="span" variant="body2">SATIŞ BELGESİ</Typography>
+        <Typography component="span" variant="body1">{t("seller/customer")}</Typography>
+        <Typography component="span" variant="body2">{t("salesDocument")}</Typography>
         <Typography
           component="span"
           variant="subtitle2"
@@ -23,14 +25,14 @@ export default function Footer() {
         </Typography>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
-        <Typography component="span" variant="body1">Merkeze Gönderilecek: 0</Typography>
+        <Typography component="span" variant="body1">{t("willBeSentToCenter")}: 0</Typography>
         <Typography component="span" variant="body2">1057/Haz. 5</Typography>
         <Typography
           component="span"
           variant="subtitle2"
           sx={{ display: "flex", alignItems: "center" }}
         >
-          Mağaza Çevrimiçi
+          { t("storeStatus") }
           <FiberManualRecordIcon color="success" />
         </Typography>
       </Box>

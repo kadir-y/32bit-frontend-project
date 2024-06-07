@@ -7,8 +7,10 @@ import {
   ArrowBackIosNew as ArrowBackIosNewIcon
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function BasicTitleBar(props) {
+  const { t } = useTranslation("app");
   const { title, endSlot } = props;
   const navigate = useNavigate();
 
@@ -34,7 +36,7 @@ export default function BasicTitleBar(props) {
         onClick={handleBackwardClick}
       >
         <ArrowBackIosNewIcon sx={{ mr: 1 }}/>
-        Backward
+        {t("backward")}
       </Button>
       <Typography 
         sx={{

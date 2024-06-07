@@ -6,7 +6,8 @@ import {
   Button,
   Typography,
   Snackbar,
-  Alert
+  Alert,
+  ButtonGroup
 } from "@mui/material";
 import {
   ManageSearchOutlined as ManageSearchOutlinedIcon
@@ -14,11 +15,12 @@ import {
 import { useTranslation } from "react-i18next";
 import { useBasket, useBasketDispatch } from "../hooks/useBasket"; 
 import { useNavigate } from "react-router-dom";
+import { useFormInput } from "../hooks/useFormInput";
 import ProductList from "../components/ProductList";
 import BasicTitleBar from "../components/BasicTitleBar";
 import NumpadAndInput from "../components/NumpadAndInput";
-import ProductSearchSection from "../components/ProductSearchSection";
 import Footer from "../components/layout/Footer";
+import TextInput from "../components/TextInput";
 import addTaxToUnitPrice from "../libs/addTaxToUnitPrice";  
 
 function calcSubtotalPrice(basket) {
@@ -72,26 +74,37 @@ function PriceSummary () {
   );
 }
 
-export default function SalesPage() {
+export default function ConfirmBasket() {
   const { t } = useTranslation("sales");
-  const [selectedProduct, setSelectedProduct] = useState({});
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const basketDispatch = useBasketDispatch();
-  const basket = useBasket();
   const navigate = useNavigate();
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState({});
+  const [invoicePreference, setInvoicePreference] = useState("normal");
+  const basket = useBasket();
+  const basketDispatch = useBasketDispatch();
+  const {
+    setValue: setCustomerEmail,
+    props: customerEmailProps
+  } = useFormInput({
+    type: "text",
+    label: t("customerEmailPlaceholder"),
+  });
 
-  function handleViewPriceClick() {
-    navigate("/view-prices");
-  };
   function handleSnackbarClose() {
     setSnackbarMessage("");
   };
-  function handleNextButtonClick() {
+  function handleConfirmButtonClick() {
     if (basket.length === 0) {
-      setSnackbarMessage("Not found product in basket.");
+      setSnackbarMessage("foo");
+      setTimeout(() => {
+        navigate("/sales"); 
+      }, 2000);
     } else {
-      navigate("/confirm-basket");
+      navigate("/checkout"); 
     }
+  }
+  function handleViewPriceClick() {
+    navigate("/view-prices");
   };
   function handleAbortReceipt() {
     basketDispatch({ type: "cleared" });
@@ -148,24 +161,47 @@ export default function SalesPage() {
         py: 1.5,
         px: 2
       }}>
-        <Grid item xs={12} md={4} lg={5} sx={{ pr: { md: 1 } }}>
+        <Grid item xs={12} md={4} sx={{ pr: { md: 1 } }}>
           <Paper
             sx={{ 
               width: "100%",
               height: "auto",
               minHeight: { md: "100%" },
-              overflow: "hidden"
+              overflow: "hidden",
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "column"
             }}
           >
-            <Box sx={{ mt: 1 }}>
-              <ProductSearchSection 
-                setSelectedProduct={setSelectedProduct}
-                selectedProduct={selectedProduct}
-              />
+            <Box sx={{ mt: 1, mb: 6 }}>
+              <Button fullWidth size="large" variant="contained" sx={{ mb: 0.5 }}>Hadi Cüzdan</Button>
+              <Button fullWidth size="large" variant="contained" sx={{ mb: 1 }}>Tombank Cüzdan</Button>
+              <Button fullWidth size="large" variant="contained" color="warning">E Fatura</Button>
             </Box>
+            <Box sx={{ mt: 1 }}>
+              <TextInput 
+                id="customer-email"
+                disabled={invoicePreference === "normal"}
+                sx={{ mb: 1 }}
+                { ...customerEmailProps }
+              />
+              <ButtonGroup fullWidth size="small" aria-label="User receipt preference">
+                <Button 
+                  variant={invoicePreference === "normal" ? "contained" : "outlined"}
+                  onClick={() => setInvoicePreference("normal")}
+                  color="error"
+                >Normal Fatura</Button>
+                <Button 
+                  variant={invoicePreference === "einvoice" ? "contained" : "outlined"}
+                  onClick={() => setInvoicePreference("einvoice")}
+                  color="success"
+                >E-Fatura</Button>
+              </ButtonGroup>
+            </Box>
+
           </Paper>
         </Grid>
-        <Grid item xs={12} md={4} sx={{ px: { md: 1 } }}>
+        <Grid item xs={12} md={4} lg={5} sx={{ px: { md: 1 } }}>
           <Paper
             sx={{
               width: "100%",
@@ -230,14 +266,14 @@ export default function SalesPage() {
                 <NumpadAndInput 
                   onChange={handleNumpadChange}
                   unit={selectedProduct.unit}
-                  measure={selectedProduct.measure}
+                  measure={selectedProduct.measure} 
                   AdditionalButton={
                     <Button fullWidth
                       variant="contained"
                       color="primary"
                       sx={{ flexGrow: 1 }}
-                      onClick={handleNextButtonClick}
-                    >{t("next")}</Button>
+                      onClick={handleConfirmButtonClick}
+                    >{t("confirm")}</Button>
                   }
                 />
               </Box>

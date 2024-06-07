@@ -28,6 +28,7 @@ import navbarEnGBTranslation from "./locales/en-GB/navbar-translation.json";
 import settingsEnGBTranslation from "./locales/en-GB/settings-translation.json";
 import productsEnGBTranslation from "./locales/en-GB/products-translation.json";
 import homeEnGBTranslation from "./locales/en-GB/home-translation.json";
+import salesEnGBTranslation from "./locales/en-GB/sales-translation.json";
 
 // include translation files
 const resources = {
@@ -56,7 +57,8 @@ const resources = {
     navbar: navbarEnGBTranslation,
     settings: settingsEnGBTranslation,
     products: productsEnGBTranslation,
-    home: homeEnGBTranslation
+    home: homeEnGBTranslation,
+    sales: salesEnGBTranslation
   }
 };
 

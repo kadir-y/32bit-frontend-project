@@ -25,6 +25,7 @@ import LoginPage from "./views/Login";
 import SettingsPage from "./views/Settings";
 import ProductsPage from "./views/Products";
 import SalesPage from "./views/Sales";
+import ConfirmBasketPage from "./views/ConfirmBasket";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
       {
         path: "/sales",
         element: <SalesPage />,
+      },
+      {
+        path: "/confirm-basket",
+        element: <ConfirmBasketPage />,
       },
     ]
   },
