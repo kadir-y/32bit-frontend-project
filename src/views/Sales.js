@@ -18,6 +18,7 @@ import NumpadAndInput from "../components/NumpadAndInput";
 import ProductSearchSection from "../components/ProductSearchSection";
 import PriceSummary from "../components/PriceSummary";
 import Footer from "../components/layout/Footer";
+import sumArray from "../libs/sumArray"
 import {
   useBasketItems,
   useBasketItemsDispatch
@@ -66,7 +67,8 @@ export default function SalesPage() {
       }
     });
   };
-
+  const totalPrice = sumArray(basketItems, "totalPrice")
+  const subtotalPrice = sumArray(basketItems, "totalPrice")
   return (
     <>
       <Snackbar
@@ -138,7 +140,10 @@ export default function SalesPage() {
               position: "absolute",
               bottom: 0
             }}>
-              <PriceSummary />
+              <PriceSummary
+                totalPrice={totalPrice}
+                subtotalPrice={subtotalPrice}
+              />
             </Box>
           </Paper>
         </Grid>

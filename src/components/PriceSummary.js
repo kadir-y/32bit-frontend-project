@@ -3,15 +3,15 @@ import {
   Typography
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useBasketSummary } from "../hooks/useBasket";
+import normalizePrice from "../libs/priceNormalizer"
 
-export default function PriceSummary () {
+export default function PriceSummary (props) {
     const { t } = useTranslation("sales");
-    const { subtotalPrice, totalPrice } = useBasketSummary();
+    const totalPrice = normalizePrice(props.totalPrice);
+    const subtotalPrice = normalizePrice(props.subtotalPrice);
     return (
       <>
         <Box sx={{
-          width: "100%",
           px: 2,
           py: 1,
           bgcolor: "info.main",

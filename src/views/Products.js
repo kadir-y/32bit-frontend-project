@@ -223,6 +223,7 @@ function Products () {
       >
         {products.map(product => 
           <ProductCard 
+            key={product.meta.barcode}
             product={product}
             sx={{
               mb: 2,

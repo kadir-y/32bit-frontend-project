@@ -29,9 +29,7 @@ import beutyImage from "../assets/images/beuty.jpg";
 import addTaxesToPrice from "../libs/addTaxesToPrice";
 import { 
   useBasketItems,
-  useBasketItemsDispatch,
-  useBasketSummary,
-  useBasketSummaryDispatch
+  useBasketItemsDispatch
 } from "../hooks/useBasket";
 import normalizeMass from "../libs/normalizeMass";
 
@@ -54,8 +52,6 @@ export default function ProductSearchSection({ setSelectedProduct }) {
   const { t } = useTranslation("sales");
   const basketItems = useBasketItems();
   const basketItemsDispatch = useBasketItemsDispatch();
-  const basketSummary = useBasketSummary();
-  const basketSummaryDispatch = useBasketSummaryDispatch();
   const [tabId, changeTab] = useState("1");
   const [startWith, setStartWith] = useState("");
   const [products1, setProducts1] = useState([]);
@@ -99,13 +95,6 @@ export default function ProductSearchSection({ setSelectedProduct }) {
       product.measure = oldProduct.measure + 1;
       product.totalPrice += oldProduct.priceWithTaxes;
     }
-    const subtotalPrice = basketSummary.subtotalPrice + product.priceWithTaxes*product.measure;
-    const totalPrice = basketSummary.totalPrice + product.priceWithTaxes*product.measure;
-    basketSummaryDispatch( {
-      type: "setted",
-      totalPrice,
-      subtotalPrice
-    });
     basketItemsDispatch({
       type: indexOf === -1 ? "added" : "changed", 
       product

@@ -7645,6 +7645,14 @@
         {
           "name": "KDV",
           "amount": 18
+        },
+        {
+          "name": "MTV",
+          "amount": 35
+        },
+        {
+          "name": "ÖTV",
+          "amount": 27
         }
       ],
       "unit": "piece",
@@ -7714,6 +7722,14 @@
         {
           "name": "KDV",
           "amount": 18
+        },
+        {
+          "name": "MTV",
+          "amount": 35
+        },
+        {
+          "name": "ÖTV",
+          "amount": 27
         }
       ],
       "unit": "piece",
@@ -7784,6 +7800,14 @@
         {
           "name": "KDV",
           "amount": 18
+        },
+        {
+          "name": "MTV",
+          "amount": 35
+        },
+        {
+          "name": "ÖTV",
+          "amount": 27
         }
       ],
       "unit": "piece",
@@ -7854,6 +7878,14 @@
         {
           "name": "KDV",
           "amount": 18
+        },
+        {
+          "name": "MTV",
+          "amount": 35
+        },
+        {
+          "name": "ÖTV",
+          "amount": 27
         }
       ],
       "unit": "piece",
@@ -7924,6 +7956,14 @@
         {
           "name": "KDV",
           "amount": 18
+        },
+        {
+          "name": "MTV",
+          "amount": 35
+        },
+        {
+          "name": "ÖTV",
+          "amount": 27
         }
       ],
       "unit": "piece",

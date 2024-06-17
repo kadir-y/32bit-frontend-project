@@ -21,7 +21,7 @@ export default function ProductCard({ product, onClick: handleClick, sx }) {
     <Card key={title} sx={{
       width: "10rem",
       cursor: "pointer",
-      "&:hover": { transform: "translateY(-1rem)" },
+      "&:hover": { transform: "translateY(-0.75rem)" },
       transition: "transform 0.3s",
       mb: 2,
       ...sx
