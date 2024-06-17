@@ -4,7 +4,6 @@ import {
   Paper,
   Box,
   Button,
-  Typography,
   Snackbar,
   Alert
 } from "@mui/material";
@@ -12,72 +11,28 @@ import {
   ManageSearchOutlined as ManageSearchOutlinedIcon
 } from '@mui/icons-material';
 import { useTranslation } from "react-i18next";
-import { useBasket, useBasketDispatch } from "../hooks/useBasket"; 
 import { useNavigate } from "react-router-dom";
 import ProductList from "../components/ProductList";
 import BasicTitleBar from "../components/BasicTitleBar";
 import NumpadAndInput from "../components/NumpadAndInput";
 import ProductSearchSection from "../components/ProductSearchSection";
+import PriceSummary from "../components/PriceSummary";
 import Footer from "../components/layout/Footer";
-import addTaxToUnitPrice from "../libs/addTaxToUnitPrice";  
+import {
+  useBasketItems,
+  useBasketItemsDispatch
+} from "../hooks/useBasket"; 
 
-function calcSubtotalPrice(basket) {
-  let total = 0;
-  basket.forEach(i => {
-    total += addTaxToUnitPrice(i) * i.measure;
-  });
-  return total.toFixed(2);
-};
-
-function PriceSummary () {
-  const { t } = useTranslation("sales");
-  const basket = useBasket();
-  const subtotalPrice = calcSubtotalPrice(basket);
-  return (
-    <>
-      <Box sx={{
-        width: "100%",
-        px: 2,
-        py: 1,
-        bgcolor: "info.main",
-        color: "white"
-      }}>
-        <Box sx={{ display: "flex" }}>
-          <Typography component="span" variant="body1" sx={{ flexGrow: 1 }}>
-            {t("subtotal")} 
-          </Typography>
-          <Typography component="span" variant="body1">
-            {subtotalPrice} $
-          </Typography>
-        </Box>
-      </Box>
-      <Box sx={{
-        width: "100%",
-        px: 2,
-        pb: 1,
-        pt: 1,
-        bgcolor: "primary.main",
-        color: "#fff"
-      }}>
-        <Box sx={{ display: "flex" }}>
-          <Typography component="span" variant="body1" sx={{ flexGrow: 1 }}>
-            {t("totalPrice")}
-          </Typography>
-          <Typography component="span" variant="body1">
-            {subtotalPrice} $
-          </Typography>
-        </Box>
-      </Box>
-    </>
-  );
+const heightStyle = {
+  height: "calc(100vh - 9.5rem)"
 }
 
 export default function SalesPage() {
   const { t } = useTranslation("sales");
   const [selectedProduct, setSelectedProduct] = useState({});
   const [snackbarMessage, setSnackbarMessage] = useState("");
-  const basketDispatch = useBasketDispatch();
-  const basket = useBasket();
+  const basketItemsDispatch = useBasketItemsDispatch();
+  const basketItems = useBasketItems();
   const navigate = useNavigate();
 
   function handleViewPriceClick() {
@@ -87,25 +42,27 @@ export default function SalesPage() {
     setSnackbarMessage("");
   };
   function handleNextButtonClick() {
-    if (basket.length === 0) {
+    if (basketItems.length === 0) {
       setSnackbarMessage("Not found product in basket.");
     } else {
       navigate("/confirm-basket");
     }
   };
   function handleAbortReceipt() {
-    basketDispatch({ type: "cleared" });
+    basketItemsDispatch({ type: "cleared" });
     setSelectedProduct({});
   };
   function handleDeleteProduct() {
-    basketDispatch({ type: "deleted", product: { id: selectedProduct.id }});
+    basketItemsDispatch({ type: "deleted", product: selectedProduct });
   };
-  function handleNumpadChange(value) {
-    basketDispatch({
+  function handleNumpadChange(measure) {
+    const totalPrice = selectedProduct.priceWithTaxes * measure;
+    basketItemsDispatch({
       type: "changed",
       product: {
         ...selectedProduct,
-        measure: value
+        measure,
+        totalPrice
       }
     });
   };
@@ -123,7 +80,7 @@ export default function SalesPage() {
           sx={{ width: "100%" }}
         >{snackbarMessage}</Alert>
       </Snackbar>
-      <Box sx={{ width: "100%", px: 2, pt: 1 }}>
+      <Box sx={{ px: 2, pt: 1 }}>
         <BasicTitleBar
           title={t("salesDocument")}
           endSlot={
@@ -142,17 +99,10 @@ export default function SalesPage() {
           }
         />
       </Box>
-      <Grid container sx={{
-        height: "calc(100vh - 8.5rem)",
-        overflow: "hidden",
-        py: 1.5,
-        px: 2
-      }}>
-        <Grid item xs={12} md={4} lg={5} sx={{ pr: { md: 1 } }}>
+      <Grid container sx={{ px: 2, paddingTop: "0.5rem", paddingBottom: "0.5rem" }}>
+        <Grid item xs={12} md={4} lg={5} sx={{ ...heightStyle }}>
           <Paper
             sx={{ 
-              width: "100%",
-              height: "auto",
               minHeight: { md: "100%" },
               overflow: "hidden"
             }}
@@ -165,11 +115,9 @@ export default function SalesPage() {
             </Box>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={4} sx={{ px: { md: 1 } }}>
+        <Grid item xs={12} md={4} sx={{ ...heightStyle, px: { md: 2 } }}>
           <Paper
             sx={{
-              width: "100%",
-              height: "auto",
               minHeight: { md: "100%" },
               position: "relative",
               overflow: "hidden"
@@ -177,8 +125,8 @@ export default function SalesPage() {
             elevation={4}
           >
             <Box sx={{
-              height: "calc(100% - 5rem)",
               width: "100%",
+              maxHeight: "calc(100% - 5rem)",
               overflow: "auto",
               position: "absolute"
             }}>
@@ -186,15 +134,15 @@ export default function SalesPage() {
             </Box>
 
             <Box sx={{
-              position: "absolute",
-              bottom: 0,
               width: "100%",
+              position: "absolute",
+              bottom: 0
             }}>
               <PriceSummary />
             </Box>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={4} lg={3} sx={{ pl: { md: 1 } }}>
+        <Grid item xs={12} md={4} lg={3} sx={{ ...heightStyle }}>
           <Paper
             sx={{
               width: "100%",
@@ -229,8 +177,7 @@ export default function SalesPage() {
               <Box>
                 <NumpadAndInput 
                   onChange={handleNumpadChange}
-                  unit={selectedProduct.unit}
-                  measure={selectedProduct.measure}
+                  selectedProduct={selectedProduct}
                   AdditionalButton={
                     <Button fullWidth
                       variant="contained"

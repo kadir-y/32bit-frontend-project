@@ -10,6 +10,7 @@ import { ColorModeProvider } from "./hooks/useColorMode";
 import { AuthProvider } from "./hooks/useAuth";
 import { ProductsProvider } from "./hooks/useProducts";
 import { BasketProvider } from "./hooks/useBasket";
+import { CampaignProvider } from "./hooks/useCampaign";
 import i18n from "./i18n"; // Configuration of i18next
 import reportWebVitals from "./reportWebVitals";
 
@@ -26,6 +27,7 @@ import SettingsPage from "./views/Settings";
 import ProductsPage from "./views/Products";
 import SalesPage from "./views/Sales";
 import ConfirmBasketPage from "./views/ConfirmBasket";
+import PaymentPage from "./views/Payment";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "/confirm-basket",
         element: <ConfirmBasketPage />,
+      },
+      {
+        path: "/payment",
+        element: <PaymentPage />,
       },
     ]
   },
@@ -83,7 +89,9 @@ enableMocking().then(() => {
             <KeyboardProvider>
               <ProductsProvider>
                 <BasketProvider>
-                  <RouterProvider router={router} />
+                  <CampaignProvider>
+                    <RouterProvider router={router} />
+                  </CampaignProvider>
                 </BasketProvider>
               </ProductsProvider>
             </KeyboardProvider>

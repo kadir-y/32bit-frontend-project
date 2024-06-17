@@ -1,5 +1,5 @@
 import { http, HttpResponse, delay } from 'msw'
-import products from './products.json'
+import productsJSON from './products.json'
 import queryString from "query-string";
 import url from "url";
 
@@ -32,7 +32,7 @@ export const handlers = [
   http.get(baseUrl + "/products", async ({ request }) => {
     const query = url.parse(request.url).query;
     let { page, limit, search, sort, startWith, category } = queryString.parse(query);
-    let filteredData = products;
+    let filteredData = productsJSON.products;
     if (Boolean(startWith)) {
       filteredData = filteredData.filter(p => {
         const title = p.title.toLocaleLowerCase();

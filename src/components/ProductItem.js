@@ -4,18 +4,25 @@ import {
   Typography,
   Box
 } from "@mui/material";
-import addTaxToUnitPrice from "../libs/addTaxToUnitPrice";
+import priceNormalizer from "../libs/priceNormalizer";
 
 const TypographyStyle = {
   whiteSpace: "nowrap",
   textOverflow: "ellipsis",
-  overflow: "hidden"
+  overflow: "hidden",
+  maxWidth: "calc(50% - 1rem)"
 }
 
-export default function ProductItem({ product, selectedProduct, onClick: handleClick }) {
+export default function ProductItem({ product, selected, onClick: handleClick }) {
+  const priceWithTaxes = priceNormalizer(product.priceWithTaxes);
+  const totalPrice = priceNormalizer(product.totalPrice);
+  const unitPrice = priceNormalizer(product.price);
+  const taxesText = product.taxes
+    .map(tax => `${tax.name} ${tax.amount}%`)
+    .join(" ");
   return (
     <ListItemButton
-      selected={selectedProduct.id === product.id}
+      selected={selected}
       onClick={e => handleClick(e, product)}
     >
       <ListItemText>
@@ -24,20 +31,13 @@ export default function ProductItem({ product, selectedProduct, onClick: handleC
             component="span"
             variant="body2"
             sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)" }}
-          >{ product.title }</Typography>
+          >{product.title}</Typography>
           <Typography 
             component="span"
             variant="subtitle2"
             sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)", fontSize: "0.75rem" }}
-          >
-            {
-              ( 
-                `${product.price}$ and ` +
-                (product.kdv ? `%${product.kdv} KDV` : "") +
-                (product.otv ? ` %${product.otv} ÖTV` : "") +
-                (product.mtv ? ` %${product.mtv} MTV` : "")
-              ).trim()
-            }
+          > 
+            {`${unitPrice}$ and ${taxesText}`}
           </Typography>
         </Box>
         <Box sx={{ display: "flex", flexWrap: 1, justifyContent: "space-between" }}>
@@ -49,14 +49,14 @@ export default function ProductItem({ product, selectedProduct, onClick: handleC
           <Typography 
             component="span"
             variant="subtitle2"
-            sx={{ ...TypographyStyle, maxWidth: "calc(50% - 1rem)", fontSize: "0.8rem"  }}
-          >{product.measure} {product.unit === "mass" ? "kg" : "piece" } x {addTaxToUnitPrice(product)}$</Typography>
+            sx={{ ...TypographyStyle, fontSize: "0.8rem"  }}
+          >{product.measure} {product.unit === "mass" ? "kg" : "pieces" } x {priceWithTaxes}$</Typography>
         </Box>
         <Typography 
           component="div"
           variant="subtitle2"
-          sx={{ ...TypographyStyle, textAlign: "right", fontSize: "0.85rem"}}
-        >= {parseFloat(addTaxToUnitPrice(product) * product.measure).toFixed(2)}$</Typography>
+          sx={{ ...TypographyStyle, maxWidth: "100%", textAlign: "right", fontSize: "0.85rem"}}
+        >= {totalPrice}$</Typography>
       </ListItemText>
     </ListItemButton>
   );

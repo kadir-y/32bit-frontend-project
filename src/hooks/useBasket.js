@@ -1,35 +1,59 @@
 import { createContext, useContext, useReducer } from "react";
 
-const BasketContext = createContext(null);
-const BasketDispatchContext = createContext(null);
+
+const BasketItemsContext = createContext(null);
+const BasketItemsDispatchContext = createContext(null);
+const BasketSummaryContext = createContext(null);
+const BasketSummaryDispatchContext = createContext(null);
+
+const initialSummaryObj = {
+  subtotalPrice: 0,
+  totalPrice: 0
+}
 
 export function BasketProvider({ children }) {
-  const [basket, dispatch] = useReducer(basketReducer, []);
+  const [basketItems, basketItemsDispatch] = useReducer(basketItemsReducer, []);
+  const [basketSummary, basketSummaryDispatch] = useReducer(basketSummaryReducer, initialSummaryObj);
 
   return (
-    <BasketContext.Provider value={basket}>
-      <BasketDispatchContext.Provider value={dispatch}>
-        {children}
-      </BasketDispatchContext.Provider>
-    </BasketContext.Provider>
+    <BasketSummaryContext.Provider value={basketSummary}>
+      <BasketSummaryDispatchContext.Provider value={basketSummaryDispatch}>
+        <BasketItemsContext.Provider value={basketItems}>
+          <BasketItemsDispatchContext.Provider value={basketItemsDispatch}>
+            {children}
+          </BasketItemsDispatchContext.Provider>
+        </BasketItemsContext.Provider>
+      </BasketSummaryDispatchContext.Provider>
+    </BasketSummaryContext.Provider>
   );
 }
 
-export function useBasketDispatch() {
-  return useContext(BasketDispatchContext);
+export function useBasketItemsDispatch() {
+  return useContext(BasketItemsDispatchContext);
 }
 
-export function useBasket() {
-  return useContext(BasketContext);
+export function useBasketItems() {
+  return useContext(BasketItemsContext);
 }
 
-function basketReducer(basket, action) {
+export function useBasketSummaryDispatch() {
+  return useContext(BasketSummaryDispatchContext);
+}
+
+export function useBasketSummary() {
+  return useContext(BasketSummaryContext);
+}
+
+function basketItemsReducer(basketItems, action) {
   switch (action.type) {
     case "added": {
-      return [ ...basket, action.product ];
+      return [ 
+        ...basketItems, 
+        {...action.product}
+      ];
     }
     case "changed": {
-      return basket.map(p => {
+      return basketItems.map(p => {
         if (p.id === action.product.id) {
           return action.product;
         } else {
@@ -38,10 +62,21 @@ function basketReducer(basket, action) {
       });
     }
     case "deleted": {
-      return basket.filter(p => p.id !== action.product.id);
+      return basketItems.filter(p => p.id !== action.product.id);
     }
     case "cleared": {
       return [];
+    }
+    default: {
+      throw Error("Unknown action: " + action.type);
+    }
+  }
+}
+
+function basketSummaryReducer(basketSummary, action) {
+  switch (action.type) {
+    case "setted": {
+      return { ...basketSummary, ...action.set };
     }
     default: {
       throw Error("Unknown action: " + action.type);

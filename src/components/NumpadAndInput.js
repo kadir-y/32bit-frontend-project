@@ -39,22 +39,20 @@ const normalizeButton = {
 
 export default function NumpadAndInput(props) {
   const onChange = props.onChange ? props.onChange : () => { };
-  const AdditionalButton = props.AdditionalButton;
-  const { unit, measure } = props;
+  const { AdditionalButton, selectedProduct } = props;
+  const { measure, unit } = selectedProduct;
   const [value, setValue] = useState();
   const digit = useRef(0);
   
   useEffect(() => {
-    digit.current = getMeasureDigit(unit);
+    digit.current = getMeasureDigit(selectedProduct.unit);
     setValue(parseFloat(0).toFixed(digit.current));
-  }, [unit]);
+    setValue(parseFloat(selectedProduct.measure).toFixed(digit.current));
+  }, [selectedProduct]);
 
-  useEffect(() => {
-    setValue(measure);
-  }, [measure]);
-  
+
   function handleChange(keyValue) {
-    if (!Boolean(unit) || !Boolean(measure)) return;
+    if (!Boolean(unit) || (!Boolean(measure) && measure !== 0)) return;
     let val = parseInt(parseFloat(value) * Math.pow(10, digit.current));
     if (keyValue === "decrease" && val === 0) return;
     if (keyValue === "backspace") {
@@ -85,7 +83,7 @@ export default function NumpadAndInput(props) {
         my: 1,
         px: 1.5,
         textAlign: "right"
-      }}>{(Boolean(unit) && Boolean(measure)) && `${value} ${unitSymbols[unit]}`}</Box>
+      }}>{(Boolean(unit) && (Boolean(measure) || measure === 0)) && `${value} ${unitSymbols[unit]}`}</Box>
       <Grid container>
         <Grid item xs={7} sx={{ pr: 1 }}>
           <Box sx={{ display: "flex", mb: 0.5 }}>

@@ -16,8 +16,7 @@ import {
 import {
   ArrowBackIosNew as  ArrowBackIosNewIcon
 } from '@mui/icons-material';
-import { useTranslation } from "react-i18next";
-import { useBasket, useBasketDispatch } from "../hooks/useBasket"; 
+import { useTranslation } from "react-i18next"; 
 import { useToggle } from "../hooks/useToggle";
 import { useFormInput } from "../hooks/useFormInput";
 import TextInput from "./TextInput";
@@ -27,7 +26,14 @@ import CategoryCard from "./CategoryCard";
 import kitchenImage from "../assets/images/kitchen.jpg";
 import bookImage from "../assets/images/books.jpg";
 import beutyImage from "../assets/images/beuty.jpg";
-import getMeasureDigit from "../libs/getMeasureDigit";
+import addTaxesToPrice from "../libs/addTaxesToPrice";
+import { 
+  useBasketItems,
+  useBasketItemsDispatch,
+  useBasketSummary,
+  useBasketSummaryDispatch
+} from "../hooks/useBasket";
+import normalizeMass from "../libs/normalizeMass";
 
 const categories = [
   {
@@ -42,18 +48,20 @@ const categories = [
     category: "beauty",
     thumbnail: beutyImage
   }
-]
+];
 
-export default function ProductSearchSection({ setSelectedProduct, selectedProduct }) {
+export default function ProductSearchSection({ setSelectedProduct }) {
   const { t } = useTranslation("sales");
-  const basket = useBasket();
-  const basketDispatch = useBasketDispatch();
+  const basketItems = useBasketItems();
+  const basketItemsDispatch = useBasketItemsDispatch();
+  const basketSummary = useBasketSummary();
+  const basketSummaryDispatch = useBasketSummaryDispatch();
+  const [tabId, changeTab] = useState("1");
   const [startWith, setStartWith] = useState("");
   const [products1, setProducts1] = useState([]);
   const [products2, setProducts2] = useState([]);
   const [products3, setProducts3] = useState([]);
   const [isFetching, toggleIsFetching] = useToggle(false);
-  const [tabId, changeTab] = useState("1");
   const fetchCount = useRef(0);
   const {
     props: inputProps,
@@ -64,6 +72,7 @@ export default function ProductSearchSection({ setSelectedProduct, selectedProdu
     onChange: handleSearchInputChange
   });
 
+  // fetching products without barcode
   useEffect(() => {
     let ignore  = false;
     fetchProducts({ startWith: "", category: "groceries" })
@@ -76,22 +85,31 @@ export default function ProductSearchSection({ setSelectedProduct, selectedProdu
   }, []);
 
   function addToBasket(product) {
-    const unit = product.unit;
-    const indexOf = basket.findIndex(p => p.id === product.id);
+    const { unit, price, taxes } = product;
+    const indexOf = basketItems.findIndex(p => p.id === product.id);
+    if (indexOf !== -1 && unit === "mass") return;
     if (indexOf === -1) {
-      product.measure = unit === "piece" ? 1 : parseFloat(0).toFixed(getMeasureDigit(unit));
+      const unitPrice = addTaxesToPrice(price, taxes);
+      const measure = unit === "piece" ? 1 : normalizeMass(0);
+      product.priceWithTaxes = unitPrice;
+      product.totalPrice = unitPrice * measure;
+      product.measure = measure; 
     } else {
-      const oldProduct = basket.find(p => p.id === product.id);
-      if (unit === "piece") {
-        product.measure = parseInt(oldProduct.measure) + 1;
-      } else {
-        product.measure = oldProduct.measure;
-      }
+      const oldProduct = basketItems.find(p => p.id === product.id);
+      product.measure = oldProduct.measure + 1;
+      product.totalPrice += oldProduct.priceWithTaxes;
     }
-    basketDispatch({
+    const subtotalPrice = basketSummary.subtotalPrice + product.priceWithTaxes*product.measure;
+    const totalPrice = basketSummary.totalPrice + product.priceWithTaxes*product.measure;
+    basketSummaryDispatch( {
+      type: "setted",
+      totalPrice,
+      subtotalPrice
+    });
+    basketItemsDispatch({
       type: indexOf === -1 ? "added" : "changed", 
       product
-    })
+    });
     setSearchInputValue("");
     setSelectedProduct(product);
   };

@@ -4,7 +4,8 @@ import {
   CardContent,
   Typography
 } from "@mui/material";
-import addTaxToUnitPrice from "../libs/addTaxToUnitPrice";
+import addTaxesToPrice from "../libs/addTaxesToPrice";
+import priceNormalizer from "../libs/priceNormalizer";
 
 const TypographyStyle = {
   whiteSpace: "nowrap",
@@ -12,16 +13,18 @@ const TypographyStyle = {
   overflow: "hidden"
 }
 
-export default function ProductCard({ product, onClick: handleClick }) {
-  const { title, thumbnail, barcode, category } = product;
-
+export default function ProductCard({ product, onClick: handleClick, sx }) {
+  const { title, thumbnail, barcode, category, price, taxes } = product;
+  const priceWithTaxes = priceNormalizer(addTaxesToPrice(price, taxes));
+  sx = Boolean(sx) ? sx : {};
   return(
     <Card key={title} sx={{
       width: "10rem",
       cursor: "pointer",
       "&:hover": { transform: "translateY(-1rem)" },
       transition: "transform 0.3s",
-      mb: 2
+      mb: 2,
+      ...sx
     }}
     onClick={handleClick}
     >
@@ -52,7 +55,7 @@ export default function ProductCard({ product, onClick: handleClick }) {
             variant="body2"
             color="text.secondary"
             sx={{ ...TypographyStyle }}
-          >{addTaxToUnitPrice(product)}$</Typography>
+          >{priceWithTaxes}$</Typography>
         </CardContent>
       </CardMedia>
     </Card>

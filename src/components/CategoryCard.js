@@ -9,7 +9,7 @@ const TypographyStyle = {
   whiteSpace: "nowrap",
   textOverflow: "ellipsis",
   overflow: "hidden"
-}
+};
 
 export default function CategoryCard({ category, thumbnail, onClick: handleClick }) {
   return(

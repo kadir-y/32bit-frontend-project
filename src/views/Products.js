@@ -7,9 +7,6 @@ import {
   MenuItem,
   Box,
   Typography,
-  Card,
-  CardMedia,
-  CardContent,
   LinearProgress
 } from "@mui/material";
 import { useProducts } from "../hooks/useProducts";
@@ -18,7 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import { useFormInput } from "../hooks/useFormInput"
 import { useTranslation } from "react-i18next";
 import axios from "axios";
-import addTaxToUnitPrice from "../libs/addTaxToUnitPrice";
+import ProductCard from "../components/ProductCard";
 import TextInput from "../components/TextInput";
 import AlphabeticSearchBar from "../components/AlphabeticSearchBar";
 import BasicTitleBar from "../components/BasicTitleBar";
@@ -224,34 +221,15 @@ function Products () {
           width: "90%"
         }}
       >
-        {
-          products.map(p => {
-            return (
-            <Card sx={{ width: "15rem", mb: 2, mx: 1, float: "left" }} key={p.id}>
-              <CardMedia 
-                component="img"
-                alt={p.title}
-                height="150"
-                src={p.thumbnail}
-              ></CardMedia>  
-              <CardContent>
-              <Typography sx={{  
-                  width: "100%",
-                  overflow: "hidden !important",
-                  whiteSpace: "nowrap",
-                  textOverflow: "ellipsis",
-                  mb: 0
-                }} 
-                gutterBottom 
-                variant="h6" 
-                component="div"
-              >{p.title}</Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ textTransform: "capitalize", mb: 1.5 }}>{p.category}</Typography>
-              <Typography variant="body2" color="text.secondary">{addTaxToUnitPrice(p)} $</Typography>
-              </CardContent>
-            </Card>);
-          })
-        }
+        {products.map(product => 
+          <ProductCard 
+            product={product}
+            sx={{
+              mb: 2,
+              mx: 0.75,
+              width: "12rem"
+            }}
+          />)}
       </Box>
       <Box>
         <Paper
