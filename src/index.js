@@ -11,6 +11,7 @@ import { AuthProvider } from "./hooks/useAuth";
 import { ProductsProvider } from "./hooks/useProducts";
 import { BasketProvider } from "./hooks/useBasket";
 import { CampaignProvider } from "./hooks/useCampaign";
+import { CustomerInfoProvider } from "./hooks/useCustomerInfo";
 import i18n from "./i18n"; // Configuration of i18next
 import reportWebVitals from "./reportWebVitals";
 
@@ -85,17 +86,19 @@ enableMocking().then(() => {
     <React.StrictMode>
       <I18nextProvider i18n={i18n}>
         <AuthProvider>
-          <ColorModeProvider>
-            <KeyboardProvider>
-              <ProductsProvider>
-                <BasketProvider>
-                  <CampaignProvider>
-                    <RouterProvider router={router} />
-                  </CampaignProvider>
-                </BasketProvider>
-              </ProductsProvider>
-            </KeyboardProvider>
-          </ColorModeProvider>
+          <CustomerInfoProvider>
+            <ColorModeProvider>
+              <KeyboardProvider>
+                <ProductsProvider>
+                  <BasketProvider>
+                    <CampaignProvider>
+                      <RouterProvider router={router} />
+                    </CampaignProvider>
+                  </BasketProvider>
+                </ProductsProvider>
+              </KeyboardProvider>
+            </ColorModeProvider>
+          </CustomerInfoProvider>
         </AuthProvider>
       </I18nextProvider>
     </React.StrictMode>

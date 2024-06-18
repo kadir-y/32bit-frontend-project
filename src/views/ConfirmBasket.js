@@ -19,92 +19,35 @@ import {
 } from '@mui/icons-material';
 import { useTranslation } from "react-i18next";
 import { useBasketItems, useBasketItemsDispatch } from "../hooks/useBasket";
-import { useCampaign } from "../hooks/useCampaign";
 import { useNavigate } from "react-router-dom";
 import { useFormInput } from "../hooks/useFormInput";
+import { useCustomerInfo } from "../hooks/useCustomerInfo";
 import ProductList from "../components/ProductList";
 import BasicTitleBar from "../components/BasicTitleBar";
 import NumpadAndInput from "../components/NumpadAndInput";
 import Footer from "../components/layout/Footer";
 import TextInput from "../components/TextInput";
-import addTaxesToPrice from "../libs/addTaxesToPrice";  
-import makeDiscount from "../libs/makeDiscount";  
+import PriceSummary from "../components/PriceSummary";
+import sumArray from "../libs/sumArray";
 
-function calcSubtotalPrice(basketItems) {
-  let total = 0;
-  basketItems.forEach(i => {
-    total += addTaxesToPrice(i) * i.measure;
-  });
-  return total.toFixed(2);
+const heightStyle = {
+  height: "calc(100vh - 9.5rem)"
 };
-
-function calcTotalPrice(basketItems) {
-  let total = 0;
-  basketItems.forEach(i => {
-    console.log(i)
-    total += makeDiscount(addTaxesToPrice(i) * i.measure, i.discount);
-  });
-  return total.toFixed(2);
-};
-
-function PriceSummary () {
-  const { t } = useTranslation("sales");
-  const basketItems = useBasketItems();
-  const subtotalPrice = calcSubtotalPrice(basketItems);
-  const totalPrice = calcTotalPrice(basketItems);
-  return (
-    <>
-      <Box sx={{
-        width: "100%",
-        px: 2,
-        py: 1,
-        bgcolor: "info.main",
-        color: "white"
-      }}>
-        <Box sx={{ display: "flex" }}>
-          <Typography component="span" variant="body1" sx={{ flexGrow: 1 }}>
-            {t("subtotal")} 
-          </Typography>
-          <Typography component="span" variant="body1">
-            {subtotalPrice} $
-          </Typography>
-        </Box>
-      </Box>
-      <Box sx={{
-        width: "100%",
-        px: 2,
-        pb: 1,
-        pt: 1,
-        bgcolor: "primary.main",
-        color: "#fff"
-      }}>
-        <Box sx={{ display: "flex" }}>
-          <Typography component="span" variant="body1" sx={{ flexGrow: 1 }}>
-            {t("totalPrice")}
-          </Typography>
-          <Typography component="span" variant="body1">
-            {totalPrice} $
-          </Typography>
-        </Box>
-      </Box>
-    </>
-  );
-}
 
 export default function ConfirmBasket() {
   const { t } = useTranslation("sales");
   const navigate = useNavigate();
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [selectedProduct, setSelectedProduct] = useState({});
-  const [invoicePreference, setInvoicePreference] = useState("normal");
   const basketItems = useBasketItems();
   const basketItemsDispatch = useBasketItemsDispatch();
-  const { applyCampaign, campaigns } = useCampaign();
+  const { customerInfo, setCustomerInfo } = useCustomerInfo();
   const {
     props: customerEmailProps
   } = useFormInput({
     type: "text",
     label: t("customerEmailPlaceholder"),
+    onChange: handleCustomerEmailChange
   });
 
   function handleSnackbarClose() {
@@ -131,42 +74,31 @@ export default function ConfirmBasket() {
   function handleDeleteProduct() {
     basketItemsDispatch({ type: "deleted", product: { id: selectedProduct.id }});
   };
-  function handleNumpadChange(value) {
+  function handleNumpadChange(measure) {
+    const totalPrice = selectedProduct.priceWithTaxes * measure;
     basketItemsDispatch({
       type: "changed",
       product: {
         ...selectedProduct,
-        measure: value
+        measure,
+        totalPrice
       }
     });
   };
-  function handleCampaignButtonClick(campaign) {
-    applyCampaign(campaign);
-    basketItems.forEach(i => {
-      if (i.category === "groceries") {
-        basketItemsDispatch({
-          type: "changed",
-          product: {
-            ...i,
-            discount: 20,
-          }
-        });
-      }
+  function handleReceiptPreferenceChange(value) {
+    setCustomerInfo({
+      ...customerInfo,
+      receiptPreference: value
     });
   };
-  function campaignIsApplicable(campaign) {
-    console.log(campaigns);
-    if (campaigns.includes(campaign)) return false;
-    let total = 0;
-    basketItems.forEach(i => {
-      if (i.category === "groceries") {
-        total += addTaxesToPrice(i) * i.measure;
-      }
+  function handleCustomerEmailChange(e) {
+    setCustomerInfo({
+      ...customerInfo,
+      email: e.target.value
     });
-    console.log(total);
-    return total >= 20;
-  }
-  
+  };
+  const totalPrice = sumArray(basketItems, "totalPrice")
+  const subtotalPrice = sumArray(basketItems, "totalPrice")
   return (
     <>
       <Snackbar
@@ -199,73 +131,96 @@ export default function ConfirmBasket() {
           }
         />
       </Box>
-      <Grid container sx={{
-        height: "calc(100vh - 8.5rem)",
-        overflow: "hidden",
-        py: 1.5,
-        px: 2
-      }}>
-        <Grid item xs={12} md={4} sx={{ pr: { md: 1 } }}>
+      <Grid container sx={{ px: 2, paddingTop: "0.5rem", paddingBottom: "0.5rem" }}>
+        <Grid item xs={12} md={4} sx={{ ...heightStyle }}>
           <Paper
-            sx={{ 
-              width: "100%",
-              height: "auto",
+            sx={{
               minHeight: { md: "100%" },
               overflow: "hidden",
               display: "flex",
               alignItems: "center",
-              flexDirection: "column"
+              flexDirection: "column",
+              position: "relative"
             }}
           >
-            <Box sx={{ mt: 1, mb: 6 }}>
-              <Button fullWidth size="large" variant="contained" sx={{ mb: 0.5 }}>Hadi Cüzdan</Button>
-              <Button fullWidth size="large" variant="contained" sx={{ mb: 1 }}>Tombank Cüzdan</Button>
-              <Button fullWidth size="large" variant="contained" color="warning">E Fatura</Button>
-            </Box>
-            <Box sx={{ mb: 6 }}>
+            <Box sx={{ 
+              width: "100%",
+              pt: 3, px: 2, mb: 6
+              }}>
+              <Typography 
+                sx={{ mb: 1 }}
+                component="div"
+                variant="subtitle2"
+              >User Email</Typography>
               <TextInput 
                 id="customer-email"
-                disabled={invoicePreference === "normal"}
+                disabled={customerInfo.receiptPreference === "normal"}
                 sx={{ mb: 1 }}
                 { ...customerEmailProps }
               />
               <ButtonGroup fullWidth size="small" aria-label="User receipt preference">
                 <Button 
-                  variant={invoicePreference === "normal" ? "contained" : "outlined"}
-                  onClick={() => setInvoicePreference("normal")}
+                  variant={customerInfo.receiptPreference === "normal" ? "contained" : "outlined"}
+                  onClick={() => handleReceiptPreferenceChange("normal")}
                   color="error"
                 >Normal Fatura</Button>
                 <Button 
-                  variant={invoicePreference === "einvoice" ? "contained" : "outlined"}
-                  onClick={() => setInvoicePreference("einvoice")}
+                  variant={customerInfo.receiptPreference === "ereceipt" ? "contained" : "outlined"}
+                  onClick={() => handleReceiptPreferenceChange("ereceipt")}
                   color="success"
                 >E-Fatura</Button>
               </ButtonGroup>
             </Box>
-            <Box sx={{ width: "100%", height: "10rem", overflow: "auto" }}>
+            <Box sx={{ 
+              width: "100%",
+              height: "calc(100% - 12rem)",
+              position: "absolute",
+              overflow: "auto",
+              bottom: 0
+            }}>
               <List subheader={
                 <ListSubheader>Uygulanabilir Kampanyalar</ListSubheader>
               }> 
                   {
-                    campaignIsApplicable("groceries20") ?
+                    true ?
                     <>
-                      <ListItemButton onClick={() => handleCampaignButtonClick("groceries20")}>
+                      <ListItemButton>
                         <ListItemText primary="Groceries 20%" secondary="20$ ve üzeri" />
                       </ListItemButton>
                       <Divider />  
+                      <ListItemButton>
+                        <ListItemText primary="Groceries 20%" secondary="20$ ve üzeri" />
+                      </ListItemButton>
+                      <Divider />  
+                      <ListItemButton>
+                        <ListItemText primary="Groceries 20%" secondary="20$ ve üzeri" />
+                      </ListItemButton>
+                      <Divider />  
+                      <ListItemButton>
+                        <ListItemText primary="Groceries 20%" secondary="20$ ve üzeri" />
+                      </ListItemButton>
+                      <Divider />  
+                      <ListItemButton>
+                        <ListItemText primary="Groceries 20%" secondary="20$ ve üzeri" />
+                      </ListItemButton>
+                      <Divider />  
+                      <ListItemButton>
+                        <ListItemText primary="Groceries 20%" secondary="20$ ve üzeri" />
+                      </ListItemButton>
+                      <Divider />  
+                      <ListItemButton>
+                        <ListItemText primary="Groceries 20%" secondary="20$ ve üzeri" />
+                      </ListItemButton>
                     </> : 
                     <Typography variant="subtitle2" sx={{ px: 2 }}>Uygulanbilir bir kampanya bulunamadı</Typography>
                   }
                 </List>
             </Box>
-
           </Paper>
         </Grid>
-        <Grid item xs={12} md={4} lg={5} sx={{ px: { md: 1 } }}>
+        <Grid item xs={12} md={4} lg={5} sx={{ ...heightStyle, px: { md: 2 }  }}>
           <Paper
             sx={{
-              width: "100%",
-              height: "auto",
               minHeight: { md: "100%" },
               position: "relative",
               overflow: "hidden"
@@ -289,15 +244,16 @@ export default function ConfirmBasket() {
               bottom: 0,
               width: "100%",
             }}>
-              <PriceSummary />
+              <PriceSummary 
+                totalPrice={totalPrice}
+                subtotalPrice={subtotalPrice}
+              />
             </Box>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={4} lg={3} sx={{ pl: { md: 1 } }}>
+        <Grid item xs={12} md={4} lg={3} sx={{ ...heightStyle }}>
           <Paper
             sx={{
-              width: "100%",
-              height: "auto",
               minHeight: { md: "100%" },
               display: "flex",
               alignItems: "center",
@@ -328,8 +284,7 @@ export default function ConfirmBasket() {
               <Box>
                 <NumpadAndInput 
                   onChange={handleNumpadChange}
-                  unit={selectedProduct.unit}
-                  measure={selectedProduct.measure} 
+                  selectedProduct={selectedProduct}
                   AdditionalButton={
                     <Button fullWidth
                       variant="contained"
@@ -344,7 +299,7 @@ export default function ConfirmBasket() {
           </Paper>
         </Grid>
       </Grid> 
-      <Box sx={{ width: "calc(100% - 9.5rem)", px: 2, pt: 1 }}>
+      <Box sx={{ width: "calc(100% - 9.5rem)", px: 2 }}>
         <Footer />
       </Box>
     </>

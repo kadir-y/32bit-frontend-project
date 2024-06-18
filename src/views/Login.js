@@ -6,13 +6,9 @@ import {
 import LoadingButton from "../components/LoadingButton";
 import PasswordInput from "../components/PasswordInput";
 import TextInput from "../components/TextInput";
-
 import { AccountCircle } from "@mui/icons-material";
-
 import logo from "../assets/logo.png";
-
 import "../stylesheets/Login.css";
-
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useFormInput } from "../hooks/useFormInput";
@@ -26,9 +22,6 @@ import getErrorStatusCode from "../libs/getErrorStatusCode";
 import { useEffect, useState } from "react";
 
 function Login () {
-  function fetchStoreStatus() {
-    return axios.get("/");
-  }
   const { t } = useTranslation("login");
   const [loading, setLoading] = useToggle(false);
   const [version, setVersion] = useState();

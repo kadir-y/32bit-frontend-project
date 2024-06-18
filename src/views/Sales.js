@@ -27,7 +27,6 @@ import {
 const heightStyle = {
   height: "calc(100vh - 9.5rem)"
 }
-
 export default function SalesPage() {
   const { t } = useTranslation("sales");
   const [selectedProduct, setSelectedProduct] = useState({});
@@ -151,7 +150,6 @@ export default function SalesPage() {
           <Paper
             sx={{
               width: "100%",
-              height: "auto",
               minHeight: { md: "100%" },
               display: "flex",
               alignItems: "center",
@@ -197,7 +195,7 @@ export default function SalesPage() {
           </Paper>
         </Grid>
       </Grid> 
-      <Box sx={{ width: "calc(100% - 9.5rem)", px: 2, pt: 1 }}>
+      <Box sx={{ width: "calc(100% - 9.5rem)", px: 2 }}>
         <Footer />
       </Box>
     </>
