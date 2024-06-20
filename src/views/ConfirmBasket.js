@@ -34,6 +34,15 @@ const heightStyle = {
   height: "calc(100vh - 9.5rem)"
 };
 
+const categories = [
+  {
+    title: "Grocery %20",
+    description: "200$ ve üzeri alışveriş",
+    condition: "totalPrice>100,category=groceries",
+    amount: "%20"
+  }
+];
+
 export default function ConfirmBasket() {
   const { t } = useTranslation("sales");
   const navigate = useNavigate();
@@ -183,36 +192,15 @@ export default function ConfirmBasket() {
               }> 
                   {
                     true ?
-                    <>
-                      <ListItemButton>
-                        <ListItemText primary="Groceries 20%" secondary="20$ ve üzeri" />
-                      </ListItemButton>
-                      <Divider />  
-                      <ListItemButton>
-                        <ListItemText primary="Groceries 20%" secondary="20$ ve üzeri" />
-                      </ListItemButton>
-                      <Divider />  
-                      <ListItemButton>
-                        <ListItemText primary="Groceries 20%" secondary="20$ ve üzeri" />
-                      </ListItemButton>
-                      <Divider />  
-                      <ListItemButton>
-                        <ListItemText primary="Groceries 20%" secondary="20$ ve üzeri" />
-                      </ListItemButton>
-                      <Divider />  
-                      <ListItemButton>
-                        <ListItemText primary="Groceries 20%" secondary="20$ ve üzeri" />
-                      </ListItemButton>
-                      <Divider />  
-                      <ListItemButton>
-                        <ListItemText primary="Groceries 20%" secondary="20$ ve üzeri" />
-                      </ListItemButton>
-                      <Divider />  
-                      <ListItemButton>
-                        <ListItemText primary="Groceries 20%" secondary="20$ ve üzeri" />
-                      </ListItemButton>
-                    </> : 
-                    <Typography variant="subtitle2" sx={{ px: 2 }}>Uygulanbilir bir kampanya bulunamadı</Typography>
+                      categories.map((category, index) =>
+                        <Box key={index}>
+                          <Divider />
+                          <ListItemButton>
+                            <ListItemText primary={category.title} secondary={category.description} />
+                          </ListItemButton>
+                        </Box>
+                      )
+                    : <Typography variant="subtitle2" sx={{ px: 2 }}>Uygulanbilir bir kampanya bulunamadı</Typography>
                   }
                 </List>
             </Box>
