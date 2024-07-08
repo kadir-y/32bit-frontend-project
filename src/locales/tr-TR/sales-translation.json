@@ -19,5 +19,13 @@
   "tab2Label": "Products Without Barcode",
   "tab3Label": "Products",
   "searchInputPlaceholder": "Product entry from keyboard",
-  "backward": "Backward"
+  "backward": "Backward",
+  "customerEmailPlaceholder": "Customer Email",
+  "receiptPreferenceLabel": "Receipt Preference Form",
+  "defaultReceipt": "Normal Receipt",
+  "digitalReceipt": "Digital Receipt",
+  "availableCampaignsNotFound": "No suitable campaigns found",
+  "campaignListHeader": "Campaigns",
+  "notApplicable": "Not applicable",
+  "applied": "Applied"
 }

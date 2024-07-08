@@ -39,6 +39,7 @@ import settingsRuRUTranslation from "./locales/ru-RU/settings-translation.json";
 import productsRuRUTranslation from "./locales/ru-RU/products-translation.json";
 import homeRuRUTranslation from "./locales/ru-RU/home-translation.json";
 
+
 // include translation files
 const resources = {
   "tr-TR": {

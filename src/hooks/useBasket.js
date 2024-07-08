@@ -16,15 +16,15 @@ export function BasketProvider({ children }) {
   const [basketSummary, basketSummaryDispatch] = useReducer(basketSummaryReducer, initialSummaryObj);
 
   return (
-    <BasketSummaryContext.Provider value={basketSummary}>
-      <BasketSummaryDispatchContext.Provider value={basketSummaryDispatch}>
-        <BasketItemsContext.Provider value={basketItems}>
-          <BasketItemsDispatchContext.Provider value={basketItemsDispatch}>
+    <BasketItemsContext.Provider value={basketItems}>
+      <BasketItemsDispatchContext.Provider value={basketItemsDispatch}>
+        <BasketSummaryContext.Provider value={basketSummary}>
+          <BasketSummaryDispatchContext.Provider value={basketSummaryDispatch}>
             {children}
-          </BasketItemsDispatchContext.Provider>
-        </BasketItemsContext.Provider>
-      </BasketSummaryDispatchContext.Provider>
-    </BasketSummaryContext.Provider>
+          </BasketSummaryDispatchContext.Provider>
+        </BasketSummaryContext.Provider>
+      </BasketItemsDispatchContext.Provider>
+    </BasketItemsContext.Provider>
   );
 }
 
@@ -47,9 +47,9 @@ export function useBasketSummary() {
 function basketItemsReducer(basketItems, action) {
   switch (action.type) {
     case "added": {
-      return [ 
-        ...basketItems, 
-        {...action.product}
+      return [
+        ...basketItems,
+        { ...action.product }
       ];
     }
     case "changed": {
