@@ -7,12 +7,7 @@ import {
   Typography,
   Snackbar,
   Alert,
-  ButtonGroup,
-  ListSubheader,
-  List,
-  ListItemText,
-  ListItemButton,
-  Divider
+  ButtonGroup
 } from "@mui/material";
 import {
   ManageSearchOutlined as ManageSearchOutlinedIcon
@@ -28,20 +23,12 @@ import NumpadAndInput from "../components/NumpadAndInput";
 import Footer from "../components/layout/Footer";
 import TextInput from "../components/TextInput";
 import PriceSummary from "../components/PriceSummary";
+import CampaignList from "../components/CampaignList";
 import sumArray from "../libs/sumArray";
 
 const heightStyle = {
   height: "calc(100vh - 9.5rem)"
 };
-
-const categories = [
-  {
-    title: "Grocery %20",
-    description: "200$ ve üzeri alışveriş",
-    condition: "totalPrice>100,category=groceries",
-    amount: "%20"
-  }
-];
 
 export default function ConfirmBasket() {
   const { t } = useTranslation("sales");
@@ -85,12 +72,14 @@ export default function ConfirmBasket() {
   };
   function handleNumpadChange(measure) {
     const totalPrice = selectedProduct.priceWithTaxes * measure;
+    const subtotalPrice = selectedProduct.priceWithTaxes * measure;
     basketItemsDispatch({
       type: "changed",
       product: {
         ...selectedProduct,
         measure,
-        totalPrice
+        totalPrice,
+        subtotalPrice
       }
     });
   };
@@ -106,8 +95,8 @@ export default function ConfirmBasket() {
       email: e.target.value
     });
   };
-  const totalPrice = sumArray(basketItems, "totalPrice")
-  const subtotalPrice = sumArray(basketItems, "totalPrice")
+  const totalPrice = sumArray(basketItems, "totalPrice");
+  const subtotalPrice = sumArray(basketItems, "subtotalPrice");
   return (
     <>
       <Snackbar
@@ -187,22 +176,7 @@ export default function ConfirmBasket() {
               overflow: "auto",
               bottom: 0
             }}>
-              <List subheader={
-                <ListSubheader>Uygulanabilir Kampanyalar</ListSubheader>
-              }> 
-                  {
-                    true ?
-                      categories.map((category, index) =>
-                        <Box key={index}>
-                          <Divider />
-                          <ListItemButton>
-                            <ListItemText primary={category.title} secondary={category.description} />
-                          </ListItemButton>
-                        </Box>
-                      )
-                    : <Typography variant="subtitle2" sx={{ px: 2 }}>Uygulanbilir bir kampanya bulunamadı</Typography>
-                  }
-                </List>
+              <CampaignList />
             </Box>
           </Paper>
         </Grid>

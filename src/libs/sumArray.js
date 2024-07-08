@@ -3,7 +3,7 @@ export default function sumArray(arr, field) {
   if (field.includes("*")) {
     const [f0, f1] = field.split("*")
     arr.forEach(item => {
-      sum += item[f0] * item[f1];
+      sum += (item[f0] * item[f1]);
     });
   } else {
     arr.forEach(item => {

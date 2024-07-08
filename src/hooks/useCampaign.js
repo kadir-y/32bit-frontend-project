@@ -5,14 +5,23 @@ const CampaignContext = createContext(null);
 export function CampaignProvider({ children }) {
   const [campaigns, setCampaigns] = useState([]);
 
-  function applyCampaign(campaign) {
-    console.log("appl")
-    setCampaigns([...campaigns, campaign]);
+  function addCampaign(campaign) {
+    setCampaigns([
+      ...campaigns,
+      campaign
+    ])
+  };
+  function removeCampaign(id) {
+    setCampaigns(campaigns.filter(c => c.id !== id))
+  };
+  function includes(id) {
+    return Boolean(campaigns.find(c => c.id === id));
   };
 
   const value = {
-    campaigns,
-    applyCampaign
+    addCampaign,
+    removeCampaign,
+    includes
   };
 
   return (
