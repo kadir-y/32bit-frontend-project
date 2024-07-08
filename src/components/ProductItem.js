@@ -5,18 +5,21 @@ import {
   Box
 } from "@mui/material";
 import priceNormalizer from "../libs/priceNormalizer";
+import makeDiscount from "../libs/makeDiscount";
 
 const TypographyStyle = {
   whiteSpace: "nowrap",
   textOverflow: "ellipsis",
   overflow: "hidden",
   maxWidth: "calc(50% - 1rem)"
-}
+};
 
 export default function ProductItem({ product, selected, onClick: handleClick }) {
   const priceWithTaxes = priceNormalizer(product.priceWithTaxes);
   const totalPrice = priceNormalizer(product.totalPrice);
   const unitPrice = priceNormalizer(product.price);
+  const discount = product.discount;
+  const discountedPrice = product.discount ? priceNormalizer(makeDiscount(priceWithTaxes, discount)) : 0;
   const taxesText = product.taxes
     .map(tax => `${tax.name} ${tax.amount}%`)
     .join(" ");
@@ -50,7 +53,17 @@ export default function ProductItem({ product, selected, onClick: handleClick })
             component="span"
             variant="subtitle2"
             sx={{ ...TypographyStyle, fontSize: "0.8rem"  }}
-          >{product.measure} {product.unit === "mass" ? "kg" : "pieces" } x {priceWithTaxes}$</Typography>
+          >{product.measure} {product.unit === "mass" ? "kg" : "pieces" } x&nbsp; 
+          { 
+            discount 
+            ? <>
+                <s>{priceWithTaxes}$</s>&nbsp;&nbsp; 
+                <Typography component="span" variant="subtitle2" color="#50B498">{discount}</Typography>
+                &nbsp;&nbsp;{discountedPrice}$
+              </> 
+            : <span>{priceWithTaxes}$</span>
+          }
+          </Typography>
         </Box>
         <Typography 
           component="div"

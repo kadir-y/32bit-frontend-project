@@ -57,17 +57,19 @@ export default function SalesPage() {
   };
   function handleNumpadChange(measure) {
     const totalPrice = selectedProduct.priceWithTaxes * measure;
+    const subtotalPrice = totalPrice;
     basketItemsDispatch({
       type: "changed",
       product: {
         ...selectedProduct,
         measure,
-        totalPrice
+        totalPrice,
+        subtotalPrice
       }
     });
   };
   const totalPrice = sumArray(basketItems, "totalPrice")
-  const subtotalPrice = sumArray(basketItems, "totalPrice")
+  const subtotalPrice = sumArray(basketItems, "subtotalPrice")
   return (
     <>
       <Snackbar

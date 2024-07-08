@@ -7,12 +7,7 @@ import {
   Typography,
   Snackbar,
   Alert,
-  ButtonGroup,
-  ListSubheader,
-  List,
-  ListItemText,
-  ListItemButton,
-  Divider
+  ButtonGroup
 } from "@mui/material";
 import {
   ManageSearchOutlined as ManageSearchOutlinedIcon
@@ -28,20 +23,12 @@ import NumpadAndInput from "../components/NumpadAndInput";
 import Footer from "../components/layout/Footer";
 import TextInput from "../components/TextInput";
 import PriceSummary from "../components/PriceSummary";
+import CampaignList from "../components/CampaignList";
 import sumArray from "../libs/sumArray";
 
 const heightStyle = {
   height: "calc(100vh - 9.5rem)"
 };
-
-const categories = [
-  {
-    title: "Grocery %20",
-    description: "200$ ve üzeri alışveriş",
-    condition: "totalPrice>100,category=groceries",
-    amount: "%20"
-  }
-];
 
 export default function ConfirmBasket() {
   const { t } = useTranslation("sales");
@@ -85,12 +72,14 @@ export default function ConfirmBasket() {
   };
   function handleNumpadChange(measure) {
     const totalPrice = selectedProduct.priceWithTaxes * measure;
+    const subtotalPrice = selectedProduct.priceWithTaxes * measure;
     basketItemsDispatch({
       type: "changed",
       product: {
         ...selectedProduct,
         measure,
-        totalPrice
+        totalPrice,
+        subtotalPrice
       }
     });
   };
@@ -106,8 +95,8 @@ export default function ConfirmBasket() {
       email: e.target.value
     });
   };
-  const totalPrice = sumArray(basketItems, "totalPrice")
-  const subtotalPrice = sumArray(basketItems, "totalPrice")
+  const totalPrice = sumArray(basketItems, "totalPrice");
+  const subtotalPrice = sumArray(basketItems, "subtotalPrice");
   return (
     <>
       <Snackbar
@@ -160,7 +149,7 @@ export default function ConfirmBasket() {
                 sx={{ mb: 1 }}
                 component="div"
                 variant="subtitle2"
-              >User Email</Typography>
+              >{t("receiptPreferenceLabel")}</Typography>
               <TextInput 
                 id="customer-email"
                 disabled={customerInfo.receiptPreference === "normal"}
@@ -172,12 +161,12 @@ export default function ConfirmBasket() {
                   variant={customerInfo.receiptPreference === "normal" ? "contained" : "outlined"}
                   onClick={() => handleReceiptPreferenceChange("normal")}
                   color="error"
-                >Normal Fatura</Button>
+                >{t("defaultReceipt")}</Button>
                 <Button 
                   variant={customerInfo.receiptPreference === "ereceipt" ? "contained" : "outlined"}
                   onClick={() => handleReceiptPreferenceChange("ereceipt")}
                   color="success"
-                >E-Fatura</Button>
+                >{t("digitalReceipt")}</Button>
               </ButtonGroup>
             </Box>
             <Box sx={{ 
@@ -186,24 +175,7 @@ export default function ConfirmBasket() {
               position: "absolute",
               overflow: "auto",
               bottom: 0
-            }}>
-              <List subheader={
-                <ListSubheader>Uygulanabilir Kampanyalar</ListSubheader>
-              }> 
-                  {
-                    true ?
-                      categories.map((category, index) =>
-                        <Box key={index}>
-                          <Divider />
-                          <ListItemButton>
-                            <ListItemText primary={category.title} secondary={category.description} />
-                          </ListItemButton>
-                        </Box>
-                      )
-                    : <Typography variant="subtitle2" sx={{ px: 2 }}>Uygulanbilir bir kampanya bulunamadı</Typography>
-                  }
-                </List>
-            </Box>
+            }}><CampaignList /></Box>
           </Paper>
         </Grid>
         <Grid item xs={12} md={4} lg={5} sx={{ ...heightStyle, px: { md: 2 }  }}>

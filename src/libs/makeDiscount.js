@@ -1,3 +1,7 @@
 export default function makeDiscount(price, discount) {
-  return discount ? price * (100 - discount) / 100 : price;
+  if (discount.includes("%")) {
+    return price * (100 - parseFloat(discount.replace("%", ""))) / 100;
+  } else {
+    return price - discount;
+  }
 };

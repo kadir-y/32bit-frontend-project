@@ -89,10 +89,12 @@ export default function ProductSearchSection({ setSelectedProduct }) {
       const measure = unit === "piece" ? 1 : normalizeMass(0);
       product.priceWithTaxes = unitPrice;
       product.totalPrice = unitPrice * measure;
+      product.subtotalPrice = unitPrice * measure;
       product.measure = measure; 
     } else {
       const oldProduct = basketItems.find(p => p.id === product.id);
       product.measure = oldProduct.measure + 1;
+      product.totalPrice += oldProduct.priceWithTaxes;
       product.totalPrice += oldProduct.priceWithTaxes;
     }
     basketItemsDispatch({
