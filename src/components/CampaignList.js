@@ -3,7 +3,9 @@ import {
   ListSubheader,
   Typography
 } from "@mui/material";
-import CampaignItem from "./CampaignItem"
+import { useTranslation } from "react-i18next";
+import CampaignItem from "./CampaignItem";
+
 
 const campaigns = [
   {
@@ -17,14 +19,15 @@ const campaigns = [
 ];
 
 export default function CampaignList () {
+  const { t } = useTranslation("sales");
   return (
     <List subheader={
-      <ListSubheader>Uygulanabilir Kampanyalar</ListSubheader>
+      <ListSubheader>{t("campaignListHeader")}</ListSubheader>
     }> 
       {
         campaigns.length > 0 ?
-        campaigns.map((campaign, index) => <CampaignItem key={index} campaign={campaign} />): 
-        <Typography variant="subtitle2" sx={{ px: 2 }}>Uygulanbilir bir kampanya bulunamadı</Typography>
+        campaigns.map((campaign, index) => <CampaignItem key={index} campaign={campaign} />) :
+        <Typography variant="subtitle2" sx={{ px: 2 }}>{t("availableCampaignsNotFound")}</Typography>
       }
     </List>
   )

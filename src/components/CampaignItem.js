@@ -5,6 +5,7 @@ import {
   ListItemText,
   Typography
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { useBasketItems, useBasketItemsDispatch } from "../hooks/useBasket";
 import { useCampaign } from "../hooks/useCampaign";
 import campaignIsAvailable from "../libs/campaignIsAvailable";
@@ -12,6 +13,7 @@ import makeDiscount from "../libs/makeDiscount";
 import { useEffect, useCallback, useRef } from "react";
 
 export default function CampaignItem ({ campaign }) {
+  const {t} = useTranslation("sales")
   const basketItems = useBasketItems();
   const basketItemsDispatch = useBasketItemsDispatch();
   const { addCampaign, removeCampaign, includes } = useCampaign();
@@ -50,6 +52,7 @@ export default function CampaignItem ({ campaign }) {
   
   /* dont split this block */
   function toggleCampaign() {
+    if (!isAvailable) return;
     if (isIncludes) {
       unapplyCampaign();
     } else {
@@ -70,16 +73,14 @@ export default function CampaignItem ({ campaign }) {
   }, [basketItems, isAvailable, isIncludes, unapplyCampaign]);
 
   return (
-    isAvailable &&
-    <Box onClick={toggleCampaign}>
+    <Box>
       <Divider />
-      <ListItemButton disabled={false}>
+      <ListItemButton sx={{ opacity: isAvailable ? 1 : 0.6 }} disabled={!isAvailable} onClick={toggleCampaign}>
         <ListItemText>
           <Typography component="div" variant="body1">
             {campaign.title}
-            { isIncludes &&
-              <i>&nbsp;&nbsp;(applied)</i>
-            }
+            { !isAvailable && <i>&nbsp;&nbsp;({t("notApplicable")})</i> }
+            { isIncludes && <i>&nbsp;&nbsp;({t("applied")})</i> }
           </Typography>
           <Typography component="div" variant="body2">{campaign.description}</Typography>
         </ListItemText>

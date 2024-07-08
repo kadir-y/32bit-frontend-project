@@ -149,7 +149,7 @@ export default function ConfirmBasket() {
                 sx={{ mb: 1 }}
                 component="div"
                 variant="subtitle2"
-              >User Email</Typography>
+              >{t("receiptPreferenceLabel")}</Typography>
               <TextInput 
                 id="customer-email"
                 disabled={customerInfo.receiptPreference === "normal"}
@@ -161,12 +161,12 @@ export default function ConfirmBasket() {
                   variant={customerInfo.receiptPreference === "normal" ? "contained" : "outlined"}
                   onClick={() => handleReceiptPreferenceChange("normal")}
                   color="error"
-                >Normal Fatura</Button>
+                >{t("defaultReceipt")}</Button>
                 <Button 
                   variant={customerInfo.receiptPreference === "ereceipt" ? "contained" : "outlined"}
                   onClick={() => handleReceiptPreferenceChange("ereceipt")}
                   color="success"
-                >E-Fatura</Button>
+                >{t("digitalReceipt")}</Button>
               </ButtonGroup>
             </Box>
             <Box sx={{ 
@@ -175,9 +175,7 @@ export default function ConfirmBasket() {
               position: "absolute",
               overflow: "auto",
               bottom: 0
-            }}>
-              <CampaignList />
-            </Box>
+            }}><CampaignList /></Box>
           </Paper>
         </Grid>
         <Grid item xs={12} md={4} lg={5} sx={{ ...heightStyle, px: { md: 2 }  }}>
