@@ -1,117 +1,85 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   Grid,
   Paper,
   Box,
   Button,
-  Typography,
   Snackbar,
-  Alert,
-  List,
-  ListItem,
-  ListSubheader,
-  Divider,
-  styled
+  Alert
 } from "@mui/material";
 import {
   ManageSearchOutlined as ManageSearchOutlinedIcon
 } from '@mui/icons-material';
 import { useTranslation } from "react-i18next";
-import { useBasketItems, useBasketItemsDispatch } from "../hooks/useBasket"; 
 import { useNavigate } from "react-router-dom";
+import { useToggle } from "../hooks/useToggle";
 import ProductList from "../components/ProductList";
 import BasicTitleBar from "../components/BasicTitleBar";
 import NumpadAndInput from "../components/NumpadAndInput";
+import PriceSummary from "../components/PriceSummary";
+import PaymentAmountDisplay from "../components/PaymentAmountDisplay";
+import ReceiptDiaolog from "../components/ReceiptDiaolog";
 import Footer from "../components/layout/Footer";
-import addTaxesToPrice from "../libs/addTaxesToPrice";  
+import sumArray from "../libs/sumArray"
+import {
+  useBasketItems,
+  useBasketItemsDispatch
+} from "../hooks/useBasket"; 
 
-function calcSubtotalPrice(basketItems) {
-  let total = 0;
-  basketItems.forEach(i => {
-    total += addTaxesToPrice(i) * i.measure;
-  });
-  return total.toFixed(2);
-};
-
-function PriceSummary () {
-  const { t } = useTranslation("sales");
-  const basketItems = useBasketItems();
-  const subtotalPrice = calcSubtotalPrice(basketItems);
-  return (
-    <>
-      <Box sx={{
-        width: "100%",
-        px: 2,
-        py: 1,
-        bgcolor: "info.main",
-        color: "white"
-      }}>
-        <Box sx={{ display: "flex" }}>
-          <Typography component="span" variant="body1" sx={{ flexGrow: 1 }}>
-            {t("subtotal")}
-          </Typography>
-          <Typography component="span" variant="body1">
-            {subtotalPrice} $
-          </Typography>
-        </Box>
-      </Box>
-      <Box sx={{
-        width: "100%",
-        px: 2,
-        pb: 1,
-        pt: 1,
-        bgcolor: "primary.main",
-        color: "#fff"
-      }}>
-        <Box sx={{ display: "flex" }}>
-          <Typography component="span" variant="body1" sx={{ flexGrow: 1 }}>
-            {t("totalPrice")}
-          </Typography>
-          <Typography component="span" variant="body1">
-            {subtotalPrice} $
-          </Typography>
-        </Box>
-      </Box>
-    </>
-  );
+const heightStyle = {
+  height: "calc(100vh - 9.5rem)"
 }
-
-export default function Payment() {
+export default function SalesPage() {
   const { t } = useTranslation("sales");
-  const navigate = useNavigate();
+  const [showReceiptDialog, setShowReceiptDialog] = useToggle();
   const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [selectedProduct, setSelectedProduct] = useState({});
-  const basketItems = useBasketItems();
   const basketItemsDispatch = useBasketItemsDispatch();
-
-  function handleSnackbarClose() {
-    setSnackbarMessage("");
-  };
-  function handlePayButtonClick() {
-    if (basketItems.length === 0) {
-      setSnackbarMessage("foo");
-      setTimeout(() => {
-        navigate("/sales"); 
-      }, 2000);
-    } else {
-      navigate("/checkout"); 
-    }
-  }
+  const basketItems = useBasketItems();
+  const navigate = useNavigate();
+  const totalPrice = sumArray(basketItems, "totalPrice");
+  const subtotalPrice = sumArray(basketItems, "subtotalPrice");
+  const [remainingAmount, setRemainingAmount] = useState(totalPrice);
+  const [amountPaid, setAmountPaid] = useState(0);
+  const [changeAmount, setChangeAmount] = useState(0);
+  const numpadValue = useRef(0);
   function handleViewPriceClick() {
     navigate("/view-prices");
   };
-  function handleNumpadChange(value) {
-    basketItemsDispatch({
-      type: "changed",
-      product: {
-        ...selectedProduct,
-        measure: value
-      }
-    });
+  function handleSnackbarClose() {
+    setSnackbarMessage("");
   };
-
+  function handleButtonClick() {
+    const measure = numpadValue.current;
+    if (measure < 0) return;
+    setAmountPaid(currentAmountPaid => currentAmountPaid + measure);
+    setRemainingAmount(currentRemainingAmount =>
+      currentRemainingAmount - measure < 0 
+      ? 0
+      : currentRemainingAmount - measure
+    );
+    
+    setChangeAmount(() =>
+      totalPrice - (parseFloat(amountPaid) + measure) < 0 
+      ? (parseFloat(amountPaid) + measure) - totalPrice 
+      : 0
+    );
+  };
+  function handleAbortReceipt() {
+    basketItemsDispatch({ type: "cleared" });
+    setSnackbarMessage("You are redirected to the Sales Page...");
+    setTimeout(() => {
+      navigate("/sales");
+    }, 2000);
+  };
+  function handleNumpadChange(measure) {
+    numpadValue.current = parseFloat(measure);
+  };
   return (
     <>
+      <ReceiptDiaolog 
+        isOpen={showReceiptDialog}
+        closeDialog={setShowReceiptDialog}
+      />
       <Snackbar
         open={snackbarMessage !== ""}
         onClose={handleSnackbarClose}
@@ -123,9 +91,10 @@ export default function Payment() {
           sx={{ width: "100%" }}
         >{snackbarMessage}</Alert>
       </Snackbar>
-      <Box sx={{ width: "100%", px: 2, pt: 1 }}>
+      <Box sx={{ px: 2, pt: 1 }}>
         <BasicTitleBar
           title={t("salesDocument")}
+          bakwardLink="/confirm-basket"
           endSlot={
             <Button
               sx={{
@@ -142,36 +111,37 @@ export default function Payment() {
           }
         />
       </Box>
-      <Grid container sx={{
-        height: "calc(100vh - 8.5rem)",
-        overflow: "hidden",
-        py: 1.5,
-        px: 2
-      }}>
-        <Grid item xs={12} md={4} sx={{ pr: { md: 1 } }}>
+      <Grid container sx={{ px: 2, paddingTop: "0.5rem", paddingBottom: "0.5rem" }}>
+        <Grid item xs={12} md={3} sx={{ ...heightStyle }}>
           <Paper
             sx={{ 
-              width: "100%",
-              height: "auto",
               minHeight: { md: "100%" },
               overflow: "hidden",
-              display: "flex",
-              alignItems: "center",
-              flexDirection: "column",
-              p: 1
+              py: 8, px: 2
             }}
           >
-            <Box sx={{ width: "100%", display: "flex" }}>
+            <Box sx={{ mb: 6 }}>
+              <Box sx={{ display: "flex", mb: 1 }}>
+                <Button fullWidth sx={{ mr: 0.5 }} color="error" variant="outlined" disabled>
+                  {t("deleteLine")}
+                </Button>
+                <Button fullWidth sx={{ ml: 0.5 }} color="error" variant="contained" onClick={handleAbortReceipt}>
+                  {t("abortProcess")}
+                </Button>
+              </Box>
+            </Box>
+            <Box sx={{ mb: 2 }}>
+              <Button fullWidth variant="contained" color="primary">{t("installment")}</Button>
+            </Box>
+            <Box sx={{ width: "100%", display: "flex"}}>
               <Button fullWidth size="large" variant="contained" sx={{ mr: 0.5 }}>Hediye Çeki</Button>
               <Button fullWidth size="large" variant="contained" sx={{ ml: 0.5 }}>Kupon Harcama</Button>
             </Box>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={4} lg={5} sx={{ px: { md: 1 } }}>
+        <Grid item xs={12} md={5} sx={{ ...heightStyle, px: { md: 2 } }}>
           <Paper
             sx={{
-              width: "100%",
-              height: "auto",
               minHeight: { md: "100%" },
               position: "relative",
               overflow: "hidden"
@@ -179,96 +149,73 @@ export default function Payment() {
             elevation={4}
           >
             <Box sx={{
-              height: "calc(100% - 5rem)",
               width: "100%",
+              maxHeight: "calc(100% - 5rem)",
               overflow: "auto",
               position: "absolute"
             }}>
-              <ProductList value={selectedProduct} onChange={setSelectedProduct}  />
+              <ProductList />
             </Box>
 
             <Box sx={{
-              position: "absolute",
-              bottom: 0,
               width: "100%",
+              position: "absolute",
+              bottom: 0
             }}>
-              <PriceSummary />
+              <PriceSummary
+                totalPrice={totalPrice}
+                subtotalPrice={subtotalPrice}
+              />
             </Box>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={4} lg={3} sx={{ pl: { md: 1 } }}>
+        <Grid item xs={12} md={4} sx={{ ...heightStyle }}>
           <Paper
             sx={{
               width: "100%",
-              height: "auto",
               minHeight: { md: "100%" },
               display: "flex",
               alignItems: "center",
+              px: 1,
               py: 2
             }}
           >
             <Box sx={{ width: "100%" }}>
-              <Box sx={{ mb: 8 }}>
-                <List subheader={
-                  <ListSubheader>Özet</ListSubheader>
-                  }>
-                  <SummaryItem>
-                    <SummaryTypography sx={{ }} variant="body1" color="text.primary">Ödenen Tutar:</SummaryTypography>
-                    <SummaryTypography variant="body1" color="primary">0.00 $</SummaryTypography>
-                  </SummaryItem>
-                  <Divider />
-                  <SummaryItem>
-                    <SummaryTypography variant="body1">Kalan Tutar</SummaryTypography>
-                    <SummaryTypography variant="body1" color="error">0.00 $</SummaryTypography>
-                  </SummaryItem>
-                  <Divider />
-                  <SummaryItem>
-                    <SummaryTypography component="div" variant="body1">Para Üstü:</SummaryTypography>
-                    <SummaryTypography variant="body1" color="text.secondary">0.00 $</SummaryTypography>
-                  </SummaryItem>
-                </List>
-              </Box>
-              <Box sx={{ px: 1 }}>
+              <Box>
+                <PaymentAmountDisplay
+                  remainingAmount={remainingAmount}
+                  amountPaid={amountPaid}
+                  changeAmount={changeAmount}
+                />
                 <NumpadAndInput 
                   onChange={handleNumpadChange}
-                  unit="price"
-                  measure={0.00} 
                   AdditionalButton={
                     <Button fullWidth
                       variant="contained"
                       color="primary"
                       sx={{ flexGrow: 1 }}
-                      onClick={handlePayButtonClick}
+                      onClick={handleButtonClick}
                     >{t("pay")}</Button>
                   }
                 />
+                <Button 
+                  fullWidth
+                  variant="contained"
+                  disabled={remainingAmount !== 0}
+                  color="secondary"
+                  size="large"
+                  sx={{ height: "3rem", mt: 2 }}
+                >
+                    Print Receipt
+                </Button>
               </Box>
             </Box>
           </Paper>
         </Grid>
       </Grid> 
-      <Box sx={{ width: "calc(100% - 9.5rem)", px: 2, pt: 1 }}>
+      <Box sx={{ width: "calc(100% - 9.5rem)", px: 2 }}>
         <Footer />
       </Box>
     </>
   );
 }
-
-const typographyStyle = {
-  whiteSpace: "nowrap",
-  textOverflow: "ellipsis",
-  overflow: "hidden"
-};
-const summaryItemStyle = {
-  display: "flex",
-  justifyContent: "space-between",
-  flexDirection: "row",
-  flexWrap: "wrap",
-  mr: 1,
-  "&:last-child": {
-    mr: 0
-  }
-};
-
-const SummaryItem = styled(ListItem)(summaryItemStyle);
-const SummaryTypography = styled(Typography)(typographyStyle);

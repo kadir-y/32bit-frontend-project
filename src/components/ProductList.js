@@ -7,12 +7,14 @@ import ProductItem from "../components/ProductItem";
 import { useBasketItems } from "../hooks/useBasket";
 import { useTranslation } from "react-i18next";
 
-export default function ProductList ({ value: selectedProduct, onChange: setSelectedProduct }) {
+export default function ProductList ({ value: selectedProduct = {}, onChange: setSelectedProduct }) {
   const { t } = useTranslation("sales");
   const basketItems = useBasketItems();
   
   function handleClick(e, product) {
-    setSelectedProduct(product);
+    if (setSelectedProduct) {
+      setSelectedProduct(product);
+    }
   };
 
   return (

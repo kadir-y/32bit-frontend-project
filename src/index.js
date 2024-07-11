@@ -84,8 +84,8 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 enableMocking().then(() => {
   root.render(
     <React.StrictMode>
-      <I18nextProvider i18n={i18n}>
-        <AuthProvider>
+      <AuthProvider>
+        <I18nextProvider i18n={i18n}>
           <CustomerInfoProvider>
             <ColorModeProvider>
               <KeyboardProvider>
@@ -99,8 +99,8 @@ enableMocking().then(() => {
               </KeyboardProvider>
             </ColorModeProvider>
           </CustomerInfoProvider>
-        </AuthProvider>
-      </I18nextProvider>
+        </I18nextProvider>
+      </AuthProvider>
     </React.StrictMode>
   );
 })

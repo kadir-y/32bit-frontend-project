@@ -113,6 +113,7 @@ export default function ConfirmBasket() {
       <Box sx={{ width: "100%", px: 2, pt: 1 }}>
         <BasicTitleBar
           title={t("salesDocument")}
+          bakwardLink="/sales"
           endSlot={
             <Button
               sx={{

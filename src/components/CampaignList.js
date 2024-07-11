@@ -12,8 +12,8 @@ const campaigns = [
     id: 0,
     title: "Grocery %20",
     description: "200$ ve üzeri alışveriş",
-    filter: "category=groceries",
-    condition: "totalPrice>100",
+    filter: "category=<groceries",
+    condition: "totalPrice>200",
     amount: "%20"
   }
 ];

@@ -86,6 +86,7 @@ export default function SalesPage() {
       <Box sx={{ px: 2, pt: 1 }}>
         <BasicTitleBar
           title={t("salesDocument")}
+          backwardLink="/"
           endSlot={
             <Button
               sx={{

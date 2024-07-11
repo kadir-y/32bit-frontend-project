@@ -19,7 +19,7 @@ export default function ProductItem({ product, selected, onClick: handleClick })
   const totalPrice = priceNormalizer(product.totalPrice);
   const unitPrice = priceNormalizer(product.price);
   const discount = product.discount;
-  const discountedPrice = product.discount ? priceNormalizer(makeDiscount(priceWithTaxes, discount)) : 0;
+  const discountedPrice = product.discount ? priceNormalizer(makeDiscount(priceWithTaxes, discount)) : undefined;
   const taxesText = product.taxes
     .map(tax => `${tax.name} ${tax.amount}%`)
     .join(" ");
