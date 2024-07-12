@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -13,17 +13,21 @@ import axios from "axios";
 function App() {
   const navigate = useNavigate();
   const { t } = useTranslation("app");
-
-  function fetchStoreStatus() {
-    return axios.get("/");
-  };
+  let interval = useRef(false);
   useEffect(() => {
+    async function fetchStoreStatus() {
+      await axios.get("/");
+      interval.current = setTimeout(() => {
+        fetchStoreStatus();
+      }, 2000);  
+    };
     fetchStoreStatus()
-    .then(res => {
-    })
-    .catch(err => {
-      navigate("/login")
+    .catch(() => {
+      navigate("/login");
     });
+    return () => {
+      clearInterval(interval.current);
+    }
   } , [navigate]);
   useTitle(t("documentTitle"));
   return (

@@ -11,7 +11,7 @@ export const handlers = [
   // responds with a mock JSON response.
   http.get(baseUrl + "/", () => {
     return new HttpResponse("ok", {
-      status: 200,  
+      status: 400,  
       headers: {
         'Content-Type': 'text/plain',
       }
