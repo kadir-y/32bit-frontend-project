@@ -10,7 +10,7 @@ import { useBasketItems, useBasketItemsDispatch } from "../hooks/useBasket";
 import { useCampaign } from "../hooks/useCampaign";
 import campaignIsAvailable from "../libs/campaignIsAvailable";
 import makeDiscount from "../libs/makeDiscount";
-import { useEffect, useCallback, useRef } from "react";
+import { useRef } from "react";
 
 export default function CampaignItem ({ campaign }) {
   const {t} = useTranslation("sales")
@@ -20,7 +20,8 @@ export default function CampaignItem ({ campaign }) {
   const { isAvailable, filteredItems } = campaignIsAvailable(campaign, basketItems);
   let applied = useRef(false);
   const isIncludes = includes(campaign.id);
-  const applyCampaign = useCallback(function () {
+  
+  function applyCampaign () {
     applied.current = true
     addCampaign(campaign);
     filteredItems.forEach(item => {
@@ -34,13 +35,8 @@ export default function CampaignItem ({ campaign }) {
         }
       });
     });
-  }, [
-    addCampaign,
-    basketItemsDispatch,
-    campaign,
-    filteredItems
-  ]);
-  const unapplyCampaign = useCallback(function () {
+  }
+  function unapplyCampaign () {
     applied.current = false;
     removeCampaign(campaign.id);
     filteredItems.forEach(item => {
@@ -53,12 +49,7 @@ export default function CampaignItem ({ campaign }) {
         }
       });
     });
-  }, [
-      campaign,
-      basketItemsDispatch,
-      removeCampaign,
-      filteredItems
-    ]);
+  }
   
   /* dont split this block */
   function toggleCampaign() {
@@ -69,25 +60,6 @@ export default function CampaignItem ({ campaign }) {
       applyCampaign();
     }
   };
-  /* */
-
-  useEffect(() => {
-    if (isIncludes && !isAvailable) {
-      unapplyCampaign();
-    }
-    return () => {
-      if (isIncludes && applied.current) {
-        unapplyCampaign();
-      };
-    }
-  }, 
-    [
-      basketItems,
-      isAvailable,
-      isIncludes,
-      unapplyCampaign,
-      applyCampaign
-    ]);
 
   return (
     <Box>

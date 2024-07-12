@@ -48,7 +48,7 @@ export default function NumpadAndInput(props) {
     digit.current = getMeasureDigit(unit);
     setValue(parseFloat(0).toFixed(digit.current));
     setValue(parseFloat(measure).toFixed(digit.current));
-  }, [measure, unit]);
+  }, [measure, unit, selectedProduct]);
 
   function handleChange(keyValue) {
     if (!Boolean(unit) || (!Boolean(measure) && measure !== 0)) return;

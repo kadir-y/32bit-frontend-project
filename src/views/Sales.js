@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Grid,
   Paper,
@@ -12,6 +12,8 @@ import {
 } from '@mui/icons-material';
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useCampaign } from "../hooks/useCampaign";
+import campaignIsAvailable from "../libs/campaignIsAvailable";
 import ProductList from "../components/ProductList";
 import BasicTitleBar from "../components/BasicTitleBar";
 import NumpadAndInput from "../components/NumpadAndInput";
@@ -23,9 +25,10 @@ import {
   useBasketItems,
   useBasketItemsDispatch
 } from "../hooks/useBasket"; 
+import makeDiscount from "../libs/makeDiscount";
 
 const heightStyle = {
-  height: "calc(100vh - 9.5rem)"
+  height: "calc(100vh - 9.4rem)"
 }
 export default function SalesPage() {
   const { t } = useTranslation("sales");
@@ -34,7 +37,7 @@ export default function SalesPage() {
   const basketItemsDispatch = useBasketItemsDispatch();
   const basketItems = useBasketItems();
   const navigate = useNavigate();
-
+  const { campaigns, removeCampaign } = useCampaign();
   function handleViewPriceClick() {
     navigate("/view-prices");
   };
@@ -56,18 +59,57 @@ export default function SalesPage() {
     basketItemsDispatch({ type: "deleted", product: selectedProduct });
   };
   function handleNumpadChange(measure) {
-    const totalPrice = selectedProduct.priceWithTaxes * measure;
-    const subtotalPrice = totalPrice;
+    const product = basketItems.find(i => i.id === selectedProduct.id);
+    const subtotalPrice = selectedProduct.priceWithTaxes * measure;
+    const totalPrice = makeDiscount(selectedProduct.priceWithTaxes, selectedProduct.discount) * measure;
     basketItemsDispatch({
       type: "changed",
       product: {
-        ...selectedProduct,
+        ...product,
         measure,
         totalPrice,
         subtotalPrice
       }
     });
   };
+
+  useEffect(() => {
+    campaigns.forEach(campaign => {
+      let { isAvailable, filteredItems } = campaignIsAvailable(campaign, basketItems);
+      if (!isAvailable) {
+        removeCampaign(campaign.id);
+        filteredItems.forEach(item => {
+          basketItemsDispatch({
+            type: "changed",
+            product: {
+              ...item,
+              totalPrice: item.subtotalPrice,
+              discount: undefined
+            }
+          });
+        });
+      } else {
+        filteredItems.forEach(item => {
+          if (item.discount ) return;
+          const totalPrice = makeDiscount(item.totalPrice, campaign.amount);
+          basketItemsDispatch({
+            type: "changed",
+            product: {
+              ...item,
+              totalPrice,
+              discount: campaign.amount
+            }
+          });
+        });
+      }
+    });
+  }, [
+    basketItems,
+    basketItemsDispatch,
+    campaigns,
+    removeCampaign
+  ]);
+
   const totalPrice = sumArray(basketItems, "totalPrice")
   const subtotalPrice = sumArray(basketItems, "subtotalPrice")
   return (

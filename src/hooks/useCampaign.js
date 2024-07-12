@@ -9,10 +9,10 @@ export function CampaignProvider({ children }) {
     setCampaigns([
       ...campaigns,
       campaign
-    ])
+    ]);
   };
   function removeCampaign(id) {
-    setCampaigns(campaigns.filter(c => c.id !== id))
+    setCampaigns(campaigns.filter(c => c.id !== id));
   };
   function includes(id) {
     return Boolean(campaigns.find(c => c.id === id));
@@ -21,7 +21,8 @@ export function CampaignProvider({ children }) {
   const value = {
     addCampaign,
     removeCampaign,
-    includes
+    includes,
+    campaigns
   };
 
   return (

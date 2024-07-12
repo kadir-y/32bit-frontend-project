@@ -18,11 +18,13 @@ export default function campaignIsAvailable (campaign, basketItems) {
 
   let isAvailable = false;
   for (let c of conditions) {
+    // eslint-disable-next-line
     let [field, value] = [];
     if (c.includes("totalPrice")) {
       if (c.includes(">")) {
+        // eslint-disable-next-line
         [field, value] = c.split(">");
-        const totalPrice = sumArray(filteredItems, field);
+        const totalPrice = sumArray(filteredItems, "subtotalPrice");
         if (totalPrice > value) {
           isAvailable = true;
           return { isAvailable, filteredItems };   

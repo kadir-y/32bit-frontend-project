@@ -19,7 +19,7 @@ function App() {
       await axios.get("/");
       interval.current = setTimeout(() => {
         fetchStoreStatus();
-      }, 2000);  
+      }, 9999);  
     };
     fetchStoreStatus()
     .catch(() => {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Grid,
   Paper,
@@ -17,6 +17,7 @@ import { useBasketItems, useBasketItemsDispatch } from "../hooks/useBasket";
 import { useNavigate } from "react-router-dom";
 import { useFormInput } from "../hooks/useFormInput";
 import { useCustomerInfo } from "../hooks/useCustomerInfo";
+import { useCampaign } from "../hooks/useCampaign";
 import ProductList from "../components/ProductList";
 import BasicTitleBar from "../components/BasicTitleBar";
 import NumpadAndInput from "../components/NumpadAndInput";
@@ -25,6 +26,8 @@ import TextInput from "../components/TextInput";
 import PriceSummary from "../components/PriceSummary";
 import CampaignList from "../components/CampaignList";
 import sumArray from "../libs/sumArray";
+import makeDiscount from "../libs/makeDiscount";
+import campaignIsAvailable from "../libs/campaignIsAvailable";
 
 const heightStyle = {
   height: "calc(100vh - 9.5rem)"
@@ -38,6 +41,7 @@ export default function ConfirmBasket() {
   const basketItems = useBasketItems();
   const basketItemsDispatch = useBasketItemsDispatch();
   const { customerInfo, setCustomerInfo } = useCustomerInfo();
+  const { removeCampaign, campaigns } = useCampaign();
   const {
     props: customerEmailProps
   } = useFormInput({
@@ -45,7 +49,6 @@ export default function ConfirmBasket() {
     label: t("customerEmailPlaceholder"),
     onChange: handleCustomerEmailChange
   });
-
   function handleSnackbarClose() {
     setSnackbarMessage("");
   };
@@ -70,19 +73,6 @@ export default function ConfirmBasket() {
   function handleDeleteProduct() {
     basketItemsDispatch({ type: "deleted", product: { id: selectedProduct.id }});
   };
-  function handleNumpadChange(measure) {
-    const totalPrice = selectedProduct.priceWithTaxes * measure;
-    const subtotalPrice = selectedProduct.priceWithTaxes * measure;
-    basketItemsDispatch({
-      type: "changed",
-      product: {
-        ...selectedProduct,
-        measure,
-        totalPrice,
-        subtotalPrice
-      }
-    });
-  };
   function handleReceiptPreferenceChange(value) {
     setCustomerInfo({
       ...customerInfo,
@@ -95,6 +85,58 @@ export default function ConfirmBasket() {
       email: e.target.value
     });
   };
+  function handleNumpadChange(measure) {
+    const product = basketItems.find(i => i.id === selectedProduct.id);
+    const subtotalPrice = selectedProduct.priceWithTaxes * measure;
+    const totalPrice = makeDiscount(selectedProduct.priceWithTaxes, selectedProduct.discount) * measure;
+    basketItemsDispatch({
+      type: "changed",
+      product: {
+        ...product,
+        measure,
+        totalPrice,
+        subtotalPrice
+      }
+    });
+  };
+  
+  useEffect(() => {
+    campaigns.forEach(campaign => {
+      let { isAvailable, filteredItems } = campaignIsAvailable(campaign, basketItems);
+      if (!isAvailable) {
+        removeCampaign(campaign.id);
+        filteredItems.forEach(item => {
+          basketItemsDispatch({
+            type: "changed",
+            product: {
+              ...item,
+              totalPrice: item.subtotalPrice,
+              discount: undefined
+            }
+          });
+        });
+      } else {
+        filteredItems.forEach(item => {
+          if (item.discount ) return;
+          const totalPrice = makeDiscount(item.totalPrice, campaign.amount);
+          basketItemsDispatch({
+            type: "changed",
+            product: {
+              ...item,
+              totalPrice,
+              discount: campaign.amount
+            }
+          });
+        });
+      }
+    });
+  }, [
+    basketItems,
+    basketItemsDispatch,
+    campaigns,
+    removeCampaign
+  ]);
+
   const totalPrice = sumArray(basketItems, "totalPrice");
   const subtotalPrice = sumArray(basketItems, "subtotalPrice");
   return (
