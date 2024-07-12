@@ -93,9 +93,10 @@ export default function ProductSearchSection({ setSelectedProduct }) {
       product.measure = measure; 
     } else {
       const oldProduct = basketItems.find(p => p.id === product.id);
+      product.priceWithTaxes = addTaxesToPrice(price, taxes);;
       product.measure = oldProduct.measure + 1;
-      product.totalPrice += oldProduct.priceWithTaxes;
-      product.totalPrice += oldProduct.priceWithTaxes;
+      product.totalPrice = product.measure * product.priceWithTaxes;
+      product.subtotalPrice = product.measure * product.priceWithTaxes;
     }
     basketItemsDispatch({
       type: indexOf === -1 ? "added" : "changed", 

@@ -20,7 +20,7 @@ export default function CampaignItem ({ campaign }) {
   const { isAvailable, filteredItems } = campaignIsAvailable(campaign, basketItems);
   let applied = useRef(false);
   const isIncludes = includes(campaign.id);
-  function applyCampaign () {
+  const applyCampaign = useCallback(function () {
     applied.current = true
     addCampaign(campaign);
     filteredItems.forEach(item => {
@@ -34,7 +34,12 @@ export default function CampaignItem ({ campaign }) {
         }
       });
     });
-  };
+  }, [
+    addCampaign,
+    basketItemsDispatch,
+    campaign,
+    filteredItems
+  ]);
   const unapplyCampaign = useCallback(function () {
     applied.current = false;
     removeCampaign(campaign.id);
@@ -48,7 +53,12 @@ export default function CampaignItem ({ campaign }) {
         }
       });
     });
-  }, [campaign, basketItemsDispatch, removeCampaign, filteredItems]);
+  }, [
+      campaign,
+      basketItemsDispatch,
+      removeCampaign,
+      filteredItems
+    ]);
   
   /* dont split this block */
   function toggleCampaign() {
@@ -70,7 +80,14 @@ export default function CampaignItem ({ campaign }) {
         unapplyCampaign();
       };
     }
-  }, [basketItems, isAvailable, isIncludes, unapplyCampaign]);
+  }, 
+    [
+      basketItems,
+      isAvailable,
+      isIncludes,
+      unapplyCampaign,
+      applyCampaign
+    ]);
 
   return (
     <Box>

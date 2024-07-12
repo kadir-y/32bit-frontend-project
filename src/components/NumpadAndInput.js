@@ -38,18 +38,17 @@ const normalizeButton = {
 }
 
 export default function NumpadAndInput(props) {
-  const onChange = props.onChange ? props.onChange : () => { };
+  const onChange = props.onChange ? props.onChange : () => {};
   const { AdditionalButton, selectedProduct } = props;
-  const { measure, unit } = selectedProduct;
+  const { measure, unit } = selectedProduct ? selectedProduct : { measure: 0, unit: "price" };
   const [value, setValue] = useState();
   const digit = useRef(0);
   
   useEffect(() => {
-    digit.current = getMeasureDigit(selectedProduct.unit);
+    digit.current = getMeasureDigit(unit);
     setValue(parseFloat(0).toFixed(digit.current));
-    setValue(parseFloat(selectedProduct.measure).toFixed(digit.current));
-  }, [selectedProduct]);
-
+    setValue(parseFloat(measure).toFixed(digit.current));
+  }, [measure, unit]);
 
   function handleChange(keyValue) {
     if (!Boolean(unit) || (!Boolean(measure) && measure !== 0)) return;

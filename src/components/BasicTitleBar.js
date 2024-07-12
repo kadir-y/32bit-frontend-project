@@ -11,11 +11,11 @@ import { useTranslation } from "react-i18next";
 
 export default function BasicTitleBar(props) {
   const { t } = useTranslation("app");
-  const { title, endSlot } = props;
+  const { title, endSlot, backwardLink } = props;
   const navigate = useNavigate();
 
   function handleBackwardClick() {
-    navigate(-1);
+    navigate(backwardLink ? backwardLink : -1);
   };
 
   return (
