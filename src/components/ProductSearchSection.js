@@ -94,7 +94,7 @@ export default function ProductSearchSection({ setSelectedProduct }) {
     } else {
       const oldProduct = basketItems.find(p => p.id === product.id);
       product.priceWithTaxes = addTaxesToPrice(price, taxes);;
-      product.measure = oldProduct.measure + 1;
+      product.measure = parseInt(oldProduct.measure) + 1;
       product.totalPrice = product.measure * product.priceWithTaxes;
       product.subtotalPrice = product.measure * product.priceWithTaxes;
     }

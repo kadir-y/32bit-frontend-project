@@ -10,7 +10,6 @@ import { useBasketItems, useBasketItemsDispatch } from "../hooks/useBasket";
 import { useCampaign } from "../hooks/useCampaign";
 import campaignIsAvailable from "../libs/campaignIsAvailable";
 import makeDiscount from "../libs/makeDiscount";
-import { useRef } from "react";
 
 export default function CampaignItem ({ campaign }) {
   const {t} = useTranslation("sales")
@@ -18,11 +17,9 @@ export default function CampaignItem ({ campaign }) {
   const basketItemsDispatch = useBasketItemsDispatch();
   const { addCampaign, removeCampaign, includes } = useCampaign();
   const { isAvailable, filteredItems } = campaignIsAvailable(campaign, basketItems);
-  let applied = useRef(false);
   const isIncludes = includes(campaign.id);
   
   function applyCampaign () {
-    applied.current = true
     addCampaign(campaign);
     filteredItems.forEach(item => {
       const totalPrice = makeDiscount(item.totalPrice, campaign.amount);
@@ -37,7 +34,6 @@ export default function CampaignItem ({ campaign }) {
     });
   }
   function unapplyCampaign () {
-    applied.current = false;
     removeCampaign(campaign.id);
     filteredItems.forEach(item => {
       basketItemsDispatch({

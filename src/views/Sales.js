@@ -59,6 +59,7 @@ export default function SalesPage() {
     basketItemsDispatch({ type: "deleted", product: selectedProduct });
   };
   function handleNumpadChange(measure) {
+    console.log(typeof measure)
     const product = basketItems.find(i => i.id === selectedProduct.id);
     const subtotalPrice = selectedProduct.priceWithTaxes * measure;
     const totalPrice = makeDiscount(selectedProduct.priceWithTaxes, selectedProduct.discount) * measure;
