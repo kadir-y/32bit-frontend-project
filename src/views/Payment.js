@@ -25,6 +25,7 @@ import {
   useBasketItems,
   useBasketItemsDispatch
 } from "../hooks/useBasket"; 
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 const heightStyle = {
   height: "calc(100vh - 9.5rem)"
@@ -35,6 +36,7 @@ export default function SalesPage() {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const basketItemsDispatch = useBasketItemsDispatch();
   const basketItems = useBasketItems();
+  const setReceiptData = useLocalStorage("receiptData")[1];
   const navigate = useNavigate();
   const totalPrice = sumArray(basketItems, "totalPrice");
   const subtotalPrice = sumArray(basketItems, "subtotalPrice");
@@ -76,12 +78,26 @@ export default function SalesPage() {
   };
   function handleFinishProcessButton() {
     toggleReceiptDialog();
+    const receiptData = {
+      storeName: "Sample Store",
+      storeAddress: "Merkez Mahallesi 4112 Sokak No:12 0242 423 22 51 Antalya/Serik",
+      date: "07.08.2024",
+      time: "14.50",
+      sellingNumber: 2,
+      sellingType: "Nakit",
+      cashier: "Ahmet",
+      products: basketItems,
+      amountPaid,
+      changeAmount,
+      totalPrice
+    }
+    setReceiptData(receiptData);
   };
   return (
     <>
       <ReceiptDialog
         isOpen={showReceiptDialog}
-        closeDialog={toggleReceiptDialog}
+        toggleReceiptDialog={toggleReceiptDialog}
       />
       <Snackbar
         open={snackbarMessage !== ""}

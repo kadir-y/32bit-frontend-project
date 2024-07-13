@@ -7,10 +7,8 @@ import {
   IconButton
 } from "@mui/material";
 import { Close as CloseIcon } from "@mui/icons-material";
-import { useRef } from "react";
 
 export default function ReceiptDialog({ isOpen, toggleReceiptDialog }) {
-  const receiptRef = useRef(null);
   const printIframe = (id) => {
     const iframe = document.frames
       ? document.frames[id]
@@ -23,7 +21,7 @@ export default function ReceiptDialog({ isOpen, toggleReceiptDialog }) {
     return false;
   };
   function handlePrintReceiptButton() {
-    printIframe("receipt");
+    printIframe("receipt-iframe");
   };
   function handleSendDigitalReceiptButton() {
 
@@ -51,19 +49,38 @@ export default function ReceiptDialog({ isOpen, toggleReceiptDialog }) {
       </IconButton>
       <DialogContent>
         <iframe
-          id="receipt"
+          id="receipt-iframe"
           src="/payment/receipt"
           title="Receipt"
         />
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleSendDigitalReceiptButton}>
+      <DialogActions sx={{ display: "flex", m: 0, p: 0 }}>
+        <Button 
+          onClick={handleSendDigitalReceiptButton}
+          variant="contained"
+          color="error"
+          sx={actionButtonStyle}
+        >
           Send Digital Receipt
         </Button>
-        <Button autoFocus onClick={handlePrintReceiptButton}>
+        <Button 
+          autoFocus
+          onClick={handlePrintReceiptButton}
+          variant="contained"
+          color="primary"
+          sx={actionButtonStyle}
+        >
           Print Receipt
         </Button>
       </DialogActions>
     </Dialog>
   );
+}
+
+const actionButtonStyle = {
+  width: "100%",
+  height: "3rem",
+  margin: "0 !important",
+  padding: "0 !important",
+  borderRadius: 0
 }
