@@ -18,7 +18,7 @@ import BasicTitleBar from "../components/BasicTitleBar";
 import NumpadAndInput from "../components/NumpadAndInput";
 import PriceSummary from "../components/PriceSummary";
 import PaymentAmountDisplay from "../components/PaymentAmountDisplay";
-import ReceiptDiaolog from "../components/ReceiptDiaolog";
+import ReceiptDialog from "../components/ReceiptDialog";
 import Footer from "../components/layout/Footer";
 import sumArray from "../libs/sumArray"
 import {
@@ -31,7 +31,7 @@ const heightStyle = {
 }
 export default function SalesPage() {
   const { t } = useTranslation("sales");
-  const [showReceiptDialog, setShowReceiptDialog] = useToggle();
+  const [showReceiptDialog, toggleReceiptDialog] = useToggle();
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const basketItemsDispatch = useBasketItemsDispatch();
   const basketItems = useBasketItems();
@@ -74,11 +74,14 @@ export default function SalesPage() {
   function handleNumpadChange(measure) {
     numpadValue.current = parseFloat(measure);
   };
+  function handleFinishProcessButton() {
+    toggleReceiptDialog();
+  };
   return (
     <>
-      <ReceiptDiaolog 
+      <ReceiptDialog
         isOpen={showReceiptDialog}
-        closeDialog={setShowReceiptDialog}
+        closeDialog={toggleReceiptDialog}
       />
       <Snackbar
         open={snackbarMessage !== ""}
@@ -205,8 +208,9 @@ export default function SalesPage() {
                   color="secondary"
                   size="large"
                   sx={{ height: "3rem", mt: 2 }}
+                  onClick={handleFinishProcessButton}
                 >
-                    Print Receipt
+                    Finish Process
                 </Button>
               </Box>
             </Box>

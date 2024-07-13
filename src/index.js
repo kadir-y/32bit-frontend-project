@@ -29,6 +29,7 @@ import ProductsPage from "./views/Products";
 import SalesPage from "./views/Sales";
 import ConfirmBasketPage from "./views/ConfirmBasket";
 import PaymentPage from "./views/Payment";
+import ReceiptPage from "./views/Receipt";
 
 const router = createBrowserRouter([
   {
@@ -58,9 +59,13 @@ const router = createBrowserRouter([
       },
       {
         path: "/payment",
-        element: <PaymentPage />,
-      },
+        element: <PaymentPage />
+      }
     ]
+  },
+  {
+    path: "/payment/receipt",
+    element: <ReceiptPage />,
   },
   {
     path: "/login",
