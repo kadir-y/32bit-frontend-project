@@ -153,8 +153,8 @@ export default function SalesPage() {
               <Button fullWidth variant="contained" color="primary">{t("installment")}</Button>
             </Box>
             <Box sx={{ width: "100%", display: "flex"}}>
-              <Button fullWidth size="large" variant="contained" sx={{ mr: 0.5 }}>Hediye Çeki</Button>
-              <Button fullWidth size="large" variant="contained" sx={{ ml: 0.5 }}>Kupon Harcama</Button>
+              <Button fullWidth size="large" variant="contained" sx={{ mr: 0.5 }}>{t("giftCertificate")}</Button>
+              <Button fullWidth size="large" variant="contained" sx={{ ml: 0.5 }}>{t("spendingCoupon")}</Button>
             </Box>
           </Paper>
         </Grid>
@@ -226,7 +226,7 @@ export default function SalesPage() {
                   sx={{ height: "3rem", mt: 2 }}
                   onClick={handleFinishProcessButton}
                 >
-                    Finish Process
+                  {t("finishProcess")}
                 </Button>
               </Box>
             </Box>

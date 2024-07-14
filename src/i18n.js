@@ -10,6 +10,7 @@ import navbarEnUSTranslation from "./locales/en-US/navbar-translation.json";
 import settingsEnUSTranslation from "./locales/en-US/settings-translation.json";
 import productsEnUSTranslation from "./locales/en-US/products-translation.json";
 import homeEnUSTranslation from "./locales/en-US/home-translation.json";
+import salesEnUSTranslation from "./locales/en-US/sales-translation.json";
 
 // translation files for turkish language
 import loginTrTRTranslation from "./locales/tr-TR/login-translation.json";
@@ -19,6 +20,7 @@ import navbarTrTRTranslation from "./locales/tr-TR/navbar-translation.json";
 import settingsTrTRTranslation from "./locales/tr-TR/settings-translation.json";
 import productsTrTRTranslation from "./locales/tr-TR/products-translation.json";
 import homeTrTRTranslation from "./locales/tr-TR/home-translation.json";
+import salesTrTRTranslation from "./locales/tr-TR/sales-translation.json";
 
 // translation files for biritish english language
 import loginEnGBTranslation from "./locales/en-GB/login-translation.json";
@@ -38,7 +40,7 @@ import navbarRuRUTranslation from "./locales/ru-RU/navbar-translation.json";
 import settingsRuRUTranslation from "./locales/ru-RU/settings-translation.json";
 import productsRuRUTranslation from "./locales/ru-RU/products-translation.json";
 import homeRuRUTranslation from "./locales/ru-RU/home-translation.json";
-
+import salesRuRUTranslation from "./locales/ru-RU/sales-translation.json";
 
 // include translation files
 const resources = {
@@ -49,7 +51,8 @@ const resources = {
     navbar: navbarTrTRTranslation,
     settings: settingsTrTRTranslation,
     products: productsTrTRTranslation,
-    home: homeTrTRTranslation
+    home: homeTrTRTranslation,
+    sales: salesTrTRTranslation
   },
   "en-US": {
     login: loginEnUSTranslation,
@@ -58,7 +61,8 @@ const resources = {
     navbar: navbarEnUSTranslation,
     settings: settingsEnUSTranslation,
     products: productsEnUSTranslation,
-    home: homeEnUSTranslation
+    home: homeEnUSTranslation,
+    sales: salesEnUSTranslation
   },
   "en-GB": {
     login: loginEnGBTranslation,
@@ -77,7 +81,8 @@ const resources = {
     navbar: navbarRuRUTranslation,
     settings: settingsRuRUTranslation,
     products: productsRuRUTranslation,
-    home: homeRuRUTranslation
+    home: homeRuRUTranslation,
+    sales: salesRuRUTranslation
   }
 };
 

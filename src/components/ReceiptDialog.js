@@ -12,12 +12,15 @@ import {
   Close as CloseIcon,
   Check as CheckIcon } from "@mui/icons-material";
 import { useCustomerInfo } from "../hooks/useCustomerInfo";
+import { useTranslation } from "react-i18next";
 
 export default function ReceiptDialog({ isOpen, toggleReceiptDialog }) {
   const { customerInfo } = useCustomerInfo();
   const { email, receiptPreference } = customerInfo;
   const [receiptIsSended, setReceiptIsSended] = useState(false);
   const [receiptIsPrinting, setReceiptIsPrinting] = useState(false);
+  const [receiptIsPrinted, setReceiptIsPrinted] = useState(false);
+  const {t} = useTranslation("sales");
   const printIframe = (id) => {
     setReceiptIsPrinting(true);
     const iframe = document.frames
@@ -27,6 +30,7 @@ export default function ReceiptDialog({ isOpen, toggleReceiptDialog }) {
 
     iframeWindow.onafterprint = () => {
       setReceiptIsPrinting(false);
+      setReceiptIsPrinted(true);
     };
 
     iframe.focus();
@@ -46,7 +50,7 @@ export default function ReceiptDialog({ isOpen, toggleReceiptDialog }) {
       onClose={handleClose}
       open={isOpen}
     >
-      <DialogTitle>Receipt</DialogTitle>
+      <DialogTitle>{t("receiptDialogTitle")}</DialogTitle>
       <IconButton
         aria-label="close"
         onClick={handleClose}
@@ -63,9 +67,14 @@ export default function ReceiptDialog({ isOpen, toggleReceiptDialog }) {
         {
           receiptIsSended && 
           <Alert icon={<CheckIcon fontSize="inherit" />} severity="success" sx={{ mb: 2 }}>
-            Receipt is sended to {email}.
+            {t("receiptSendedMessage", { email })}.
           </Alert>
-          
+        }
+        {
+          receiptIsPrinted && 
+          <Alert icon={<CheckIcon fontSize="inherit" />} severity="success" sx={{ mb: 2 }}>
+            {t("receiptPrintedMessage")}.
+          </Alert>
         }
         <iframe
           id="receipt-iframe"
@@ -81,7 +90,7 @@ export default function ReceiptDialog({ isOpen, toggleReceiptDialog }) {
           sx={actionButtonStyle}
           disabled={receiptPreference !== "ereceipt" || receiptIsSended}
         >
-          Send Digital Receipt
+          {t("sendDigitalReceipt")}
         </Button>
         <Button 
           autoFocus
@@ -91,7 +100,7 @@ export default function ReceiptDialog({ isOpen, toggleReceiptDialog }) {
           sx={actionButtonStyle}
           disabled={receiptIsPrinting}
         >
-          Print Receipt
+          {t("printReceipt")}
         </Button>
       </DialogActions>
     </Dialog>
