@@ -26,7 +26,7 @@ export default function Receipt() {
       <div className="receipt-divider"></div>
       {
         receiptData.products.map(item => 
-          <div className="product">
+          <div className="product" key={item.meta.barcode}>
             <div>{item.meta.barcode} ({item.measure} Adet X {pN(mD(item.priceWithTaxes, item.discount))})</div>
             <div className="flex-container">
               <div>{item.title}</div>
