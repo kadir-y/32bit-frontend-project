@@ -46,7 +46,7 @@ export default function SalesPage() {
   };
   function handleNextButtonClick() {
     if (basketItems.length === 0) {
-      setSnackbarMessage("Not found product in basket.");
+      setSnackbarMessage(t("productNotFoundInBasket"));
     } else {
       navigate("/confirm-basket");
     }
@@ -206,7 +206,7 @@ export default function SalesPage() {
             <Box sx={{ width: "100%" }}>
               <Box sx={{ mb: 4 }}>
                 <Box sx={{ display: "flex", mb: 1 }}>
-                  <Button fullWidth sx={{ mr: 0.5 }} color="success" variant="contained">Satıcı</Button>
+                  <Button fullWidth sx={{ mr: 0.5 }} color="success" variant="contained">{t("seller")}</Button>
                   <Button fullWidth sx={{ ml: 0.5 }} variant="contained">A101 Hadi</Button>
                 </Box>
                 <Button fullWidth variant="contained" color="primary">{t("installment")}</Button>

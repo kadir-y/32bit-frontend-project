@@ -54,7 +54,7 @@ export default function ConfirmBasket() {
   };
   function handleConfirmButtonClick() {
     if (basketItems.length === 0) {
-      setSnackbarMessage("foo");
+      setSnackbarMessage(t("productNotFoundInBasket"));
       setTimeout(() => {
         navigate("/sales"); 
       }, 2000);
@@ -267,7 +267,7 @@ export default function ConfirmBasket() {
             <Box sx={{ width: "100%" }}>
               <Box sx={{ mb: 4 }}>
                 <Box sx={{ display: "flex", mb: 1 }}>
-                  <Button fullWidth sx={{ mr: 0.5 }} color="success" variant="contained">Satıcı</Button>
+                  <Button fullWidth sx={{ mr: 0.5 }} color="success" variant="contained">{t("seller")}</Button>
                   <Button fullWidth sx={{ ml: 0.5 }} variant="contained">A101 Hadi</Button>
                 </Box>
                 <Button fullWidth variant="contained" color="primary">{t("installment")}</Button>

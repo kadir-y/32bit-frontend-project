@@ -18,23 +18,25 @@ import BasicTitleBar from "../components/BasicTitleBar";
 import NumpadAndInput from "../components/NumpadAndInput";
 import PriceSummary from "../components/PriceSummary";
 import PaymentAmountDisplay from "../components/PaymentAmountDisplay";
-import ReceiptDiaolog from "../components/ReceiptDiaolog";
+import ReceiptDialog from "../components/ReceiptDialog";
 import Footer from "../components/layout/Footer";
 import sumArray from "../libs/sumArray"
 import {
   useBasketItems,
   useBasketItemsDispatch
 } from "../hooks/useBasket"; 
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 const heightStyle = {
   height: "calc(100vh - 9.5rem)"
 }
 export default function SalesPage() {
   const { t } = useTranslation("sales");
-  const [showReceiptDialog, setShowReceiptDialog] = useToggle();
+  const [showReceiptDialog, toggleReceiptDialog] = useToggle();
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const basketItemsDispatch = useBasketItemsDispatch();
   const basketItems = useBasketItems();
+  const setReceiptData = useLocalStorage("receiptData")[1];
   const navigate = useNavigate();
   const totalPrice = sumArray(basketItems, "totalPrice");
   const subtotalPrice = sumArray(basketItems, "subtotalPrice");
@@ -74,11 +76,28 @@ export default function SalesPage() {
   function handleNumpadChange(measure) {
     numpadValue.current = parseFloat(measure);
   };
+  function handleFinishProcessButton() {
+    toggleReceiptDialog();
+    const receiptData = {
+      storeName: "Sample Store",
+      storeAddress: "Merkez Mahallesi 4112 Sokak No:12 0242 423 22 51 Antalya/Serik",
+      date: "07.08.2024",
+      time: "14.50",
+      sellingNumber: 2,
+      sellingType: "Nakit",
+      cashier: "Ahmet",
+      products: basketItems,
+      amountPaid,
+      changeAmount,
+      totalPrice
+    }
+    setReceiptData(receiptData);
+  };
   return (
     <>
-      <ReceiptDiaolog 
+      <ReceiptDialog
         isOpen={showReceiptDialog}
-        closeDialog={setShowReceiptDialog}
+        toggleReceiptDialog={toggleReceiptDialog}
       />
       <Snackbar
         open={snackbarMessage !== ""}
@@ -134,8 +153,8 @@ export default function SalesPage() {
               <Button fullWidth variant="contained" color="primary">{t("installment")}</Button>
             </Box>
             <Box sx={{ width: "100%", display: "flex"}}>
-              <Button fullWidth size="large" variant="contained" sx={{ mr: 0.5 }}>Hediye Çeki</Button>
-              <Button fullWidth size="large" variant="contained" sx={{ ml: 0.5 }}>Kupon Harcama</Button>
+              <Button fullWidth size="large" variant="contained" sx={{ mr: 0.5 }}>{t("giftCertificate")}</Button>
+              <Button fullWidth size="large" variant="contained" sx={{ ml: 0.5 }}>{t("spendingCoupon")}</Button>
             </Box>
           </Paper>
         </Grid>
@@ -205,8 +224,9 @@ export default function SalesPage() {
                   color="secondary"
                   size="large"
                   sx={{ height: "3rem", mt: 2 }}
+                  onClick={handleFinishProcessButton}
                 >
-                    Print Receipt
+                  {t("finishProcess")}
                 </Button>
               </Box>
             </Box>
